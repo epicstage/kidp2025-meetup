@@ -1,0 +1,4229 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>관리자 페이지 - 2025 디자인-기술 협업 전주기지원</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 40px 20px;
+    }
+    
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 25px;
+      background: linear-gradient(135deg, #DC2626, #EF4444);
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .logo-icon {
+      font-size: 45px;
+    }
+    
+    h1 {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #DC2626, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      font-size: 19px;
+      color: #a0a0a0;
+      font-weight: 400;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #2a2a2a;
+    }
+    
+    .tab {
+      padding: 15px 30px;
+      background: transparent;
+      border: none;
+      color: #a0a0a0;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+    
+    .tab:hover {
+      color: #ffffff;
+    }
+    
+    .tab.active {
+      color: #DC2626;
+      border-bottom-color: #DC2626;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .view-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .view-btn {
+      padding: 10px 20px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      color: #ffffff;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .view-btn:hover {
+      background: #2a2a2a;
+      border-color: #DC2626;
+    }
+    
+    .view-btn.active {
+      background: #DC2626;
+      border-color: #DC2626;
+    }
+    
+    .sheet-container {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      height: 80vh;
+      min-height: 600px;
+    }
+    
+    .sheet-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+    
+    .sheet-url-input {
+      width: 100%;
+      padding: 12px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    
+    .sheet-url-input:focus {
+      outline: none;
+      border-color: #DC2626;
+    }
+    
+    .sheet-help {
+      background: #2a2a2a;
+      border: 1px solid #3a3a3a;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #a0a0a0;
+      line-height: 1.6;
+    }
+    
+    .sheet-help strong {
+      color: #DC2626;
+    }
+    
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      color: #ffffff;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn:hover {
+      background: #2a2a2a;
+      border-color: #DC2626;
+    }
+    
+    .btn-primary {
+      background: #DC2626;
+      border-color: #DC2626;
+    }
+    
+    .btn-primary:hover {
+      background: #B91C1C;
+      border-color: #B91C1C;
+    }
+    
+    .table-container {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 20px;
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    
+    th {
+      background: #2a2a2a;
+      color: #ffffff;
+      padding: 12px 8px;
+      text-align: left;
+      font-weight: 600;
+      border: 1px solid #3a3a3a;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 11;
+      background: #2a2a2a;
+    }
+    
+    td {
+      padding: 8px;
+      border: 1px solid #3a3a3a;
+      background: #1a1a1a;
+    }
+    
+    td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 9;
+      background: #1a1a1a;
+    }
+    
+    tr:hover td {
+      background: #2a2a2a;
+    }
+    
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      background: #1a1a1a;
+      border: 1px solid #3a3a3a;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #DC2626;
+      background: #2a2a2a;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    
+    .btn-delete {
+      padding: 6px 12px;
+      background: #DC2626;
+      border: none;
+      color: #ffffff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .btn-delete:hover {
+      background: #B91C1C;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      background: #1a1a1a;
+      border: 2px solid #DC2626;
+      border-radius: 8px;
+      color: #ffffff;
+      font-weight: 600;
+      z-index: 1000;
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    .notification.show {
+      display: block;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        box-shadow: 0 20px 80px rgba(220, 38, 38, 0.6);
+      }
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #2a2a2a;
+    }
+    
+    .footer-text {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .footer-org {
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .modal-content {
+      background: #1a1a1a;
+      margin: 10% auto;
+      padding: 40px;
+      border: 2px solid #2a2a2a;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    .modal-close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #a0a0a0;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .modal-close:hover {
+      color: #DC2626;
+    }
+    
+    .modal-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: #2a2a2a;
+      border: 2px solid #3a3a3a;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    
+    .modal-input:focus {
+      outline: none;
+      border-color: #DC2626;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .toolbar {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .tabs {
+        overflow-x: auto;
+      }
+      
+      .tab {
+        white-space: nowrap;
+      }
+    }
+    .btn-pulse {
+      animation: pulseGlow 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0.0);
+      }
+      50% {
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
+      }
+      100% {
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0.0);
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/vendor/tabulator/tabulator_midnight.min.css">
+  <script src="/vendor/tabulator/tabulator.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">⚙️</span>
+      </div>
+      <h1>관리자 페이지</h1>
+      <p class="subtitle">2025 디자인-기술 협업 전주기지원</p>
+    </div>
+    
+    <div class="tabs">
+      <button class="tab active" data-tab="tech">기술기업</button>
+      <button class="tab" data-tab="design">디자인전문기업</button>
+      <button class="tab" data-tab="selections">밋업 신청 데이터</button>
+      <button class="tab" data-tab="matching">매칭 우선순위</button>
+      <button class="tab" data-tab="assignment">라운드 배정</button>
+    </div>
+    
+    <!-- 기술기업 탭 -->
+    <div id="techTab" class="tab-content active">
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="sheet" data-tab="tech">Google Sheets 편집</button>
+        <button class="view-btn" data-view="table" data-tab="tech">로컬 테이블 편집</button>
+      </div>
+      
+      <!-- Google Sheets 뷰 -->
+      <div id="techSheetView" class="sheet-view">
+        <div class="sheet-help">
+          <strong>📋 사용 방법:</strong><br>
+          1. 아래 입력란에 Google Sheets 편집 URL을 입력하세요 (예: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit#gid=GID)<br>
+          2. 또는 CSV URL에서 자동으로 변환할 수 있습니다 (CSV URL 입력 후 변환 버튼 클릭)<br>
+          3. Google Sheets에서 "공유" 설정을 "편집자"로 설정해야 합니다
+        </div>
+        <input 
+          type="text" 
+          id="techSheetUrl" 
+          class="sheet-url-input" 
+          placeholder="Google Sheets 편집 URL을 입력하세요 (예: https://docs.google.com/spreadsheets/d/.../edit#gid=...)"
+          value="https://docs.google.com/spreadsheets/d/1NtM1995L4n_mhRyPymqEhul_Dmeif3ayjdUq_QoGzik/edit?usp=sharing"
+        />
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+          <button class="btn" onclick="loadSheetFromCSV('tech')">CSV URL에서 변환</button>
+          <button class="btn btn-primary" onclick="loadSheet('tech')">시트 불러오기</button>
+          <button class="btn" onclick="openSheetInNewTab('tech')">새 탭에서 열기</button>
+        </div>
+        <div class="sheet-container">
+          <iframe id="techSheetFrame" class="sheet-iframe" src="about:blank"></iframe>
+        </div>
+      </div>
+      
+      <!-- 로컬 테이블 뷰 -->
+      <div id="techTableView" class="table-view" style="display: none;">
+        <div class="toolbar">
+          <button class="btn btn-primary" onclick="addRow('tech')">+ 행 추가</button>
+          <button class="btn" onclick="exportCSV('tech')">CSV 내보내기</button>
+          <button class="btn" onclick="importCSV('tech')">CSV 가져오기</button>
+          <button class="btn" onclick="saveData('tech')">저장</button>
+          <button class="btn" onclick="loadData('tech')">불러오기</button>
+          <button class="btn" onclick="location.href='index.html'">홈으로</button>
+        </div>
+        
+        <div class="table-container">
+          <table id="techTable">
+            <thead>
+              <tr>
+                <th>기업명</th>
+                <th>사용자 이름</th>
+                <th>기업규모</th>
+                <th>기업 구분</th>
+                <th>주요 사업 분야</th>
+                <th>주요 역량</th>
+                <th>간략소개</th>
+                <th>밋업 참가 목적</th>
+                <th>관심분야_1</th>
+                <th>관심분야_2</th>
+                <th>관심분야_3</th>
+                <th>관심분야_4</th>
+                <th>관심분야_5</th>
+                <th>관심분야_6</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>참석인원</th>
+                <th>참석자</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody id="techTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 수동 배정 입력 모달 -->
+    <div id="manualAssignmentModal" class="modal" style="display: none;" onclick="if(event.target === this) closeManualAssignmentModal();">
+      <div class="modal-content" style="max-width: 960px;" onclick="event.stopPropagation();">
+        <span class="modal-close" onclick="closeManualAssignmentModal()">&times;</span>
+        <h2 style="color: #DC2626; margin-bottom: 20px;">✍️ 수동으로 라운드 배정 입력</h2>
+        <p style="color: #a0a0a0; margin-bottom: 15px; line-height: 1.6;">
+          표에서 바로 값을 수정하거나, 스프레드시트에서 <strong>Ctrl/⌘ + V</strong>로 붙여넣으면 행과 열이 그대로 들어옵니다. 열 순서는 <strong>라운드 → 테이블 → 기술기업 → 디자인기업 → 매칭점수</strong> 입니다. 입력한 텍스트는 가공 없이 그대로 저장·표시됩니다.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 15px;">
+          <button class="btn btn-primary" onclick="addManualGridRow()">+ 행 추가</button>
+          <button class="btn" onclick="removeManualGridRows()">선택 행 삭제</button>
+          <button class="btn" onclick="clearManualGridRows()">전체 지우기</button>
+          <span style="color: #9CA3AF; font-size: 12px; margin-left: auto;">Tip: 표를 클릭한 뒤 Ctrl/⌘ + V로 여러 행을 한 번에 붙여넣을 수 있습니다.</span>
+        </div>
+        <div id="manualAssignmentGrid" style="height: 360px; border-radius: 8px; overflow: hidden;"></div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button class="btn" onclick="closeManualAssignmentModal()">닫기</button>
+          <button class="btn btn-primary" onclick="applyManualAssignment()">적용하기</button>
+        </div>
+      </div>
+    </div>
+    <!-- 디자인전문기업 탭 -->
+    <div id="designTab" class="tab-content">
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="sheet" data-tab="design">Google Sheets 편집</button>
+        <button class="view-btn" data-view="table" data-tab="design">로컬 테이블 편집</button>
+      </div>
+      
+      <!-- Google Sheets 뷰 -->
+      <div id="designSheetView" class="sheet-view">
+        <div class="sheet-help">
+          <strong>📋 사용 방법:</strong><br>
+          1. 아래 입력란에 Google Sheets 편집 URL을 입력하세요 (예: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit#gid=GID)<br>
+          2. 또는 CSV URL에서 자동으로 변환할 수 있습니다 (CSV URL 입력 후 변환 버튼 클릭)<br>
+          3. Google Sheets에서 "공유" 설정을 "편집자"로 설정해야 합니다
+        </div>
+        <input 
+          type="text" 
+          id="designSheetUrl" 
+          class="sheet-url-input" 
+          placeholder="Google Sheets 편집 URL을 입력하세요 (예: https://docs.google.com/spreadsheets/d/.../edit#gid=...)"
+          value="https://docs.google.com/spreadsheets/d/1pBe5mM1Y64vBU2LnLTpwO-jFuUgyEkanNemrGxx13_s/edit?usp=sharing"
+        />
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+          <button class="btn" onclick="loadSheetFromCSV('design')">CSV URL에서 변환</button>
+          <button class="btn btn-primary" onclick="loadSheet('design')">시트 불러오기</button>
+          <button class="btn" onclick="openSheetInNewTab('design')">새 탭에서 열기</button>
+        </div>
+        <div class="sheet-container">
+          <iframe id="designSheetFrame" class="sheet-iframe" src="about:blank"></iframe>
+        </div>
+      </div>
+      
+      <!-- 로컬 테이블 뷰 -->
+      <div id="designTableView" class="table-view" style="display: none;">
+        <div class="toolbar">
+          <button class="btn btn-primary" onclick="addRow('design')">+ 행 추가</button>
+          <button class="btn" onclick="exportCSV('design')">CSV 내보내기</button>
+          <button class="btn" onclick="importCSV('design')">CSV 가져오기</button>
+          <button class="btn" onclick="saveData('design')">저장</button>
+          <button class="btn" onclick="loadData('design')">불러오기</button>
+          <button class="btn" onclick="location.href='index.html'">홈으로</button>
+        </div>
+        
+        <div class="table-container">
+          <table id="designTable">
+            <thead>
+              <tr>
+                <th>기업명</th>
+                <th>사용자 이름</th>
+                <th>기업규모</th>
+                <th>기업 구분</th>
+                <th>주요 사업 분야_1</th>
+                <th>주요 사업 분야_2</th>
+                <th>주요 사업 분야_3</th>
+                <th>주요 사업 분야_4</th>
+                <th>주요 사업 분야_5</th>
+                <th>주요 역량</th>
+                <th>간략소개</th>
+                <th>밋업 참가 목적</th>
+                <th>관심분야_1</th>
+                <th>관심분야_2</th>
+                <th>관심분야_3</th>
+                <th>관심분야_4</th>
+                <th>관심분야_5</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>참석인원</th>
+                <th>참석자</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody id="designTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 밋업 신청 데이터 탭 -->
+    <div id="selectionsTab" class="tab-content">
+      <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="loadSelectionsData()">🔄 새로고침</button>
+        <button class="btn" onclick="exportSelectionsCSV()">📥 CSV 다운로드</button>
+        <span id="selectionsCount" style="color: #a0a0a0; margin-left: auto;">데이터를 불러오는 중...</span>
+      </div>
+      
+      <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+        <input 
+          type="text" 
+          id="selectionsSearch" 
+          placeholder="이메일 또는 기업명으로 검색..." 
+          style="flex: 1; padding: 10px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+          onkeyup="filterSelections()"
+        />
+        <select 
+          id="selectionsListTypeFilter" 
+          style="padding: 10px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+          onchange="filterSelections()"
+        >
+          <option value="">전체 목록</option>
+          <option value="tech">기술기업</option>
+          <option value="design">디자인전문기업</option>
+        </select>
+      </div>
+      
+      <div class="table-container" style="overflow-x: auto;">
+        <table id="selectionsTable" style="width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
+          <thead>
+            <tr style="background: #2a2a2a;">
+              <th onclick="sortSelections('email')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">이메일 <span id="sort-email" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('company')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">소속 기업명 <span id="sort-company" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('listType')" style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">목록 타입 <span id="sort-listType" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority1')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">1순위 <span id="sort-priority1" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority2')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">2순위 <span id="sort-priority2" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority3')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">3순위 <span id="sort-priority3" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority4')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">4순위 <span id="sort-priority4" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority5')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">5순위 <span id="sort-priority5" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority6')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">6순위 <span id="sort-priority6" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('priority7')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">7순위 <span id="sort-priority7" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('createdAt')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">생성 시간 <span id="sort-createdAt" style="font-size: 10px;">↕</span></th>
+              <th onclick="sortSelections('updatedAt')" style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; cursor: pointer; user-select: none;" title="클릭하여 정렬">수정 시간 <span id="sort-updatedAt" style="font-size: 10px;">↕</span></th>
+            </tr>
+          </thead>
+          <tbody id="selectionsTableBody">
+            <tr>
+              <td colspan="12" style="padding: 40px; text-align: center; color: #a0a0a0;">
+                데이터를 불러오는 중...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- 아직 신청하지 않은 기업 목록 -->
+      <div id="unappliedCompaniesSection" style="margin-top: 30px; padding: 20px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #EF4444; display: none;">
+        <h3 style="color: #EF4444; margin-bottom: 15px;">❌ 아직 신청하지 않은 기업</h3>
+        <div style="margin-bottom: 15px; padding: 15px; background: #1a1a1a; border-radius: 6px;">
+          <div style="display: flex; gap: 30px; color: #a0a0a0; font-size: 14px;">
+            <div>
+              <span style="color: #ffffff; font-weight: 600;">기술기업:</span> 
+              신청 완료 <span id="appliedTechCount" style="color: #10B981; font-weight: 600;">0</span>개 / 
+              미신청 <span id="unappliedTechCount" style="color: #EF4444; font-weight: 600;">0</span>개
+            </div>
+            <div>
+              <span style="color: #ffffff; font-weight: 600;">디자인전문기업:</span> 
+              신청 완료 <span id="appliedDesignCount" style="color: #10B981; font-weight: 600;">0</span>개 / 
+              미신청 <span id="unappliedDesignCount" style="color: #EF4444; font-weight: 600;">0</span>개
+            </div>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <h4 style="color: #EF4444; margin-bottom: 10px; font-size: 16px;">기술기업 (<span id="unappliedTechCountLabel">0</span>개)</h4>
+            <div id="unappliedTechList" style="max-height: 400px; overflow-y: auto; padding: 10px; background: #1a1a1a; border-radius: 6px;">
+            </div>
+          </div>
+          <div>
+            <h4 style="color: #EF4444; margin-bottom: 10px; font-size: 16px;">디자인전문기업 (<span id="unappliedDesignCountLabel">0</span>개)</h4>
+            <div id="unappliedDesignList" style="max-height: 400px; overflow-y: auto; padding: 10px; background: #1a1a1a; border-radius: 6px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 매칭 우선순위 탭 -->
+    <div id="matchingTab" class="tab-content">
+      <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+        <button class="btn btn-primary" onclick="loadMatchingData()">🔄 새로고침</button>
+        <button class="btn" onclick="exportMatchingCSV()">📥 CSV 다운로드</button>
+        <span id="matchingCount" style="color: #a0a0a0; margin-left: auto;">데이터를 불러오는 중...</span>
+      </div>
+      
+      <div style="margin-bottom: 15px; padding: 15px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #DC2626;">
+        <strong style="color: #DC2626;">📊 매칭 점수 계산 방식:</strong>
+        <ul style="margin: 10px 0 0 20px; color: #a0a0a0; line-height: 1.8;">
+          <li>1순위 선택 = 7점, 2순위 = 6점, ..., 7순위 = 1점, 선택 안 함 = 0점</li>
+          <li>양방향 매칭: 양방향 점수 합산 (최대 14점)</li>
+          <li>일방향 매칭: 일방 점수만 사용 (최대 7점)</li>
+          <li>예: 기술기업 A가 디자인기업 B를 1순위(7점) + 디자인기업 B가 기술기업 A를 2순위(6점) = 총 13점 (양방향)</li>
+          <li>예: 기술기업 A가 디자인기업 B를 1순위(7점) + 디자인기업 B가 선택 안 함(0점) = 총 7점 (일방향)</li>
+        </ul>
+      </div>
+      
+      <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+        <input 
+          type="text" 
+          id="matchingSearch" 
+          placeholder="기술기업명 또는 디자인기업명으로 검색..." 
+          style="flex: 1; padding: 10px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+          onkeyup="filterMatching()"
+        />
+        <select 
+          id="matchingSortBy" 
+          style="padding: 10px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+          onchange="filterMatching()"
+        >
+          <option value="score-desc">점수 높은 순</option>
+          <option value="score-asc">점수 낮은 순</option>
+          <option value="tech-asc">기술기업명 순</option>
+          <option value="design-asc">디자인기업명 순</option>
+        </select>
+        <input 
+          type="number" 
+          id="matchingMinScore" 
+          placeholder="최소 점수" 
+          min="0" 
+          max="14"
+          style="width: 120px; padding: 10px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+          onkeyup="filterMatching()"
+          onchange="filterMatching()"
+        />
+      </div>
+      
+      <div class="table-container" style="overflow-x: auto;">
+        <table id="matchingTable" style="width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
+          <thead>
+            <tr style="background: #2a2a2a;">
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">순위</th>
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기술기업</th>
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">디자인기업</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기술→디자인<br/>점수</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">디자인→기술<br/>점수</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">총점</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기술기업<br/>선택 순위</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">디자인기업<br/>선택 순위</th>
+            </tr>
+          </thead>
+          <tbody id="matchingTableBody">
+            <tr>
+              <td colspan="8" style="padding: 40px; text-align: center; color: #a0a0a0;">
+                데이터를 불러오는 중...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- 라운드 배정 탭 -->
+    <div id="assignmentTab" class="tab-content">
+      <div style="margin-bottom: 20px; padding: 20px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #DC2626;">
+        <h3 style="color: #DC2626; margin-bottom: 15px;">📅 라운드 배정 설정</h3>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 10px; color: #a0a0a0; font-size: 14px; font-weight: 600;">배정 방식</label>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 2px solid #3a3a3a; transition: all 0.2s;">
+              <input type="radio" name="assignmentMode" value="priority" checked style="width: 18px; height: 18px; cursor: pointer;">
+              <div>
+                <div style="color: #ffffff; font-weight: 600; margin-bottom: 3px;">매칭 포인트를 우선으로</div>
+                <div style="color: #a0a0a0; font-size: 12px;">상호 밋업 희망정도에 따라 배정</div>
+              </div>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 2px solid #3a3a3a; transition: all 0.2s;">
+              <input type="radio" name="assignmentMode" value="guarantee1" style="width: 18px; height: 18px; cursor: pointer;">
+              <div>
+                <div style="color: #ffffff; font-weight: 600; margin-bottom: 3px;">적어도 1개 이상의 밋업을 보장하기</div>
+                <div style="color: #a0a0a0; font-size: 12px;">모든 팀이 최소 1회 이상 배정되도록 보장 (매칭 없는 팀 제외)</div>
+              </div>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; background: #1a1a1a; border-radius: 8px; border: 2px solid #3a3a3a; transition: all 0.2s;">
+              <input type="radio" name="assignmentMode" value="guaranteeX" style="width: 18px; height: 18px; cursor: pointer;">
+              <div style="flex: 1;">
+                <div style="color: #ffffff; font-weight: 600; margin-bottom: 3px;">모든 팀들이 동등하게 밋업하기</div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                  <span style="color: #a0a0a0; font-size: 12px;">모든 팀이 정확히</span>
+                  <input 
+                    type="number" 
+                    id="guaranteeRoundCount" 
+                    min="1" 
+                    max="10"
+                    value="2"
+                    style="width: 60px; padding: 6px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 6px; color: #ffffff; font-size: 13px;"
+                  />
+                  <span style="color: #a0a0a0; font-size: 12px;">회 배정되도록 보장 (보장 후 남은 슬롯은 포인트 순으로 추가 배정)</span>
+                </div>
+              </div>
+            </label>
+          </div>
+          <div>
+            <label style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #2a2a2a; border-radius: 8px; cursor: pointer; transition: background 0.2s;">
+              <input type="radio" name="assignmentMode" value="smallerGroup" style="width: 18px; height: 18px; cursor: pointer;">
+              <div style="flex: 1;">
+                <div style="color: #ffffff; font-weight: 600; margin-bottom: 3px;">적은 그룹 전체 라운드 배정</div>
+                <div style="color: #a0a0a0; font-size: 12px;">기준 그룹의 모든 팀이 모든 라운드에 배정되도록 보장</div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                  <span style="color: #a0a0a0; font-size: 12px;">기준 그룹:</span>
+                  <select 
+                    id="baseGroupSelect" 
+                    style="padding: 6px; background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 6px; color: #ffffff; font-size: 12px;"
+                  >
+                    <option value="tech">기술기업</option>
+                    <option value="design">디자인전문기업</option>
+                  </select>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+          <div>
+            <label style="display: block; margin-bottom: 5px; color: #a0a0a0; font-size: 14px;">라운드 수</label>
+            <input 
+              type="number" 
+              id="roundCount" 
+              min="1" 
+              max="10"
+              value="3"
+              onchange="checkFixedSeatSection()"
+              style="width: 100px; padding: 10px; background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+            />
+          </div>
+          <div>
+            <label style="display: block; margin-bottom: 5px; color: #a0a0a0; font-size: 14px;">테이블 수 (라운드당)</label>
+            <input 
+              type="number" 
+              id="tableCount" 
+              min="1" 
+              max="50"
+              value="10"
+              onchange="checkFixedSeatSection(); if(document.getElementById('fixedSeatTableContainer').style.display !== 'none') loadFixedSeatCompanies();"
+              style="width: 100px; padding: 10px; background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 8px; color: #ffffff; font-size: 14px;"
+            />
+          </div>
+               <div style="margin-top: 25px;">
+                 <button class="btn btn-primary" onclick="generateAssignment()">🚀 배정 생성</button>
+                <button class="btn" id="confirmAssignmentBtn" onclick="confirmAssignment()" style="margin-left: 10px; display: none; background: #10B981; border-color: #10B981;">✅ 이대로 확정하기</button>
+                <button class="btn" id="resetAssignmentBtn" onclick="resetAssignment()" style="margin-left: 10px; display: none; background: #EF4444; border-color: #EF4444;">🔄 배정 새로하기</button>
+                <button class="btn" id="clearAssignmentBtn" onclick="clearAssignment()" style="margin-left: 10px; display: none; background: #6B7280; border-color: #6B7280;">🗑️ 초기화</button>
+                 <button class="btn" onclick="exportAssignmentCSV()" style="margin-left: 10px;">📥 CSV 다운로드</button>
+                 <button class="btn" id="noShowBtn" onclick="openNoShowModal()" style="margin-left: 10px; display: none; background: #EF4444; border-color: #EF4444;">🚫 노쇼 처리</button>
+                <button class="btn" onclick="openManualAssignmentModal()" style="margin-left: 10px; background: #3B82F6; border-color: #3B82F6; color: #ffffff;">✍️ 수동 입력</button>
+               </div>
+               <div id="confirmedInfo" style="margin-top: 15px; padding: 15px; background: #1a1a1a; border-radius: 8px; border-left: 4px solid #10B981; display: none;">
+                 <div style="color: #10B981; font-weight: 600; margin-bottom: 5px;">✅ 확정된 배정</div>
+                 <div style="color: #a0a0a0; font-size: 13px;">
+                   <span id="confirmedVersion">버전: -</span> | 
+                   <span id="confirmedTime">확정 시간: -</span>
+                 </div>
+               </div>
+        </div>
+        <div style="margin-top: 15px; padding: 10px; background: #1a1a1a; border-radius: 6px; font-size: 13px; color: #a0a0a0;">
+          <strong style="color: #DC2626;">💡 안내:</strong> 매칭 우선순위에 따라 자동으로 배정됩니다. 각 라운드에서 같은 기업은 한 테이블에만 배정됩니다.
+        </div>
+      </div>
+      
+      <div id="assignmentResult" style="display: none;">
+        <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+          <span id="assignmentSummary" style="color: #a0a0a0; font-size: 14px;"></span>
+        </div>
+        
+        <!-- 배정 결과 테이블 -->
+        <div id="assignmentTables" style="margin-bottom: 30px;"></div>
+        
+             <!-- 배정 통계 섹션 -->
+             <div id="assignmentStats" style="display: none; margin-top: 30px;">
+               <h3 style="color: #DC2626; margin-bottom: 15px;">📊 배정 통계</h3>
+               <div id="assignmentStatsContent"></div>
+             </div>
+             
+             <!-- 전체 기업 리스트 (라운드 수 기준) -->
+             <div id="allCompaniesList" style="display: none; margin-top: 30px;">
+               <h3 style="color: #DC2626; margin-bottom: 15px;">📋 전체 기업 리스트 (라운드 배정 수 기준)</h3>
+               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                 <div>
+                   <h4 style="color: #DC2626; margin-bottom: 15px; font-size: 18px;">기술기업</h4>
+                   <div id="allTechCompaniesList" style="max-height: 600px; overflow-y: auto;"></div>
+                 </div>
+                 <div>
+                   <h4 style="color: #DC2626; margin-bottom: 15px; font-size: 18px;">디자인기업</h4>
+                   <div id="allDesignCompaniesList" style="max-height: 600px; overflow-y: auto;"></div>
+                 </div>
+               </div>
+             </div>
+             
+             <!-- 매칭이 없는 팀 목록 -->
+             <div id="noMatchingSection" style="display: none; margin-top: 30px;">
+               <h3 style="color: #DC2626; margin-bottom: 15px;">❌ 매칭이 없는 팀</h3>
+          <div style="margin-bottom: 15px; padding: 15px; background: #2a2a2a; border-radius: 8px; border-left: 4px solid #DC2626;">
+            <p style="color: #a0a0a0; font-size: 13px; line-height: 1.6;">
+              양방향 매칭도 일방향 매칭도 전혀 없는 기업들입니다. 이 기업들은 다른 기업을 선택하지 않았거나, 선택한 기업이 이 기업을 선택하지 않았습니다.
+            </p>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+              <h4 style="color: #DC2626; margin-bottom: 10px; font-size: 16px;">기술기업</h4>
+              <div class="table-container" style="overflow-x: auto;">
+                <table id="noMatchingTechTable" style="width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
+                  <thead>
+                    <tr style="background: #2a2a2a;">
+                      <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">순위</th>
+                      <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기업명</th>
+                    </tr>
+                  </thead>
+                  <tbody id="noMatchingTechTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+              <h4 style="color: #DC2626; margin-bottom: 10px; font-size: 16px;">디자인기업</h4>
+              <div class="table-container" style="overflow-x: auto;">
+                <table id="noMatchingDesignTable" style="width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
+                  <thead>
+                    <tr style="background: #2a2a2a;">
+                      <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">순위</th>
+                      <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기업명</th>
+                    </tr>
+                  </thead>
+                  <tbody id="noMatchingDesignTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 노쇼 처리 모달 -->
+      <div id="noShowModal" class="modal" style="display: none;" onclick="if(event.target === this) closeNoShowModal();">
+        <div class="modal-content" style="max-width: 600px;" onclick="event.stopPropagation();">
+          <span class="modal-close" onclick="closeNoShowModal()">&times;</span>
+          <h2 style="color: #DC2626; margin-bottom: 20px;">🚫 노쇼 처리</h2>
+          <p style="color: #a0a0a0; margin-bottom: 20px; line-height: 1.6;">
+            확정된 배정에서 노쇼로 처리할 기업을 선택하세요. 해당 기업이 포함된 모든 배정이 제외됩니다.
+          </p>
+          <div style="margin-bottom: 20px; position: relative;">
+            <label style="display: block; margin-bottom: 8px; color: #a0a0a0; font-size: 14px;">기업명</label>
+            <input 
+              type="text" 
+              id="noShowCompanyName" 
+              class="modal-input" 
+              placeholder="기업명을 입력하세요"
+              autocomplete="off"
+              oninput="filterCompanyNames(this.value)"
+              onblur="setTimeout(() => document.getElementById('noShowCompanySuggestions').style.display = 'none', 200);"
+            />
+            <div id="noShowCompanySuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 1001; margin-top: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);"></div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn" onclick="processNoShow()" style="background: #EF4444; border-color: #EF4444; flex: 1;">노쇼 처리</button>
+            <button class="btn" onclick="closeNoShowModal()" style="background: #2a2a2a; border-color: #3a3a3a; flex: 1;">취소</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p class="footer-text">2025 디자인-기술 협업 전주기지원</p>
+      <p class="footer-org">주최: 산업통상부, 주관: 한국디자인진흥원, 운영: MYSC</p>
+    </div>
+  </div>
+  
+  <div id="notification" class="notification"></div>
+  
+  <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleFileSelect(event)">
+  
+  <script>
+    // 기술기업 컬럼 정의 (실제 CSV 헤더 기준)
+    const techColumns = [
+      '기업명', '사용자 이름', '기업규모', '기업 구분', '주요 사업 분야', 
+      '주요 역량', '간략소개', '밋업 참가 목적', '관심분야_1', '관심분야_2', '관심분야_3', 
+      '관심분야_4', '관심분야_5', '관심분야_6',
+      '연락처', '이메일', '참석인원', '참석자'
+    ];
+    
+    // 디자인전문기업 컬럼 정의 (실제 CSV 헤더 기준)
+    const designColumns = [
+      '기업명', '사용자 이름', '기업규모', '기업 구분', 
+      '주요 사업 분야_1', '주요 사업 분야_2', '주요 사업 분야_3', '주요 사업 분야_4', '주요 사업 분야_5',
+      '주요 역량', '간략소개', '밋업 참가 목적', 
+      '관심분야_1', '관심분야_2', '관심분야_3', '관심분야_4', '관심분야_5',
+      '연락처', '이메일', '참석인원', '참석자'
+    ];
+    
+    let currentTab = 'tech';
+    let techData = [];
+    let designData = [];
+    
+    // Google Sheets 편집 URL (기본값)
+    const TECH_SHEET_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1NtM1995L4n_mhRyPymqEhul_Dmeif3ayjdUq_QoGzik/edit?usp=sharing';
+    const DESIGN_SHEET_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1pBe5mM1Y64vBU2LnLTpwO-jFuUgyEkanNemrGxx13_s/edit?usp=sharing';
+    
+    // CSV URL (편집 URL에서 자동 생성)
+    function getCSVUrl(editUrl) {
+      // 편집 URL에서 스프레드시트 ID 추출
+      const match = editUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+      if (match) {
+        const spreadsheetId = match[1];
+        // CSV URL 형식: /d/e/{SPREADSHEET_ID}/pub?output=csv
+        return `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/pub?output=csv`;
+      }
+      return null;
+    }
+    
+    const TECH_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdxkwUoTKh5y5xLeMwerXez9IpL6_QEY09ipRULpS-R60XiiSVMWC3LEjgVzHU57_EjlIVvg1LfSw_/pub?output=csv';
+    const DESIGN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRH6aVLkutbRv8_gv9kSdHS62fmcYV6_sLBRjGoPQyHHahyWMBdEm7nLVLPlkrnGccKXB462N9ZgKyK/pub?output=csv';
+    
+    // CSV URL에서 스프레드시트 ID와 GID 추출하여 편집 URL 생성
+    function convertCSVUrlToEditUrl(csvUrl) {
+      try {
+        // CSV URL 형식: https://docs.google.com/spreadsheets/d/e/SPREADSHEET_ID/pub?gid=GID&single=true&output=csv
+        const match = csvUrl.match(/\/d\/e\/([^\/]+)\/pub\?gid=(\d+)/);
+        if (match) {
+          const spreadsheetId = match[1];
+          const gid = match[2];
+          return `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit#gid=${gid}`;
+        }
+        return null;
+      } catch (e) {
+        return null;
+      }
+    }
+    
+    // 기본 시트 URL 로드
+    function loadSheetFromCSV(type) {
+      const editUrl = type === 'tech' ? TECH_SHEET_EDIT_URL : DESIGN_SHEET_EDIT_URL;
+      const urlInput = document.getElementById(type + 'SheetUrl');
+      urlInput.value = editUrl;
+      loadSheet(type);
+      showNotification('기본 Google Sheets를 불러왔습니다.');
+    }
+    
+    // Google Sheets 로드
+    function loadSheet(type) {
+      const urlInput = document.getElementById(type + 'SheetUrl');
+      const url = urlInput.value.trim();
+      
+      if (!url) {
+        showNotification('Google Sheets URL을 입력해주세요.');
+        return;
+      }
+      
+      // URL 유효성 검사
+      if (!url.includes('docs.google.com/spreadsheets')) {
+        showNotification('올바른 Google Sheets URL이 아닙니다.');
+        return;
+      }
+      
+      // iframe에 로드
+      const frame = document.getElementById(type + 'SheetFrame');
+      frame.src = url;
+      
+      // LocalStorage에 저장
+      localStorage.setItem(`kidp2025_${type}_sheet_url`, url);
+      
+      showNotification('Google Sheets를 불러왔습니다.');
+    }
+    
+    // 새 탭에서 열기
+    function openSheetInNewTab(type) {
+      const urlInput = document.getElementById(type + 'SheetUrl');
+      const url = urlInput.value.trim();
+      
+      if (!url) {
+        showNotification('Google Sheets URL을 입력해주세요.');
+        return;
+      }
+      
+      window.open(url, '_blank');
+    }
+    
+    // 뷰 전환
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        const tab = btn.dataset.tab;
+        
+        // 같은 탭의 다른 뷰 버튼 비활성화
+        document.querySelectorAll(`.view-btn[data-tab="${tab}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // 뷰 전환
+        if (view === 'sheet') {
+          document.getElementById(tab + 'SheetView').style.display = 'block';
+          document.getElementById(tab + 'TableView').style.display = 'none';
+        } else {
+          document.getElementById(tab + 'SheetView').style.display = 'none';
+          document.getElementById(tab + 'TableView').style.display = 'block';
+        }
+      });
+    });
+    
+    // 탭 전환
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        currentTab = tabName;
+        
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        tab.classList.add('active');
+        const tabElement = document.getElementById(tabName + 'Tab');
+        if (tabElement) {
+          tabElement.classList.add('active');
+        }
+        
+        // 밋업 신청 데이터 탭이 활성화되면 데이터 자동 로드
+        if (tabName === 'selections') {
+          loadSelectionsData();
+        }
+        
+        // 매칭 우선순위 탭이 활성화되면 데이터 자동 로드
+        if (tabName === 'matching') {
+          loadMatchingData();
+        }
+        
+        // 라운드 배정 탭이 활성화되면 확정된 배정 데이터 로드
+        if (tabName === 'assignment') {
+          // 확정된 배정 정보 및 데이터 로드
+          loadConfirmedAssignment();
+          
+          // 매칭 데이터도 미리 로드 (배정 생성 시 필요)
+          if (!allMatchingData || allMatchingData.length === 0) {
+            loadMatchingData();
+          }
+        }
+      });
+    });
+    
+    // 행 추가
+    function addRow(type) {
+      const columns = type === 'tech' ? techColumns : designColumns;
+      const tbody = document.getElementById(type + 'TableBody');
+      const row = document.createElement('tr');
+      
+      let html = '';
+      columns.forEach(col => {
+        html += `<td><input type="text" data-field="${col}" placeholder="${col}"></td>`;
+      });
+      html += `<td><button class="btn-delete" onclick="deleteRow(this)">삭제</button></td>`;
+      
+      row.innerHTML = html;
+      tbody.appendChild(row);
+      
+      // 첫 번째 입력 필드에 포커스
+      const firstInput = row.querySelector('input');
+      if (firstInput) firstInput.focus();
+      
+      showNotification('행이 추가되었습니다.');
+    }
+    
+    // 행 삭제
+    function deleteRow(btn) {
+      if (confirm('이 행을 삭제하시겠습니까?')) {
+        btn.closest('tr').remove();
+        showNotification('행이 삭제되었습니다.');
+      }
+    }
+    
+    // 데이터 저장 (LocalStorage)
+    function saveData(type) {
+      const tbody = document.getElementById(type + 'TableBody');
+      const rows = tbody.querySelectorAll('tr');
+      const data = [];
+      
+      const columns = type === 'tech' ? techColumns : designColumns;
+      
+      rows.forEach(row => {
+        const rowData = {};
+        columns.forEach(col => {
+          const input = row.querySelector(`input[data-field="${col}"]`);
+          rowData[col] = input ? input.value.trim() : '';
+        });
+        // 빈 행은 제외
+        if (rowData[columns[0]]) {
+          data.push(rowData);
+        }
+      });
+      
+      localStorage.setItem(`kidp2025_${type}_data`, JSON.stringify(data));
+      
+      if (type === 'tech') {
+        techData = data;
+      } else {
+        designData = data;
+      }
+      
+      showNotification(`${type === 'tech' ? '기술기업' : '디자인전문기업'} 데이터가 저장되었습니다.`);
+    }
+    
+    // 데이터 불러오기 (LocalStorage)
+    function loadData(type) {
+      const stored = localStorage.getItem(`kidp2025_${type}_data`);
+      if (!stored) {
+        showNotification('저장된 데이터가 없습니다.');
+        return;
+      }
+      
+      const data = JSON.parse(stored);
+      const tbody = document.getElementById(type + 'TableBody');
+      tbody.innerHTML = '';
+      
+      const columns = type === 'tech' ? techColumns : designColumns;
+      
+      data.forEach(rowData => {
+        const row = document.createElement('tr');
+        let html = '';
+        columns.forEach(col => {
+          const value = rowData[col] || '';
+          html += `<td><input type="text" data-field="${col}" value="${escapeHtml(value)}" placeholder="${col}"></td>`;
+        });
+        html += `<td><button class="btn-delete" onclick="deleteRow(this)">삭제</button></td>`;
+        row.innerHTML = html;
+        tbody.appendChild(row);
+      });
+      
+      if (type === 'tech') {
+        techData = data;
+      } else {
+        designData = data;
+      }
+      
+      showNotification(`${type === 'tech' ? '기술기업' : '디자인전문기업'} 데이터를 불러왔습니다.`);
+    }
+    
+    // CSV 내보내기
+    function exportCSV(type) {
+      const tbody = document.getElementById(type + 'TableBody');
+      const rows = tbody.querySelectorAll('tr');
+      const columns = type === 'tech' ? techColumns : designColumns;
+      
+      // 헤더
+      let csv = columns.map(col => escapeCSV(col)).join(',') + '\n';
+      
+      // 데이터
+      rows.forEach(row => {
+        const values = [];
+        columns.forEach(col => {
+          const input = row.querySelector(`input[data-field="${col}"]`);
+          values.push(escapeCSV(input ? input.value.trim() : ''));
+        });
+        csv += values.join(',') + '\n';
+      });
+      
+      // BOM 추가 (한글 깨짐 방지)
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${type === 'tech' ? 'tech_companies' : 'design_companies'}_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification('CSV 파일이 다운로드되었습니다.');
+    }
+    
+    // CSV 가져오기
+    function importCSV(type) {
+      document.getElementById('csvFileInput').click();
+      document.getElementById('csvFileInput').dataset.type = type;
+    }
+    
+    // 파일 선택 처리
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const type = event.target.dataset.type;
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const text = e.target.result;
+        parseAndImportCSV(text, type);
+      };
+      
+      reader.readAsText(file, 'UTF-8');
+    }
+    
+    // CSV 파싱 및 가져오기
+    function parseAndImportCSV(text, type) {
+      const lines = text.split(/\r?\n/).filter(line => line.trim());
+      if (lines.length < 2) {
+        showNotification('CSV 파일 형식이 올바르지 않습니다.');
+        return;
+      }
+      
+      // BOM 제거
+      if (lines[0].charCodeAt(0) === 0xFEFF) {
+        lines[0] = lines[0].substring(1);
+      }
+      
+      // 헤더 파싱
+      const headers = parseCSVLine(lines[0]);
+      const columns = type === 'tech' ? techColumns : designColumns;
+      
+      // 데이터 파싱
+      const data = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        const rowData = {};
+        columns.forEach((col, idx) => {
+          rowData[col] = values[idx] || '';
+        });
+        if (rowData[columns[0]]) {
+          data.push(rowData);
+        }
+      }
+      
+      // 테이블에 표시
+      const tbody = document.getElementById(type + 'TableBody');
+      tbody.innerHTML = '';
+      
+      data.forEach(rowData => {
+        const row = document.createElement('tr');
+        let html = '';
+        columns.forEach(col => {
+          const value = rowData[col] || '';
+          html += `<td><input type="text" data-field="${col}" value="${escapeHtml(value)}" placeholder="${col}"></td>`;
+        });
+        html += `<td><button class="btn-delete" onclick="deleteRow(this)">삭제</button></td>`;
+        row.innerHTML = html;
+        tbody.appendChild(row);
+      });
+      
+      if (type === 'tech') {
+        techData = data;
+      } else {
+        designData = data;
+      }
+      
+      showNotification(`${data.length}개의 ${type === 'tech' ? '기술기업' : '디자인전문기업'} 데이터를 가져왔습니다.`);
+    }
+    
+    // CSV 라인 파싱 (쉼표와 따옴표 처리)
+    function parseCSVLine(line) {
+      const values = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          values.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      values.push(current.trim());
+      return values;
+    }
+    
+    // CSV 이스케이프
+    function escapeCSV(value) {
+      if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+        return '"' + value.replace(/"/g, '""') + '"';
+      }
+      return value;
+    }
+    
+    // HTML 이스케이프
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // 알림 표시
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // 밋업 신청 데이터 관련 변수
+    let allSelectionsData = [];
+    let filteredSelectionsData = [];
+    let selectionsSortColumn = null;
+    let selectionsSortDirection = 'asc'; // 'asc' or 'desc'
+    let userCompanyMap = {}; // 이메일 -> 소속 기업명 매핑
+    
+    // CSV에서 사용자 소속 기업 정보 로드
+    async function loadUserCompanyMap() {
+      try {
+        const techRes = await fetch(TECH_CSV_URL);
+        const techText = await techRes.text();
+        const techData = parseCSVForUserCompany(techText);
+        
+        const designRes = await fetch(DESIGN_CSV_URL);
+        const designText = await designRes.text();
+        const designData = parseCSVForUserCompany(designText);
+        
+        [...techData, ...designData].forEach(entry => {
+          if (entry.email && entry.companyName) {
+            userCompanyMap[entry.email] = entry.companyName;
+          }
+        });
+      } catch (error) {
+        console.error('사용자 소속 기업 정보 로드 오류:', error);
+      }
+    }
+    
+    // CSV 파싱 (사용자 소속 기업용)
+    function parseCSVForUserCompany(text) {
+      const lines = text.split(/\r?\n/).filter(line => line.trim());
+      if (lines.length < 2) return [];
+      
+      const headers = parseCSVLine(lines[0]);
+      const data = [];
+      
+      // 헤더 인덱스 찾기
+      const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+      const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '멘토명' || h === '기술기업명' || h === '스타트업' || h === '디자인전문기업');
+      
+      if (userEmailIdx === -1 || companyNameIdx === -1) {
+        console.warn('CSV 헤더를 찾을 수 없습니다:', headers);
+        return [];
+      }
+      
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        if (values.length <= Math.max(userEmailIdx, companyNameIdx)) continue;
+        
+        const userEmail = (values[userEmailIdx] || '').toLowerCase().trim();
+        const companyName = (values[companyNameIdx] || '').trim();
+        
+        if (userEmail && companyName) {
+          data.push({
+            email: userEmail,
+            companyName
+          });
+        }
+      }
+      
+      return data;
+    }
+
+    function getCompanyNameByEmail(email, fallbackName = '') {
+      const normalized = (email || '').toLowerCase().trim();
+      if (normalized && userCompanyMap[normalized]) {
+        return userCompanyMap[normalized];
+      }
+      return fallbackName || normalized || '';
+    }
+    
+    // 밋업 신청 데이터 불러오기
+    async function loadSelectionsData() {
+      const tbody = document.getElementById('selectionsTableBody');
+      const countSpan = document.getElementById('selectionsCount');
+      
+      tbody.innerHTML = '<tr><td colspan="12" style="padding: 40px; text-align: center; color: #a0a0a0;">데이터를 불러오는 중...</td></tr>';
+      countSpan.textContent = '데이터를 불러오는 중...';
+      
+      try {
+        // 사용자 소속 기업 정보 먼저 로드
+        await loadUserCompanyMap();
+        
+        const response = await fetch('/api/kidp2025/meetup/selections');
+        const data = await response.json();
+        
+        if (data.success && data.selections) {
+          // 사용자 소속 기업명 추가
+          allSelectionsData = data.selections.map(selection => {
+            const email = selection.email.toLowerCase().trim();
+            if (!selection.userCompany && userCompanyMap[email]) {
+              selection.userCompany = userCompanyMap[email];
+            }
+            return selection;
+          });
+          
+          filteredSelectionsData = [...allSelectionsData];
+          
+          // 정렬 적용
+          if (selectionsSortColumn) {
+            sortSelectionsData(selectionsSortColumn, selectionsSortDirection);
+          }
+          
+          renderSelectionsTable();
+          countSpan.textContent = `총 ${allSelectionsData.length}개의 신청`;
+          
+          // 아직 신청하지 않은 기업 목록 표시
+          await displayUnappliedCompanies();
+          
+          showNotification('데이터를 불러왔습니다.');
+        } else {
+          throw new Error(data.error || '데이터를 불러올 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('데이터 불러오기 오류:', error);
+        tbody.innerHTML = `<tr><td colspan="12" style="padding: 40px; text-align: center; color: #DC2626;">오류: ${escapeHtml(error.message)}</td></tr>`;
+        countSpan.textContent = '오류 발생';
+        showNotification('데이터를 불러오는 중 오류가 발생했습니다.');
+      }
+    }
+    
+    // 아직 신청하지 않은 기업 목록 표시
+    async function displayUnappliedCompanies() {
+      try {
+        // selections 데이터가 로드되지 않았으면 먼저 로드
+        if (!allSelectionsData || allSelectionsData.length === 0) {
+          console.log('selections 데이터가 없어서 로드합니다...');
+          try {
+            const response = await fetch('/api/kidp2025/meetup/selections');
+            const data = await response.json();
+            if (data.success && data.selections) {
+              allSelectionsData = data.selections;
+              console.log('selections 데이터 로드 완료:', allSelectionsData.length, '개');
+            }
+          } catch (error) {
+            console.error('selections 데이터 로드 오류:', error);
+          }
+        }
+        
+        // 신청한 사용자 이메일 수집 (selections 데이터에서)
+        const appliedEmails = new Set();
+        if (allSelectionsData && allSelectionsData.length > 0) {
+          for (const selection of allSelectionsData) {
+            // selections 데이터의 email 필드 확인 (다양한 필드명 시도)
+            const email = (selection.email || selection.user_email || selection.userEmail || '').toLowerCase().trim();
+            if (email) {
+              appliedEmails.add(email);
+            }
+          }
+        }
+        
+        console.log('신청한 사용자 수:', appliedEmails.size);
+        console.log('신청한 사용자 샘플:', Array.from(appliedEmails).slice(0, 5));
+        console.log('allSelectionsData 길이:', allSelectionsData ? allSelectionsData.length : 0);
+        if (allSelectionsData && allSelectionsData.length > 0) {
+          console.log('첫 번째 selection 샘플:', allSelectionsData[0]);
+        }
+        
+        // CSV에서 기술기업 목록 로드
+        const techRes = await fetch(TECH_CSV_URL);
+        const techText = await techRes.text();
+        const techLines = techText.split(/\r?\n/).filter(line => line.trim());
+        
+        const unappliedTech = [];
+        if (techLines.length >= 2) {
+          const headers = parseCSVLine(techLines[0]);
+          const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+          const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '멘토명' || h === '기술기업명');
+          
+          console.log('기술기업 CSV 헤더:', headers);
+          console.log('사용자 이름 인덱스:', userEmailIdx, '기업명 인덱스:', companyNameIdx);
+          
+          if (userEmailIdx >= 0 && companyNameIdx >= 0) {
+            let csvUserEmailSamples = [];
+            for (let i = 1; i < techLines.length; i++) {
+              const values = parseCSVLine(techLines[i]);
+              if (values.length <= Math.max(userEmailIdx, companyNameIdx)) continue;
+              
+              const userEmailRaw = (values[userEmailIdx] || '').trim();
+              const userEmail = userEmailRaw.toLowerCase().trim();
+              const companyName = (values[companyNameIdx] || '').trim();
+              
+              // 이메일 형식 검증 (간단한 체크: @ 포함하고 공백이 없어야 함)
+              const isValidEmail = userEmail && userEmail.includes('@') && !userEmail.includes(' ') && userEmail.length > 5;
+              
+              // 기업명 유효성 검사: 너무 길지 않고(100자 이하), 숫자로 시작하지 않고, 특수 패턴이 없어야 함
+              const isValidCompanyName = companyName && 
+                companyName.length <= 100 && 
+                companyName.length >= 1 &&
+                !companyName.match(/^\d+\./) && // 숫자로 시작하는 경우 제외 (예: "2. 포트폴리오")
+                !companyName.includes('포트폴리오') &&
+                !companyName.includes('핵심역량') &&
+                !companyName.includes('http') &&
+                !companyName.includes('www.') &&
+                !companyName.includes('instagram.com') &&
+                companyName.split(',').length <= 3; // 쉼표가 너무 많으면 설명 텍스트로 간주
+              
+              // 샘플 수집 (처음 5개만)
+              if (csvUserEmailSamples.length < 5 && userEmail) {
+                csvUserEmailSamples.push({
+                  raw: userEmailRaw,
+                  normalized: userEmail,
+                  companyName: companyName,
+                  isValidEmail: isValidEmail,
+                  isValidCompanyName: isValidCompanyName
+                });
+              }
+              
+              // 사용자 이름이 이메일 형식이고, 기업명이 유효하고, 신청 목록에 없는 경우
+              if (isValidEmail && isValidCompanyName && !appliedEmails.has(userEmail)) {
+                unappliedTech.push({
+                  email: userEmail,
+                  name: companyName
+                });
+              }
+            }
+            console.log('기술기업 CSV 사용자 이름 샘플:', csvUserEmailSamples);
+            console.log('기술기업 CSV 총 행 수:', techLines.length - 1);
+          } else {
+            console.error('기술기업 CSV 헤더를 찾을 수 없습니다. userEmailIdx:', userEmailIdx, 'companyNameIdx:', companyNameIdx);
+          }
+        }
+        
+        // CSV에서 디자인기업 목록 로드
+        const designRes = await fetch(DESIGN_CSV_URL);
+        const designText = await designRes.text();
+        const designLines = designText.split(/\r?\n/).filter(line => line.trim());
+        
+        const unappliedDesign = [];
+        if (designLines.length >= 2) {
+          const headers = parseCSVLine(designLines[0]);
+          const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+          const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '스타트업' || h === '디자인전문기업');
+          
+          console.log('디자인기업 CSV 헤더:', headers);
+          console.log('사용자 이름 인덱스:', userEmailIdx, '기업명 인덱스:', companyNameIdx);
+          
+          if (userEmailIdx >= 0 && companyNameIdx >= 0) {
+            let csvUserEmailSamples = [];
+            for (let i = 1; i < designLines.length; i++) {
+              const values = parseCSVLine(designLines[i]);
+              if (values.length <= Math.max(userEmailIdx, companyNameIdx)) continue;
+              
+              const userEmailRaw = (values[userEmailIdx] || '').trim();
+              const userEmail = userEmailRaw.toLowerCase().trim();
+              const companyName = (values[companyNameIdx] || '').trim();
+              
+              // 이메일 형식 검증 (간단한 체크: @ 포함하고 공백이 없어야 함)
+              const isValidEmail = userEmail && userEmail.includes('@') && !userEmail.includes(' ') && userEmail.length > 5;
+              
+              // 기업명 유효성 검사: 너무 길지 않고(100자 이하), 숫자로 시작하지 않고, 특수 패턴이 없어야 함
+              const isValidCompanyName = companyName && 
+                companyName.length <= 100 && 
+                companyName.length >= 1 &&
+                !companyName.match(/^\d+\./) && // 숫자로 시작하는 경우 제외 (예: "2. 포트폴리오")
+                !companyName.includes('포트폴리오') &&
+                !companyName.includes('핵심역량') &&
+                !companyName.includes('http') &&
+                !companyName.includes('www.') &&
+                !companyName.includes('instagram.com') &&
+                companyName.split(',').length <= 3; // 쉼표가 너무 많으면 설명 텍스트로 간주
+              
+              // 샘플 수집 (처음 5개만)
+              if (csvUserEmailSamples.length < 5 && userEmail) {
+                csvUserEmailSamples.push({
+                  raw: userEmailRaw,
+                  normalized: userEmail,
+                  companyName: companyName,
+                  isValidEmail: isValidEmail,
+                  isValidCompanyName: isValidCompanyName
+                });
+              }
+              
+              // 사용자 이름이 이메일 형식이고, 기업명이 유효하고, 신청 목록에 없는 경우
+              if (isValidEmail && isValidCompanyName && !appliedEmails.has(userEmail)) {
+                unappliedDesign.push({
+                  email: userEmail,
+                  name: companyName
+                });
+              }
+            }
+            console.log('디자인기업 CSV 사용자 이름 샘플:', csvUserEmailSamples);
+            console.log('디자인기업 CSV 총 행 수:', designLines.length - 1);
+          } else {
+            console.error('디자인기업 CSV 헤더를 찾을 수 없습니다. userEmailIdx:', userEmailIdx, 'companyNameIdx:', companyNameIdx);
+          }
+        }
+        
+        console.log('신청하지 않은 기술기업 수:', unappliedTech.length);
+        console.log('신청하지 않은 디자인기업 수:', unappliedDesign.length);
+        
+        // 신청 완료한 기업 수 계산
+        const appliedTechEmails = new Set();
+        const appliedDesignEmails = new Set();
+        if (allSelectionsData && allSelectionsData.length > 0) {
+          for (const selection of allSelectionsData) {
+            const email = (selection.email || selection.user_email || selection.userEmail || '').toLowerCase().trim();
+            if (email) {
+              // listType === 'design' 이면 기술기업 (기술기업이 디자인기업을 선택한 경우)
+              // listType === 'tech' 이면 디자인기업 (디자인기업이 기술기업을 선택한 경우)
+              if (selection.listType === 'design') {
+                appliedTechEmails.add(email);
+              } else if (selection.listType === 'tech') {
+                appliedDesignEmails.add(email);
+              }
+            }
+          }
+        }
+        
+        // UI 업데이트
+        const section = document.getElementById('unappliedCompaniesSection');
+        const techListDiv = document.getElementById('unappliedTechList');
+        const designListDiv = document.getElementById('unappliedDesignList');
+        const techCountSpan = document.getElementById('unappliedTechCount');
+        const designCountSpan = document.getElementById('unappliedDesignCount');
+        const techCountLabel = document.getElementById('unappliedTechCountLabel');
+        const designCountLabel = document.getElementById('unappliedDesignCountLabel');
+        const appliedTechCountSpan = document.getElementById('appliedTechCount');
+        const appliedDesignCountSpan = document.getElementById('appliedDesignCount');
+        
+        // 신청 완료한 기업 수 표시
+        appliedTechCountSpan.textContent = appliedTechEmails.size;
+        appliedDesignCountSpan.textContent = appliedDesignEmails.size;
+        
+        if (unappliedTech.length === 0 && unappliedDesign.length === 0) {
+          section.style.display = 'none';
+          return;
+        }
+        
+        section.style.display = 'block';
+        techCountSpan.textContent = unappliedTech.length;
+        designCountSpan.textContent = unappliedDesign.length;
+        techCountLabel.textContent = unappliedTech.length;
+        designCountLabel.textContent = unappliedDesign.length;
+        
+        // 기술기업 목록 표시
+        if (unappliedTech.length === 0) {
+          techListDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #a0a0a0;">신청하지 않은 기업이 없습니다.</div>';
+        } else {
+          techListDiv.innerHTML = unappliedTech
+            .sort((a, b) => a.name.localeCompare(b.name, 'ko'))
+            .map(company => `<div style="padding: 8px; border-bottom: 1px solid #3a3a3a; color: #ffffff;">${escapeHtml(company.name)}</div>`)
+            .join('');
+        }
+        
+        // 디자인기업 목록 표시
+        if (unappliedDesign.length === 0) {
+          designListDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #a0a0a0;">신청하지 않은 기업이 없습니다.</div>';
+        } else {
+          designListDiv.innerHTML = unappliedDesign
+            .sort((a, b) => a.name.localeCompare(b.name, 'ko'))
+            .map(company => `<div style="padding: 8px; border-bottom: 1px solid #3a3a3a; color: #ffffff;">${escapeHtml(company.name)}</div>`)
+            .join('');
+        }
+      } catch (error) {
+        console.error('신청하지 않은 기업 목록 표시 오류:', error);
+        const section = document.getElementById('unappliedCompaniesSection');
+        if (section) {
+          section.style.display = 'none';
+        }
+      }
+    }
+    
+    // 정렬 함수
+    function sortSelections(column) {
+      if (selectionsSortColumn === column) {
+        // 같은 컬럼 클릭 시 방향 전환
+        selectionsSortDirection = selectionsSortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        selectionsSortColumn = column;
+        selectionsSortDirection = 'asc';
+      }
+      
+      sortSelectionsData(column, selectionsSortDirection);
+      renderSelectionsTable();
+      updateSortIndicators();
+    }
+    
+    // 정렬 실행
+    function sortSelectionsData(column, direction) {
+      filteredSelectionsData.sort((a, b) => {
+        let aVal, bVal;
+        
+        switch(column) {
+          case 'email':
+            aVal = (a.email || '').toLowerCase();
+            bVal = (b.email || '').toLowerCase();
+            break;
+          case 'company':
+            aVal = (a.userCompany || '').toLowerCase();
+            bVal = (b.userCompany || '').toLowerCase();
+            break;
+          case 'listType':
+            aVal = a.listType || '';
+            bVal = b.listType || '';
+            break;
+          case 'priority1':
+          case 'priority2':
+          case 'priority3':
+          case 'priority4':
+          case 'priority5':
+          case 'priority6':
+          case 'priority7':
+            const priorityNum = column.replace('priority', '');
+            aVal = (a[`priority${priorityNum}`] || '').toLowerCase();
+            bVal = (b[`priority${priorityNum}`] || '').toLowerCase();
+            break;
+          case 'createdAt':
+            aVal = new Date(a.createdAt || 0).getTime();
+            bVal = new Date(b.createdAt || 0).getTime();
+            break;
+          case 'updatedAt':
+            aVal = new Date(a.updatedAt || 0).getTime();
+            bVal = new Date(b.updatedAt || 0).getTime();
+            break;
+          default:
+            return 0;
+        }
+        
+        if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+        if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    
+    // 정렬 인디케이터 업데이트
+    function updateSortIndicators() {
+      // 모든 인디케이터 초기화
+      document.querySelectorAll('[id^="sort-"]').forEach(el => {
+        el.textContent = '↕';
+      });
+      
+      if (selectionsSortColumn) {
+        const indicator = document.getElementById(`sort-${selectionsSortColumn}`);
+        if (indicator) {
+          indicator.textContent = selectionsSortDirection === 'asc' ? '↑' : '↓';
+        }
+      }
+    }
+    
+    // 밋업 신청 데이터 테이블 렌더링
+    function renderSelectionsTable() {
+      const tbody = document.getElementById('selectionsTableBody');
+      const countSpan = document.getElementById('selectionsCount');
+      
+      if (filteredSelectionsData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="12" style="padding: 40px; text-align: center; color: #a0a0a0;">데이터가 없습니다.</td></tr>';
+        countSpan.textContent = '데이터 없음';
+        return;
+      }
+      
+      tbody.innerHTML = filteredSelectionsData.map(selection => {
+        const createdAt = new Date(selection.createdAt).toLocaleString('ko-KR');
+        const updatedAt = new Date(selection.updatedAt).toLocaleString('ko-KR');
+        const listTypeLabel = selection.listType === 'tech' ? '기술기업' : '디자인전문기업';
+        const listTypeColor = selection.listType === 'tech' ? '#3B82F6' : '#10B981';
+        
+        return `
+          <tr style="border-bottom: 1px solid #2a2a2a; transition: background 0.2s;" 
+              onmouseover="this.style.background='#2a2a2a'" 
+              onmouseout="this.style.background='transparent'">
+            <td style="padding: 12px; color: #ffffff; font-weight: 600;">${escapeHtml(selection.email)}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.userCompany || '')}</td>
+            <td style="padding: 12px; text-align: center;">
+              <span style="padding: 4px 8px; background: ${listTypeColor}; color: #ffffff; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                ${listTypeLabel}
+              </span>
+            </td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority1 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority2 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority3 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority4 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority5 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority6 || '')}</td>
+            <td style="padding: 12px; color: #ffffff;">${escapeHtml(selection.priority7 || '')}</td>
+            <td style="padding: 12px; color: #a0a0a0; font-size: 13px;">${createdAt}</td>
+            <td style="padding: 12px; color: #a0a0a0; font-size: 13px;">${updatedAt}</td>
+          </tr>
+        `;
+      }).join('');
+      
+      countSpan.textContent = `총 ${allSelectionsData.length}개 중 ${filteredSelectionsData.length}개 표시`;
+    }
+    
+    // 확정된 배정에서 사용된 모든 기업명 목록
+    let confirmedCompanyNames = [];
+    async function loadConfirmedAssignment() {
+      try {
+        const response = await fetch('/api/kidp2025/meetup/assignments/confirmed');
+        if (!response.ok) {
+          throw new Error('확정된 배정 정보를 불러오지 못했습니다.');
+        }
+        const data = await response.json();
+        const infoBox = document.getElementById('confirmedInfo');
+        const versionSpan = document.getElementById('confirmedVersion');
+        const timeSpan = document.getElementById('confirmedTime');
+
+        if (infoBox && versionSpan && timeSpan) {
+          if (data.success && data.version) {
+            infoBox.style.display = 'block';
+            versionSpan.textContent = `버전: ${data.version.version || '-'}`;
+            timeSpan.textContent = `확정 시간: ${data.version.confirmedAt || '-'}`;
+          } else {
+            infoBox.style.display = 'none';
+            versionSpan.textContent = '버전: -';
+            timeSpan.textContent = '확정 시간: -';
+          }
+        }
+      } catch (error) {
+        console.warn('확정 배정 정보를 불러오는 중 오류 발생:', error);
+        const infoBox = document.getElementById('confirmedInfo');
+        if (infoBox) infoBox.style.display = 'none';
+      }
+    }
+    
+    // 노쇼 처리 모달 열기
+    async function openNoShowModal() {
+      // 확정된 배정에서 사용된 기업명 목록 가져오기
+      try {
+        const response = await fetch('/api/kidp2025/meetup/assignments');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.assignments) {
+            const companySet = new Set();
+            data.assignments.forEach(a => {
+              if (a.techCompany) companySet.add(a.techCompany);
+              if (a.designCompany) companySet.add(a.designCompany);
+            });
+            confirmedCompanyNames = Array.from(companySet).sort();
+          }
+        }
+      } catch (error) {
+        console.error('확정된 배정 데이터 로드 오류:', error);
+      }
+      
+      document.getElementById('noShowModal').style.display = 'block';
+      document.getElementById('noShowCompanyName').value = '';
+      document.getElementById('noShowCompanySuggestions').style.display = 'none';
+      setTimeout(() => document.getElementById('noShowCompanyName').focus(), 100);
+    }
+    
+    // 노쇼 처리 모달 닫기
+    function closeNoShowModal() {
+      document.getElementById('noShowModal').style.display = 'none';
+      document.getElementById('noShowCompanyName').value = '';
+      document.getElementById('noShowCompanySuggestions').style.display = 'none';
+    }
+
+    // 수동 배정 입력 모달 열기
+    function openManualAssignmentModal() {
+      const modal = document.getElementById('manualAssignmentModal');
+      if (!modal) return;
+      
+      modal.style.display = 'block';
+      
+      setTimeout(() => {
+        const table = ensureManualAssignmentTable();
+        if (!table) return;
+        
+        if (isManualGridEmpty(table)) {
+          if (assignmentResult && assignmentResult.assignments && assignmentResult.assignments.length > 0) {
+            table.setData(assignmentResult.assignments.map(transformAssignmentForGrid));
+          } else {
+            table.setData(getManualAssignmentDefaultRows());
+          }
+        }
+        
+        table.redraw(true);
+      }, 0);
+    }
+
+    function closeManualAssignmentModal() {
+      const modal = document.getElementById('manualAssignmentModal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function applyManualAssignment() {
+      const table = ensureManualAssignmentTable();
+      if (!table) return;
+      
+      const rawRows = table.getData();
+      const rows = rawRows.filter(row => {
+        return (
+          (row.round !== '' && row.round !== undefined && row.round !== null) ||
+          (row.table !== '' && row.table !== undefined && row.table !== null) ||
+          (row.techCompany && row.techCompany.toString().trim() !== '') ||
+          (row.designCompany && row.designCompany.toString().trim() !== '') ||
+          (row.score !== '' && row.score !== undefined && row.score !== null)
+        );
+      });
+      
+      if (!rows.length) {
+        showNotification('입력된 행이 없습니다.');
+        return;
+      }
+      
+      const assignments = [];
+      let maxRound = 0;
+      let maxTable = 0;
+      
+      try {
+        rows.forEach((row, index) => {
+          const round = parseInt((row.round ?? '').toString().trim(), 10);
+          if (isNaN(round)) {
+            throw new Error(`${index + 1}행의 라운드 값을 확인해 주세요.`);
+          }
+          
+          const tableNum = parseInt((row.table ?? '').toString().trim(), 10);
+          if (isNaN(tableNum)) {
+            throw new Error(`${index + 1}행의 테이블 번호를 확인해 주세요.`);
+          }
+          
+          const techRaw = (row.techCompany || '').toString().trim();
+          const designRaw = (row.designCompany || '').toString().trim();
+          
+          if (!techRaw || !designRaw) {
+            throw new Error(`${index + 1}행의 기업 정보를 확인해 주세요.`);
+          }
+          
+          const techInfo = resolveCompanyInput(techRaw, 'tech');
+          const designInfo = resolveCompanyInput(designRaw, 'design');
+          
+          const scoreValue = row.score !== undefined && row.score !== null && row.score !== ''
+            ? Number(row.score)
+            : 0;
+          
+          assignments.push({
+            round,
+            table: tableNum,
+            techCompany: techRaw,
+            techEmail: (techInfo && techInfo.email) || '',
+            designCompany: designRaw,
+            designEmail: (designInfo && designInfo.email) || '',
+            score: isNaN(scoreValue) ? 0 : scoreValue
+          });
+
+          if (techInfo && techInfo.email && techInfo.name) {
+            userCompanyMap[techInfo.email] = techInfo.name;
+          }
+          if (designInfo && designInfo.email && designInfo.name) {
+            userCompanyMap[designInfo.email] = designInfo.name;
+          }
+          
+          maxRound = Math.max(maxRound, round);
+          maxTable = Math.max(maxTable, tableNum);
+        });
+      } catch (error) {
+        console.error('수동 배정 데이터 파싱 오류:', error);
+        showNotification(error.message || '수동 배정 데이터를 처리하는 중 오류가 발생했습니다.');
+        return;
+      }
+      
+      if (assignments.length === 0) {
+        showNotification('유효한 행을 찾지 못했습니다. 데이터를 확인해 주세요.');
+        return;
+      }
+      
+      const manualResult = {
+        assignments,
+        assigned: [],
+        unassigned: [],
+        noMatchingTeams: { tech: [], design: [] },
+        roundCount: maxRound || (parseInt(document.getElementById('roundCount').value, 10) || 1),
+        tableCount: maxTable || (parseInt(document.getElementById('tableCount').value, 10) || 1),
+        assignmentMode: 'manual'
+      };
+      
+      assignmentResult = manualResult;
+      window.assignmentResult = manualResult;
+      renderAssignmentResult(manualResult);
+      markAssignmentDirty();
+      
+      document.getElementById('assignmentResult').style.display = 'block';
+      document.getElementById('confirmAssignmentBtn').style.display = 'inline-block';
+      document.getElementById('resetAssignmentBtn').style.display = 'inline-block';
+      document.getElementById('clearAssignmentBtn').style.display = 'inline-block';
+      document.getElementById('noShowBtn').style.display = 'inline-block';
+      
+      closeManualAssignmentModal();
+      showNotification(`수동 배정 ${assignments.length}건을 적용했습니다.`);
+    }
+    
+    // 기업명 자동완성 필터링
+    function filterCompanyNames(query) {
+      const suggestionsDiv = document.getElementById('noShowCompanySuggestions');
+      if (!query || query.trim().length === 0) {
+        suggestionsDiv.style.display = 'none';
+        return;
+      }
+      
+      const filtered = confirmedCompanyNames.filter(name => 
+        name.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      if (filtered.length === 0) {
+        suggestionsDiv.style.display = 'none';
+        return;
+      }
+      
+    suggestionsDiv.innerHTML = filtered.slice(0, 10).map(name => `
+      <div 
+        class="suggestion-item" 
+        style="padding: 10px; cursor: pointer; border-bottom: 1px solid #2a2a2a; transition: background 0.2s;"
+        data-name="${escapeHtml(name).replace(/"/g, '&quot;')}"
+        onmouseover="this.style.background='#2a2a2a'"
+        onmouseout="this.style.background='transparent'"
+      >
+        ${escapeHtml(name)}
+      </div>
+    `).join('');
+    suggestionsDiv.style.display = 'block';
+    suggestionsDiv.querySelectorAll('.suggestion-item').forEach(item => {
+      item.addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        selectCompanyName(item.textContent.trim());
+      });
+    });
+    }
+    
+    // 기업명 선택
+    function selectCompanyName(name) {
+      document.getElementById('noShowCompanyName').value = name;
+      document.getElementById('noShowCompanySuggestions').style.display = 'none';
+    }
+    
+    // 노쇼 처리 실행
+    async function processNoShow() {
+      const companyName = document.getElementById('noShowCompanyName').value.trim();
+      
+      if (!companyName) {
+        showNotification('기업명을 입력해주세요.');
+        return;
+      }
+      
+      let confirmMessage = `확정된 배정에서 다음 기업을 노쇼로 처리하시겠습니까?\n\n기업명: ${companyName}\n\n이 기업이 포함된 모든 배정이 제외됩니다.\n\n이 작업은 되돌릴 수 없습니다.`;
+      
+      if (!confirm(confirmMessage)) {
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/kidp2025/meetup/assignments/noshow', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ companyName: companyName }),
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          showNotification(`노쇼 처리 완료: ${companyName}이(가) 포함된 배정이 제외되었습니다.`);
+          closeNoShowModal();
+          
+          // 확정된 배정 다시 로드
+          await loadConfirmedAssignment();
+        } else {
+          const error = await response.json();
+          showNotification(`노쇼 처리 실패: ${error.error || '알 수 없는 오류'}`);
+        }
+      } catch (error) {
+        console.error('노쇼 처리 오류:', error);
+        showNotification('노쇼 처리 중 오류가 발생했습니다.');
+      }
+    }
+    
+    // 방식 4: 적은 그룹 전체 라운드 배정 (Half-Reset Round Robin - 점수 기반)
+    function assignRoundsBySmallerGroup(matchings, roundCount, tableCount) {
+      const engine = createAssignmentEngine(matchings, roundCount, tableCount);
+      if (!engine) {
+        return null;
+      }
+
+      const {
+        rounds,
+        allTechs,
+        allDesigns,
+        assignPair,
+        pickDesignForTech,
+        pickTechForDesign,
+        roundDesignUsed,
+        hasRoundCapacity,
+        finalize
+      } = engine;
+
+      function assignRoundTechFirst(round, phaseLabel) {
+        if (!rounds.includes(round)) return;
+        for (const tech of allTechs) {
+          if (!hasRoundCapacity(round)) break;
+          if (engine.techSchedule[tech.id][round]) continue;
+          const designId = pickDesignForTech(tech.id, round, null);
+          if (designId) {
+            assignPair(tech.id, designId, round, phaseLabel);
+          }
+        }
+      }
+
+      function assignRoundDesignFirst(round, designIds, phaseLabel) {
+        if (!rounds.includes(round)) return;
+        for (const designId of designIds) {
+          if (!hasRoundCapacity(round)) break;
+          if (roundDesignUsed[round].has(designId)) continue;
+          const techId = pickTechForDesign(designId, round);
+          if (techId) {
+            assignPair(techId, designId, round, phaseLabel);
+          }
+        }
+      }
+
+      function fillRoundWithTech(round, techList, allowedDesignSet, phaseLabel) {
+        if (!rounds.includes(round)) return;
+        for (const tech of techList) {
+          if (!hasRoundCapacity(round)) break;
+          if (engine.techSchedule[tech.id][round]) continue;
+          const designId = pickDesignForTech(tech.id, round, allowedDesignSet);
+          if (designId) {
+            assignPair(tech.id, designId, round, phaseLabel);
+          }
+        }
+      }
+
+      assignRoundTechFirst(1, 'Round1-TechFirst');
+      const r1Participants = new Set(roundDesignUsed[1] || []);
+
+      const r2Targets = allDesigns.filter(design => !r1Participants.has(design.id));
+      assignRoundDesignFirst(2, r2Targets.map(d => d.id), 'Round2-Recovery');
+      const techWithoutR2 = allTechs.filter(tech => !(engine.techSchedule[tech.id] && engine.techSchedule[tech.id][2]));
+      fillRoundWithTech(2, techWithoutR2, r1Participants, 'Round2-Fill');
+
+      assignRoundTechFirst(3, 'Round3-TechFirst');
+      const r3Participants = new Set(roundDesignUsed[3] || []);
+
+      const r4Targets = allDesigns.filter(design => !r3Participants.has(design.id));
+      assignRoundDesignFirst(4, r4Targets.map(d => d.id), 'Round4-Recovery');
+      const techWithoutR4 = allTechs.filter(tech => !(engine.techSchedule[tech.id] && engine.techSchedule[tech.id][4]));
+      fillRoundWithTech(4, techWithoutR4, r3Participants, 'Round4-Fill');
+
+      return finalize('HalfResetRR');
+    }
+
+    // 방식 1: 매칭 포인트를 우선으로
+    function assignRoundsByPriority(matchings, roundCount, tableCount, noMatchingTeams) {
+      const engine = createAssignmentEngine(matchings, roundCount, tableCount);
+      if (!engine) return null;
+
+      const normalizedMatches = [...engine.cleanMatchings].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
+
+      for (const round of engine.rounds) {
+        const usedTech = new Set();
+        const usedDesign = new Set();
+
+        for (const match of normalizedMatches) {
+          const techId = match.techId;
+          const designId = match.designId;
+          if (!techId || !designId) continue;
+          if (usedTech.has(techId) || usedDesign.has(designId)) continue;
+          if (!engine.hasRoundCapacity(round)) break;
+          if (!engine.isSlotFree(techId, designId, round)) continue;
+
+          engine.assignPair(techId, designId, round, `Priority-R${round}`);
+          usedTech.add(techId);
+          usedDesign.add(designId);
+        }
+      }
+
+      return engine.finalize('Priority');
+    }
+
+    // 방식 2: 적어도 1개 이상의 밋업을 보장하기
+    function assignRoundsGuarantee1(matchings, roundCount, tableCount, noMatchingTeams) {
+      const engine = createAssignmentEngine(matchings, roundCount, tableCount);
+      if (!engine) return null;
+
+      const normalizedMatches = [...engine.cleanMatchings].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
+      const techCounts = {};
+      const designCounts = {};
+      engine.allTechs.forEach(t => { techCounts[t.id] = 0; });
+      engine.allDesigns.forEach(d => { designCounts[d.id] = 0; });
+
+      const needPhase = normalizedMatches.filter(match => {
+        return techCounts[match.techId] === 0 || designCounts[match.designId] === 0;
+      });
+
+      for (const match of normalizedMatches) {
+        const techId = match.techId;
+        const designId = match.designId;
+        if (!techId || !designId) continue;
+        if (techCounts[techId] >= 1 && designCounts[designId] >= 1) continue;
+        const round = engine.findAvailableRound(techId, designId);
+        if (round !== null) {
+          engine.assignPair(techId, designId, round, 'Guarantee1-Core');
+          techCounts[techId] = (techCounts[techId] || 0) + 1;
+          designCounts[designId] = (designCounts[designId] || 0) + 1;
+        }
+      }
+
+      for (const match of normalizedMatches) {
+        const techId = match.techId;
+        const designId = match.designId;
+        if (!techId || !designId) continue;
+        const round = engine.findAvailableRound(techId, designId);
+        if (round !== null) {
+          engine.assignPair(techId, designId, round, 'Guarantee1-Fill');
+        }
+      }
+
+      return engine.finalize('Guarantee1');
+    }
+
+    // 방식 3: 모든 팀들이 동등하게 X회 밋업하기
+    function assignRoundsGuaranteeX(matchings, roundCount, tableCount, guaranteeRoundCount, noMatchingTeams) {
+      const engine = createAssignmentEngine(matchings, roundCount, tableCount);
+      if (!engine) return null;
+
+      const target = Math.max(1, guaranteeRoundCount || 1);
+      const normalizedMatches = [...engine.cleanMatchings].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
+      const techCounts = {};
+      const designCounts = {};
+      engine.allTechs.forEach(t => { techCounts[t.id] = 0; });
+      engine.allDesigns.forEach(d => { designCounts[d.id] = 0; });
+
+      let progress = true;
+      while (progress) {
+        progress = false;
+        for (const match of normalizedMatches) {
+          const techId = match.techId;
+          const designId = match.designId;
+          if (!techId || !designId) continue;
+          if (techCounts[techId] >= target || designCounts[designId] >= target) continue;
+          const round = engine.findAvailableRound(techId, designId);
+          if (round !== null) {
+            engine.assignPair(techId, designId, round, `Guarantee${target}-Core`);
+            techCounts[techId] += 1;
+            designCounts[designId] += 1;
+            progress = true;
+          }
+        }
+      }
+
+      const unmetTech = Object.entries(techCounts).filter(([, count]) => count < target).map(([id]) => id);
+      const unmetDesign = Object.entries(designCounts).filter(([, count]) => count < target).map(([id]) => id);
+      if (unmetTech.length > 0 || unmetDesign.length > 0) {
+        console.warn(`[GuaranteeX] 목표 ${target}회를 충족하지 못한 기업이 있습니다.`, { unmetTech, unmetDesign });
+      }
+
+      for (const match of normalizedMatches) {
+        const techId = match.techId;
+        const designId = match.designId;
+        if (!techId || !designId) continue;
+        const round = engine.findAvailableRound(techId, designId);
+        if (round !== null) {
+          engine.assignPair(techId, designId, round, `Guarantee${target}-Fill`);
+        }
+      }
+
+      return engine.finalize(`Guarantee${target}`);
+    }
+// HTML 이스케이프 함수
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // 밋업 신청 데이터 필터링
+    function filterSelections() {
+      const searchTerm = document.getElementById('selectionsSearch').value.toLowerCase();
+      const listTypeFilter = document.getElementById('selectionsListTypeFilter').value;
+      
+      filteredSelectionsData = allSelectionsData.filter(selection => {
+        const matchesSearch = !searchTerm || 
+          selection.email.toLowerCase().includes(searchTerm) ||
+          (selection.userCompany || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority1 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority2 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority3 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority4 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority5 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority6 || '').toLowerCase().includes(searchTerm) ||
+          (selection.priority7 || '').toLowerCase().includes(searchTerm);
+        
+        const matchesListType = !listTypeFilter || selection.listType === listTypeFilter;
+        
+        return matchesSearch && matchesListType;
+      });
+      
+      // 정렬 적용
+      if (selectionsSortColumn) {
+        sortSelectionsData(selectionsSortColumn, selectionsSortDirection);
+      }
+      
+      renderSelectionsTable();
+    }
+    
+    // CSV 다운로드
+    function exportSelectionsCSV() {
+      window.location.href = '/api/kidp2025/meetup/selections/export';
+    }
+    
+    // 매칭 우선순위 관련 변수
+    let allMatchingData = [];
+    let filteredMatchingData = [];
+    
+    // 매칭 우선순위 데이터 불러오기
+    async function loadMatchingData() {
+      const tbody = document.getElementById('matchingTableBody');
+      const countSpan = document.getElementById('matchingCount');
+      
+      tbody.innerHTML = '<tr><td colspan="8" style="padding: 40px; text-align: center; color: #a0a0a0;">데이터를 불러오는 중...</td></tr>';
+      countSpan.textContent = '데이터를 불러오는 중...';
+      
+      try {
+        // 사용자 소속 기업 정보 먼저 로드 (CSV에서)
+        await loadUserCompanyMap();
+        
+        const response = await fetch('/api/kidp2025/meetup/matching');
+        const data = await response.json();
+        
+        if (data.success && data.matchings) {
+          // 사용자 소속 기업명 추가 (CSV에서 가져온 정보 사용)
+          allMatchingData = data.matchings.map(matching => {
+            // API에서 이미 기업명이 포함되어 있지만, CSV 정보로 보완
+            if (!matching.techCompany || matching.techCompany === matching.techEmail) {
+              matching.techCompany = userCompanyMap[matching.techEmail.toLowerCase()] || matching.techCompany || matching.techEmail;
+            }
+            if (!matching.designCompany || matching.designCompany === matching.designEmail) {
+              matching.designCompany = userCompanyMap[matching.designEmail.toLowerCase()] || matching.designCompany || matching.designEmail;
+            }
+            return matching;
+          });
+          
+          filteredMatchingData = [...allMatchingData];
+          filterMatching();
+          countSpan.textContent = `총 ${allMatchingData.length}개의 매칭 쌍`;
+          showNotification('매칭 데이터를 불러왔습니다.');
+        } else {
+          throw new Error(data.error || data.details || '데이터를 불러올 수 없습니다.');
+        }
+      } catch (error) {
+        console.error('매칭 데이터 불러오기 오류:', error);
+        const errorMsg = error instanceof Error ? (error.message || String(error)) : String(error);
+        tbody.innerHTML = `<tr><td colspan="8" style="padding: 40px; text-align: center; color: #DC2626;">오류: ${escapeHtml(errorMsg)}</td></tr>`;
+        countSpan.textContent = '오류 발생';
+        showNotification('매칭 데이터를 불러오는 중 오류가 발생했습니다: ' + errorMsg);
+      }
+    }
+    
+    // 매칭 우선순위 테이블 렌더링
+    function renderMatchingTable() {
+      const tbody = document.getElementById('matchingTableBody');
+      const countSpan = document.getElementById('matchingCount');
+      
+      if (filteredMatchingData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="padding: 40px; text-align: center; color: #a0a0a0;">매칭 데이터가 없습니다.</td></tr>';
+        countSpan.textContent = '매칭 데이터 없음';
+        return;
+      }
+      
+      tbody.innerHTML = filteredMatchingData.map((matching, index) => {
+        const rank = index + 1;
+        const totalScore = matching.totalScore;
+        const scoreColor = totalScore >= 10 ? '#10B981' : totalScore >= 7 ? '#3B82F6' : totalScore >= 4 ? '#F59E0B' : '#EF4444';
+        
+        return `
+          <tr style="border-bottom: 1px solid #2a2a2a; transition: background 0.2s;" 
+              onmouseover="this.style.background='#2a2a2a'" 
+              onmouseout="this.style.background='transparent'">
+            <td style="padding: 12px; text-align: center; color: #DC2626; font-weight: 700; font-size: 16px;">${rank}</td>
+            <td style="padding: 12px; color: #ffffff; font-weight: 600;">${escapeHtml(matching.techCompany)}</td>
+            <td style="padding: 12px; color: #ffffff; font-weight: 600;">${escapeHtml(matching.designCompany)}</td>
+            <td style="padding: 12px; text-align: center; color: #3B82F6; font-weight: 600;">${matching.techToDesignScore}</td>
+            <td style="padding: 12px; text-align: center; color: #10B981; font-weight: 600;">${matching.designToTechScore}</td>
+            <td style="padding: 12px; text-align: center;">
+              <span style="padding: 6px 12px; background: ${scoreColor}; color: #ffffff; border-radius: 6px; font-size: 16px; font-weight: 700;">
+                ${totalScore}
+              </span>
+            </td>
+            <td style="padding: 12px; text-align: center; color: #a0a0a0;">
+              ${matching.techPriority ? `${matching.techPriority}순위` : '-'}
+            </td>
+            <td style="padding: 12px; text-align: center; color: #a0a0a0;">
+              ${matching.designPriority ? `${matching.designPriority}순위` : '-'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+      
+      countSpan.textContent = `총 ${allMatchingData.length}개 중 ${filteredMatchingData.length}개 표시`;
+    }
+    
+    // 매칭 데이터 필터링 및 정렬
+    function filterMatching() {
+      const searchTerm = document.getElementById('matchingSearch').value.toLowerCase();
+      const sortBy = document.getElementById('matchingSortBy').value;
+      const minScore = parseInt(document.getElementById('matchingMinScore').value) || 0;
+      
+      filteredMatchingData = allMatchingData.filter(matching => {
+        const matchesSearch = !searchTerm || 
+          matching.techCompany.toLowerCase().includes(searchTerm) ||
+          matching.designCompany.toLowerCase().includes(searchTerm);
+        
+        const matchesMinScore = matching.totalScore >= minScore;
+        
+        return matchesSearch && matchesMinScore;
+      });
+      
+      // 정렬
+      filteredMatchingData.sort((a, b) => {
+        switch (sortBy) {
+          case 'score-desc':
+            return b.totalScore - a.totalScore;
+          case 'score-asc':
+            return a.totalScore - b.totalScore;
+          case 'tech-asc':
+            return a.techCompany.localeCompare(b.techCompany, 'ko');
+          case 'design-asc':
+            return a.designCompany.localeCompare(b.designCompany, 'ko');
+          default:
+            return b.totalScore - a.totalScore;
+        }
+      });
+      
+      renderMatchingTable();
+    }
+    
+    // 매칭 CSV 다운로드
+    function exportMatchingCSV() {
+      const headers = [
+        '순위',
+        '기술기업',
+        '디자인기업',
+        '기술→디자인 점수',
+        '디자인→기술 점수',
+        '총점',
+        '기술기업 선택 순위',
+        '디자인기업 선택 순위'
+      ];
+      
+      const csvRows = [headers.join(',')];
+      
+      filteredMatchingData.forEach((matching, index) => {
+        const csvRow = [
+          index + 1,
+          `"${(matching.techCompany || '').replace(/"/g, '""')}"`,
+          `"${(matching.designCompany || '').replace(/"/g, '""')}"`,
+          matching.techToDesignScore,
+          matching.designToTechScore,
+          matching.totalScore,
+          matching.techPriority || '',
+          matching.designPriority || ''
+        ];
+        csvRows.push(csvRow.join(','));
+      });
+      
+      const csvContent = csvRows.join('\n');
+      const bom = '\uFEFF'; // UTF-8 BOM (Excel 호환)
+      const blob = new Blob([bom + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `matching_priority_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification('매칭 우선순위 CSV 파일이 다운로드되었습니다.');
+    }
+    
+    // 라운드 배정 관련 변수
+    let assignmentResult = null;
+    let manualAssignmentTable = null;
+    
+    function getManualAssignmentDefaultRows(count = 10) {
+      return Array.from({ length: count }).map(() => ({
+        round: '',
+        table: '',
+        techCompany: '',
+        designCompany: '',
+        score: ''
+      }));
+    }
+    
+    function ensureManualAssignmentTable() {
+      if (manualAssignmentTable) {
+        return manualAssignmentTable;
+      }
+      
+      const gridElement = document.getElementById('manualAssignmentGrid');
+      if (!gridElement) {
+        return null;
+      }
+      
+      if (typeof Tabulator === 'undefined') {
+        console.error('Tabulator 라이브러리가 로드되지 않았습니다.');
+        showNotification('수동 입력 표를 초기화할 수 없습니다. 페이지를 새로고침해 주세요.');
+        return null;
+      }
+      
+      manualAssignmentTable = new Tabulator(gridElement, {
+        layout: 'fitColumns',
+        height: 360,
+        selectable: true,
+        clipboard: true,
+        clipboardPasteParser: 'table',
+        clipboardPasteAction: 'replace',
+        placeholder: '행을 추가하거나 붙여넣어 주세요.',
+        columnDefaults: {
+          headerSort: false,
+          hozAlign: 'left',
+          vertAlign: 'middle'
+        },
+        columns: [
+          { title: '라운드', field: 'round', width: 90, hozAlign: 'center', editor: 'number' },
+          { title: '테이블', field: 'table', width: 100, hozAlign: 'center', editor: 'number' },
+          { title: '기술기업', field: 'techCompany', editor: 'input', minWidth: 220 },
+          { title: '디자인기업', field: 'designCompany', editor: 'input', minWidth: 220 },
+          { title: '매칭점수', field: 'score', width: 110, hozAlign: 'center', editor: 'number' }
+        ]
+      });
+      
+      manualAssignmentTable.setData(getManualAssignmentDefaultRows());
+      return manualAssignmentTable;
+    }
+    
+    function isManualGridEmpty(table) {
+      if (!table) return true;
+      const data = table.getData();
+      if (!data || data.length === 0) return true;
+      return data.every(row => {
+        const values = [row.round, row.table, row.techCompany, row.designCompany, row.score];
+        return values.every(value => value === '' || value === null || value === undefined);
+      });
+    }
+    
+    function addManualGridRow() {
+      const table = ensureManualAssignmentTable();
+      if (!table) {
+        showNotification('표를 초기화하지 못했습니다. 페이지를 새로고침해 주세요.');
+        return;
+      }
+      table.addRow({});
+    }
+    
+    function removeManualGridRows() {
+      const table = ensureManualAssignmentTable();
+      if (!table) {
+        showNotification('표를 초기화하지 못했습니다. 페이지를 새로고침해 주세요.');
+        return;
+      }
+      const selectedRows = table.getSelectedRows();
+      if (!selectedRows || selectedRows.length === 0) {
+        showNotification('삭제할 행을 선택하세요.');
+        return;
+      }
+      selectedRows.forEach(row => row.delete());
+    }
+    
+    function clearManualGridRows() {
+      const table = ensureManualAssignmentTable();
+      if (!table) {
+        showNotification('표를 초기화하지 못했습니다. 페이지를 새로고침해 주세요.');
+        return;
+      }
+      table.deselectRow();
+      table.setData(getManualAssignmentDefaultRows());
+    }
+
+    function resolveCompanyInput(rawValue, type) {
+      const raw = (rawValue || '').toString().trim();
+      if (!raw) return null;
+      
+      const lookupMaps = type === 'tech' ? techCompanyEmailMapByName : designCompanyEmailMapByName;
+      const companyList = type === 'tech' ? techCompanyList : designCompanyList;
+      
+      if (raw.includes('@')) {
+        const email = raw.toLowerCase();
+        const name = getCompanyNameByEmail(email, raw) || companyList.find(entry => entry.email === email)?.name || raw;
+        return { email, name };
+      }
+      
+      const normalized = normalizeCompanyKey(raw);
+      const emailFromName = lookupMaps[normalized];
+      if (!emailFromName) {
+        return null;
+      }
+      const canonicalName = companyList.find(entry => entry.email === emailFromName)?.name || raw;
+      return { email: emailFromName, name: canonicalName };
+    }
+    
+    function transformAssignmentForGrid(assignment) {
+      if (!assignment) return {};
+      return {
+        round: assignment.round ?? '',
+        table: assignment.table ?? '',
+        techCompany: assignment.techCompany || getCompanyNameByEmail(assignment.techEmail, '') || assignment.techEmail || '',
+        designCompany: assignment.designCompany || getCompanyNameByEmail(assignment.designEmail, '') || assignment.designEmail || '',
+        score: assignment.score ?? ''
+      };
+    }
+    
+    // guaranteeX 라벨 업데이트 (사용하지 않지만 일관성을 위해)
+    function updateGuaranteeXLabel() {
+      // 필요시 구현
+    }
+    
+    // 기술기업 고정 좌석 정보 로드 (이메일 -> 테이블 번호 매핑)
+    let techFixedSeatMap = {}; // techEmail -> tableNumber
+    let designFixedSeatMap = {}; // designEmail -> tableNumber
+    let techCompanyList = []; // 기술기업 목록
+    let designCompanyList = []; // 디자인기업 목록
+    let techCompanyEmailMapByName = {};
+    let designCompanyEmailMapByName = {};
+    
+    function normalizeCompanyKey(value) {
+      return value ? value.toString().trim().toLowerCase().replace(/\s+/g, ' ') : '';
+    }
+    
+    function buildCompanyEmailLookup() {
+      techCompanyEmailMapByName = {};
+      designCompanyEmailMapByName = {};
+      
+      techCompanyList.forEach(entry => {
+        const key = normalizeCompanyKey(entry.name);
+        if (key && entry.email) {
+          techCompanyEmailMapByName[key] = entry.email;
+        }
+      });
+      
+      designCompanyList.forEach(entry => {
+        const key = normalizeCompanyKey(entry.name);
+        if (key && entry.email) {
+          designCompanyEmailMapByName[key] = entry.email;
+        }
+      });
+    }
+    
+    // 고정 좌석 설정을 위한 기업 목록 로드
+    async function loadCompanyLists() {
+      try {
+        // 기술기업 목록 로드
+        const techRes = await fetch(TECH_CSV_URL);
+        const techText = await techRes.text();
+        const techLines = techText.split(/\r?\n/).filter(line => line.trim());
+        
+        if (techLines.length >= 2) {
+          const headers = parseCSVLine(techLines[0]);
+          const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+          const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '멘토명' || h === '기술기업명');
+          
+          techCompanyList = [];
+          for (let i = 1; i < techLines.length; i++) {
+            const values = parseCSVLine(techLines[i]);
+            if (values.length <= Math.max(userEmailIdx, companyNameIdx)) continue;
+            
+            const email = (values[userEmailIdx] || '').toLowerCase().trim();
+            const companyName = (values[companyNameIdx] || '').trim();
+            
+            // 사용자 이름과 기업명이 모두 있어야 함
+            if (email && companyName) {
+              techCompanyList.push({
+                email: email,
+                name: companyName
+              });
+            }
+          }
+        }
+        
+        // 디자인기업 목록 로드
+        const designRes = await fetch(DESIGN_CSV_URL);
+        const designText = await designRes.text();
+        const designLines = designText.split(/\r?\n/).filter(line => line.trim());
+        
+        if (designLines.length >= 2) {
+          const headers = parseCSVLine(designLines[0]);
+          const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+          const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '스타트업' || h === '디자인전문기업');
+          
+          designCompanyList = [];
+          for (let i = 1; i < designLines.length; i++) {
+            const values = parseCSVLine(designLines[i]);
+            if (values.length <= Math.max(userEmailIdx, companyNameIdx)) continue;
+            
+            const email = (values[userEmailIdx] || '').toLowerCase().trim();
+            const companyName = (values[companyNameIdx] || '').trim();
+            
+            // 사용자 이름과 기업명이 모두 있어야 함
+            if (email && companyName) {
+              designCompanyList.push({
+                email: email,
+                name: companyName
+              });
+            }
+          }
+        }
+        
+        // 고정 좌석 설정 섹션 표시 여부 확인
+        buildCompanyEmailLookup();
+        checkFixedSeatSection();
+      } catch (error) {
+        console.error('기업 목록 로드 오류:', error);
+      }
+    }
+    
+    // 고정 좌석 설정 섹션 표시 여부 확인
+    function checkFixedSeatSection() {
+      const roundCount = parseInt(document.getElementById('roundCount').value) || 3;
+      const tableCount = parseInt(document.getElementById('tableCount').value) || 10;
+      const fixedSeatSection = document.getElementById('fixedSeatSection');
+      
+      // 요소가 없으면 함수 종료
+      if (!fixedSeatSection) {
+        return;
+      }
+      
+      const techCount = techCompanyList.length;
+      const designCount = designCompanyList.length;
+      
+      let canFixTech = techCount > 0 && techCount < tableCount;
+      let canFixDesign = designCount > 0 && designCount < tableCount;
+      
+      if (canFixTech || canFixDesign) {
+        fixedSeatSection.style.display = 'block';
+        
+        let infoText = '';
+        if (canFixTech && canFixDesign) {
+          infoText = `기술기업: ${techCount}개 (테이블 ${tableCount}개) | 디자인전문기업: ${designCount}개 (테이블 ${tableCount}개)`;
+        } else if (canFixTech) {
+          infoText = `기술기업: ${techCount}개 (테이블 ${tableCount}개)`;
+        } else if (canFixDesign) {
+          infoText = `디자인전문기업: ${designCount}개 (테이블 ${tableCount}개)`;
+        }
+        const fixedSeatInfo = document.getElementById('fixedSeatInfo');
+        if (fixedSeatInfo) {
+          fixedSeatInfo.textContent = infoText;
+        }
+      } else {
+        fixedSeatSection.style.display = 'none';
+      }
+    }
+    
+    // 고정 좌석 설정할 기업 목록 로드
+    function loadFixedSeatCompanies() {
+      const groupSelect = document.getElementById('fixedSeatGroupSelect');
+      const selectedGroup = groupSelect.value;
+      const tableContainer = document.getElementById('fixedSeatTableContainer');
+      const tableBody = document.getElementById('fixedSeatTableBody');
+      const tableTitle = document.getElementById('fixedSeatTableTitle');
+      
+      if (!tableContainer || !tableBody || !tableTitle) {
+        console.warn('고정 좌석 테이블 요소를 찾을 수 없습니다.');
+        return;
+      }
+      
+      if (!selectedGroup) {
+        tableContainer.style.display = 'none';
+        return;
+      }
+      
+      const tableCount = parseInt(document.getElementById('tableCount').value) || 10;
+      let companies = [];
+      let fixedSeatMap = {};
+      
+      if (selectedGroup === 'tech') {
+        companies = techCompanyList;
+        fixedSeatMap = techFixedSeatMap;
+        tableTitle.textContent = '기술기업 고정 좌석 설정';
+      } else {
+        companies = designCompanyList;
+        fixedSeatMap = designFixedSeatMap;
+        tableTitle.textContent = '디자인전문기업 고정 좌석 설정';
+      }
+      
+      tableBody.innerHTML = '';
+      
+      companies.forEach((company, index) => {
+        const row = document.createElement('tr');
+        const currentTable = fixedSeatMap[company.email] || '';
+        
+        row.innerHTML = `
+          <td style="padding: 12px; border-bottom: 1px solid #3a3a3a; color: #ffffff;">${index + 1}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #3a3a3a; color: #ffffff;">${escapeHtml(company.name)}</td>
+          <td style="padding: 12px; border-bottom: 1px solid #3a3a3a;">
+            <input 
+              type="number" 
+              class="fixed-seat-input" 
+              data-email="${company.email}"
+              data-group="${selectedGroup}"
+              min="1" 
+              max="${tableCount}"
+              value="${currentTable}"
+              placeholder="테이블 번호"
+              style="width: 100%; padding: 8px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 6px; color: #ffffff; font-size: 14px;"
+            />
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+      
+      tableContainer.style.display = 'block';
+    }
+    
+    // 고정 좌석 저장
+    function saveFixedSeats() {
+      const groupSelect = document.getElementById('fixedSeatGroupSelect');
+      const selectedGroup = groupSelect.value;
+      
+      if (!selectedGroup) {
+        showNotification('그룹을 선택해주세요.');
+        return;
+      }
+      
+      const inputs = document.querySelectorAll(`.fixed-seat-input[data-group="${selectedGroup}"]`);
+      const tableCount = parseInt(document.getElementById('tableCount').value) || 10;
+      const usedTables = new Set();
+      const duplicateTables = [];
+      
+      // 입력값 검증 및 중복 확인
+      inputs.forEach(input => {
+        const tableNum = parseInt(input.value);
+        if (tableNum && tableNum >= 1 && tableNum <= tableCount) {
+          if (usedTables.has(tableNum)) {
+            duplicateTables.push(tableNum);
+          } else {
+            usedTables.add(tableNum);
+          }
+        }
+      });
+      
+      if (duplicateTables.length > 0) {
+        showNotification(`중복된 테이블 번호가 있습니다: ${duplicateTables.join(', ')}`);
+        return;
+      }
+      
+      // 고정 좌석 맵 업데이트
+      if (selectedGroup === 'tech') {
+        techFixedSeatMap = {};
+        inputs.forEach(input => {
+          const email = input.getAttribute('data-email');
+          const tableNum = parseInt(input.value);
+          if (tableNum && tableNum >= 1 && tableNum <= tableCount) {
+            techFixedSeatMap[email] = tableNum;
+          }
+        });
+        showNotification(`기술기업 고정 좌석이 저장되었습니다. (${Object.keys(techFixedSeatMap).length}개)`);
+      } else {
+        designFixedSeatMap = {};
+        inputs.forEach(input => {
+          const email = input.getAttribute('data-email');
+          const tableNum = parseInt(input.value);
+          if (tableNum && tableNum >= 1 && tableNum <= tableCount) {
+            designFixedSeatMap[email] = tableNum;
+          }
+        });
+        showNotification(`디자인전문기업 고정 좌석이 저장되었습니다. (${Object.keys(designFixedSeatMap).length}개)`);
+      }
+    }
+    
+    async function loadTechFixedSeats() {
+      try {
+        const techRes = await fetch(TECH_CSV_URL);
+        const techText = await techRes.text();
+        const techLines = techText.split(/\r?\n/).filter(line => line.trim());
+        
+        if (techLines.length < 2) {
+          console.warn('기술기업 CSV 데이터가 없습니다.');
+          return;
+        }
+        
+        const headers = parseCSVLine(techLines[0]);
+        const userEmailIdx = headers.findIndex(h => h === '사용자 이름' || h === '이메일');
+        const companyNameIdx = headers.findIndex(h => h === '기업명' || h === '멘토명' || h === '기술기업명');
+        const fixedSeatIdx = headers.findIndex(h => h === '지정석');
+        
+        techFixedSeatMap = {};
+        
+        if (userEmailIdx >= 0 && fixedSeatIdx >= 0) {
+          for (let i = 1; i < techLines.length; i++) {
+            const values = parseCSVLine(techLines[i]);
+            if (values.length <= Math.max(userEmailIdx, fixedSeatIdx)) continue;
+            
+            const email = (values[userEmailIdx] || '').toLowerCase().trim();
+            const fixedSeat = (values[fixedSeatIdx] || '').trim();
+            
+            if (email && fixedSeat && fixedSeat !== '미정') {
+              // 지정석이 숫자인 경우 그대로 사용
+              const tableNum = parseInt(fixedSeat);
+              if (!isNaN(tableNum) && tableNum > 0) {
+                techFixedSeatMap[email] = tableNum;
+              }
+            }
+          }
+        }
+        
+        console.log('기술기업 고정 좌석 로드 완료:', Object.keys(techFixedSeatMap).length, '개');
+      } catch (error) {
+        console.error('기술기업 고정 좌석 로드 오류:', error);
+      }
+    }
+    
+    // 매칭되지 않은 기업 찾기
+    function findNoMatchingTeams(matchings = []) {
+      const normalize = (value) => (value || '').toLowerCase().trim();
+      const matchedTech = new Set();
+      const matchedDesign = new Set();
+
+      (matchings || []).forEach(match => {
+        const techEmail = normalize(match.techEmail || match.techId || match.tech_email);
+        if (techEmail) matchedTech.add(techEmail);
+        const designEmail = normalize(match.designEmail || match.designId || match.design_email);
+        if (designEmail) matchedDesign.add(designEmail);
+      });
+
+      const techNoMatches = [];
+      const designNoMatches = [];
+
+      const addIfUnmatched = (type, emailRaw, companyName) => {
+        const email = normalize(emailRaw);
+        if (!email) return;
+        const isMatched = type === 'tech' ? matchedTech.has(email) : matchedDesign.has(email);
+        if (isMatched) return;
+        const targetList = type === 'tech' ? techNoMatches : designNoMatches;
+        if (targetList.some(item => item.email === email)) return;
+
+        targetList.push({
+          email,
+          companyName: companyName || userCompanyMap[email] || email
+        });
+      };
+
+      if (allSelectionsData && allSelectionsData.length > 0) {
+        allSelectionsData.forEach(selection => {
+          const email = selection.email || selection.user_email || selection.userEmail;
+          const companyName = selection.userCompany || selection.companyName || selection.company_name;
+          if (selection.listType === 'design') {
+            addIfUnmatched('tech', email, companyName);
+          } else if (selection.listType === 'tech') {
+            addIfUnmatched('design', email, companyName);
+          }
+        });
+      }
+
+      if (techCompanyList && techCompanyList.length > 0) {
+        techCompanyList.forEach(company => addIfUnmatched('tech', company.email, company.name));
+      }
+      if (designCompanyList && designCompanyList.length > 0) {
+        designCompanyList.forEach(company => addIfUnmatched('design', company.email, company.name));
+      }
+
+      return {
+        tech: techNoMatches,
+        design: designNoMatches
+      };
+    }
+
+    function createAssignmentEngine(matchings, roundCount, tableCount) {
+      const TOTAL_ROUNDS = Math.max(1, roundCount || 1);
+      const rounds = Array.from({ length: TOTAL_ROUNDS }, (_, idx) => idx + 1);
+      const normalizeId = (value) => (value || '').trim().toLowerCase();
+
+      const ensureCompany = (map, rawId, rawName) => {
+        const id = normalizeId(rawId);
+        if (!id) return;
+        const displayName = rawName && rawName.trim().length > 0
+          ? rawName.trim()
+          : (userCompanyMap[id] || rawId || id);
+        if (!map.has(id)) {
+          map.set(id, { id, name: displayName });
+        } else if ((!map.get(id).name || map.get(id).name === id) && displayName && displayName !== id) {
+          map.set(id, { id, name: displayName });
+        }
+      };
+
+      const techMap = new Map();
+      const designMap = new Map();
+
+      techCompanyList.forEach(company => ensureCompany(techMap, company.email, company.name));
+      designCompanyList.forEach(company => ensureCompany(designMap, company.email, company.name));
+      matchings.forEach(match => {
+        ensureCompany(techMap, match.techEmail, match.techCompany);
+        ensureCompany(designMap, match.designEmail, match.designCompany);
+      });
+
+      if (techMap.size === 0 || designMap.size === 0) {
+        showNotification('기업 데이터가 부족하여 배정을 진행할 수 없습니다.');
+        console.warn('[AssignmentEngine] 기업 목록 부족으로 배정을 중단합니다.');
+        return null;
+      }
+
+      const allTechs = Array.from(techMap.values());
+      const allDesigns = Array.from(designMap.values());
+      const techOrderMap = new Map();
+      allTechs.forEach((tech, index) => techOrderMap.set(tech.id, index + 1));
+
+      const cleanMatchings = matchings.map(match => {
+        const techId = normalizeId(match.techId || match.techEmail);
+        const designId = normalizeId(match.designId || match.designEmail);
+        return {
+          ...match,
+          techId,
+          designId,
+          totalScore: match.totalScore ?? 0
+        };
+      }).filter(match => techMap.has(match.techId) && designMap.has(match.designId));
+
+      const scoreMap = {};
+      const techPrefMap = new Map();
+      const designPrefMap = new Map();
+      const techNameByEmail = new Map();
+      const designNameByEmail = new Map();
+
+      cleanMatchings.forEach(match => {
+        const key = `${match.techId}|${match.designId}`;
+        scoreMap[key] = match.totalScore;
+        if (!techPrefMap.has(match.techId)) techPrefMap.set(match.techId, []);
+        techPrefMap.get(match.techId).push({ designId: match.designId, score: match.totalScore });
+        if (!designPrefMap.has(match.designId)) designPrefMap.set(match.designId, []);
+        designPrefMap.get(match.designId).push({ techId: match.techId, score: match.totalScore });
+        if (match.techId && match.techCompany) {
+          techNameByEmail.set(match.techId, match.techCompany.trim());
+        }
+        if (match.designId && match.designCompany) {
+          designNameByEmail.set(match.designId, match.designCompany.trim());
+        }
+      });
+
+      techPrefMap.forEach((list, techId) => {
+        list.sort((a, b) => b.score - a.score);
+        techPrefMap.set(techId, list.map(item => item.designId));
+      });
+      designPrefMap.forEach((list, designId) => {
+        list.sort((a, b) => b.score - a.score);
+        designPrefMap.set(designId, list.map(item => item.techId));
+      });
+
+      techNameByEmail.forEach((name, id) => {
+        if (!name) return;
+        if (techMap.has(id)) {
+          techMap.get(id).name = name;
+        } else {
+          techMap.set(id, { id, name });
+        }
+      });
+      designNameByEmail.forEach((name, id) => {
+        if (!name) return;
+        if (designMap.has(id)) {
+          designMap.get(id).name = name;
+        } else {
+          designMap.set(id, { id, name });
+        }
+      });
+
+      const techSchedule = {};
+      const designSchedule = {};
+      const roundDesignUsed = {};
+      rounds.forEach(round => { roundDesignUsed[round] = new Set(); });
+      const metPairs = new Set();
+
+      allTechs.forEach(tech => { techSchedule[tech.id] = {}; });
+      allDesigns.forEach(design => { designSchedule[design.id] = {}; });
+
+      const assignments = [];
+      const assigned = [];
+      const usedMatchKeys = new Set();
+
+      const pairKey = (techId, designId) => `${techId}|${designId}`;
+
+      function getScore(techId, designId) {
+        return scoreMap[pairKey(techId, designId)] || 0;
+      }
+
+      function hasRoundCapacity(round) {
+        if (!roundDesignUsed[round]) roundDesignUsed[round] = new Set();
+        return roundDesignUsed[round].size < tableCount;
+      }
+
+      function isSlotFree(techId, designId, round) {
+        if (techSchedule[techId]?.[round]) return false;
+        if (designSchedule[designId]?.[round]) return false;
+        if (metPairs.has(pairKey(techId, designId))) return false;
+        return true;
+      }
+
+      function assignPair(techId, designId, round, phase) {
+        if (!techId || !designId) return false;
+        if (!roundDesignUsed[round]) roundDesignUsed[round] = new Set();
+        techSchedule[techId][round] = designId;
+        designSchedule[designId][round] = techId;
+        roundDesignUsed[round].add(designId);
+        metPairs.add(pairKey(techId, designId));
+
+        const score = getScore(techId, designId);
+        const tableNum = techOrderMap.get(techId) || assignments.length + 1;
+        const techName = getCompanyNameByEmail(techId, techMap.get(techId)?.name || techId);
+        const designName = getCompanyNameByEmail(designId, designMap.get(designId)?.name || designId);
+
+        assignments.push({
+          round,
+          table: tableNum,
+          techCompany: techName,
+          techEmail: techId,
+          designCompany: designName,
+          designEmail: designId,
+          score,
+          techPriority: null,
+          designPriority: null,
+          matchType: phase
+        });
+
+        usedMatchKeys.add(pairKey(techId, designId));
+        return true;
+      }
+
+      function pickDesignForTech(techId, round, allowedDesignSet) {
+        const prefList = techPrefMap.get(techId) || [];
+        for (const designId of prefList) {
+          if (allowedDesignSet && !allowedDesignSet.has(designId)) continue;
+          if (!hasRoundCapacity(round)) break;
+          if (roundDesignUsed[round].has(designId)) continue;
+          if (!designMap.has(designId)) continue;
+          if (!isSlotFree(techId, designId, round)) continue;
+          return designId;
+        }
+        const fallbackList = allowedDesignSet ? Array.from(allowedDesignSet) : allDesigns.map(d => d.id);
+        for (const designId of fallbackList) {
+          if (!hasRoundCapacity(round)) break;
+          if (roundDesignUsed[round].has(designId)) continue;
+          if (!designMap.has(designId)) continue;
+          if (!isSlotFree(techId, designId, round)) continue;
+          return designId;
+        }
+        return null;
+      }
+
+      function pickTechForDesign(designId, round) {
+        const prefList = designPrefMap.get(designId) || [];
+        for (const techId of prefList) {
+          if (!hasRoundCapacity(round)) break;
+          if (!techMap.has(techId)) continue;
+          if (roundDesignUsed[round].has(designId)) continue;
+          if (!isSlotFree(techId, designId, round)) continue;
+          return techId;
+        }
+        for (const tech of allTechs) {
+          if (!hasRoundCapacity(round)) break;
+          if (roundDesignUsed[round].has(designId)) continue;
+          if (!isSlotFree(tech.id, designId, round)) continue;
+          return tech.id;
+        }
+        return null;
+      }
+
+      function findAvailableRound(techId, designId) {
+        for (const round of rounds) {
+          if (!hasRoundCapacity(round)) continue;
+          if (isSlotFree(techId, designId, round)) {
+            return round;
+          }
+        }
+        return null;
+      }
+
+      function finalize(logLabel) {
+        const unassigned = cleanMatchings.filter(match => !usedMatchKeys.has(pairKey(match.techId, match.designId)));
+        if (logLabel) console.log(`[${logLabel}] 최종 배정 완료: ${assignments.length}`);
+        return {
+          assignments,
+          assigned,
+          unassigned
+        };
+      }
+
+      return {
+        TOTAL_ROUNDS,
+        rounds,
+        allTechs,
+        allDesigns,
+        techMap,
+        designMap,
+        techPrefMap,
+        designPrefMap,
+        roundDesignUsed,
+        techSchedule,
+        designSchedule,
+        assignPair,
+        pickDesignForTech,
+        pickTechForDesign,
+        findAvailableRound,
+        hasRoundCapacity,
+        isSlotFree,
+        finalize,
+        scoreMap,
+        cleanMatchings,
+        usedMatchKeys
+      };
+    }
+    
+    // 라운드 배정 생성
+    async function generateAssignment() {
+      const roundCount = parseInt(document.getElementById('roundCount').value) || 3;
+      const tableCount = parseInt(document.getElementById('tableCount').value) || 10;
+      const assignmentMode = document.querySelector('input[name="assignmentMode"]:checked').value;
+      
+      if (roundCount < 1 || tableCount < 1) {
+        showNotification('라운드 수와 테이블 수는 1 이상이어야 합니다.');
+        return;
+      }
+      
+      if (!userCompanyMap || Object.keys(userCompanyMap).length === 0) {
+        await loadUserCompanyMap();
+      }
+      
+      // 기술기업 고정 좌석 정보 로드
+      await loadTechFixedSeats();
+      
+      // 적은 그룹 전체 라운드 배정 모드에서는 회사 리스트도 필요
+      if (assignmentMode === 'smallerGroup' && (techCompanyList.length === 0 || designCompanyList.length === 0)) {
+        await loadCompanyLists();
+      }
+      
+      // 매칭 데이터가 없으면 먼저 로드
+      if (!allMatchingData || allMatchingData.length === 0) {
+        await loadMatchingData();
+      }
+      
+      // selections 데이터도 로드 (매칭이 없는 팀 찾기 위해)
+      if (!allSelectionsData || allSelectionsData.length === 0) {
+        await loadSelectionsData();
+      }
+      
+      // 매칭이 없는 팀 찾기 (매칭 데이터가 없어도 selections 데이터로 찾을 수 있음)
+      const noMatchingTeams = findNoMatchingTeams(allMatchingData || []);
+      
+      if (!allMatchingData || allMatchingData.length === 0) {
+        showNotification('매칭 데이터가 없습니다. 먼저 매칭 우선순위를 확인해주세요.');
+        // 매칭 데이터가 없어도 매칭이 없는 팀은 표시할 수 있음
+        return;
+      }
+      
+      // 산술적 가능 여부 계산 (적은 그룹 전체 라운드 배정 모드인 경우)
+      if (assignmentMode === 'smallerGroup') {
+        const baseGroup = document.querySelector('input[name="smallerGroupTarget"]:checked')?.value || 'tech';
+        const techCount = techCompanyList.length;
+        const designCount = designCompanyList.length;
+        const baseGroupCount = baseGroup === 'tech' ? techCount : designCount;
+        const oppositeGroupCount = baseGroup === 'tech' ? designCount : techCount;
+        
+        // 총 슬롯 수
+        const totalSlots = roundCount * tableCount;
+        
+        // 기준 그룹이 모든 라운드에 배정되므로 필요한 슬롯
+        const baseGroupRequiredSlots = baseGroupCount * roundCount;
+        
+        // 남은 슬롯 수 (상대 그룹이 사용할 수 있는 슬롯)
+        const availableSlotsForOpposite = totalSlots - baseGroupRequiredSlots;
+        
+        // 상대 그룹이 최소 1회씩 배정되려면 필요한 최소 슬롯
+        const minRequiredSlotsForOpposite = oppositeGroupCount;
+        
+        // 산술적 가능 여부 계산 결과
+        const isArithmeticallyPossible = availableSlotsForOpposite >= minRequiredSlotsForOpposite;
+        
+        console.log('=== 산술적 가능 여부 계산 ===');
+        console.log(`라운드 수: ${roundCount}`);
+        console.log(`테이블 수 (라운드당): ${tableCount}`);
+        console.log(`총 슬롯 수: ${totalSlots} (${roundCount} 라운드 × ${tableCount} 테이블)`);
+        console.log(`기준 그룹: ${baseGroup === 'tech' ? '기술기업' : '디자인기업'} (${baseGroupCount}개)`);
+        console.log(`상대 그룹: ${baseGroup === 'tech' ? '디자인기업' : '기술기업'} (${oppositeGroupCount}개)`);
+        console.log(`기준 그룹이 모든 라운드에 배정되므로 필요한 슬롯: ${baseGroupRequiredSlots} (${baseGroupCount}개 × ${roundCount}라운드)`);
+        console.log(`상대 그룹이 사용할 수 있는 남은 슬롯: ${availableSlotsForOpposite}`);
+        console.log(`상대 그룹이 최소 1회씩 배정되려면 필요한 최소 슬롯: ${minRequiredSlotsForOpposite}`);
+        console.log(`산술적으로 가능한가? ${isArithmeticallyPossible ? '✅ 가능' : '❌ 불가능'}`);
+        
+        if (!isArithmeticallyPossible) {
+          const shortage = minRequiredSlotsForOpposite - availableSlotsForOpposite;
+          console.warn(`⚠️ 산술적으로 불가능: ${shortage}개의 슬롯이 부족합니다.`);
+          console.warn(`해결 방법:`);
+          console.warn(`1. 라운드 수를 ${Math.ceil((baseGroupRequiredSlots + minRequiredSlotsForOpposite) / tableCount)} 이상으로 늘리기`);
+          console.warn(`2. 테이블 수를 ${Math.ceil((baseGroupRequiredSlots + minRequiredSlotsForOpposite) / roundCount)} 이상으로 늘리기`);
+        } else {
+          const excessSlots = availableSlotsForOpposite - minRequiredSlotsForOpposite;
+          console.log(`✅ 여유 슬롯: ${excessSlots}개 (상대 그룹이 평균 ${(availableSlotsForOpposite / oppositeGroupCount).toFixed(2)}회 배정 가능)`);
+        }
+        
+        // 사용자에게 알림
+        if (!isArithmeticallyPossible) {
+          const shortage = minRequiredSlotsForOpposite - availableSlotsForOpposite;
+          showNotification(`⚠️ 산술적으로 불가능: 상대 그룹이 최소 1회씩 배정되려면 ${shortage}개의 추가 슬롯이 필요합니다. 라운드 수나 테이블 수를 늘려주세요.`, 'warning');
+        }
+      }
+      
+      // 배정 방식에 따라 로직 실행
+      let result;
+      if (assignmentMode === 'priority') {
+        // 방식 1: 매칭 포인트를 우선으로
+        result = assignRoundsByPriority(allMatchingData, roundCount, tableCount);
+      } else if (assignmentMode === 'guarantee1') {
+        // 방식 2: 적어도 1개 이상의 밋업을 보장하기
+        result = assignRoundsGuarantee1(allMatchingData, roundCount, tableCount, noMatchingTeams);
+      } else if (assignmentMode === 'guaranteeX') {
+        // 방식 3: 모든 팀들이 x회 이상 동등하게 밋업하기
+        const guaranteeRoundCount = parseInt(document.getElementById('guaranteeRoundCount').value) || 2;
+        result = assignRoundsGuaranteeX(allMatchingData, roundCount, tableCount, guaranteeRoundCount, noMatchingTeams);
+        if (!result) {
+          // 보장할 수 없는 경우 (null 반환)
+          return;
+        }
+      } else if (assignmentMode === 'smallerGroup') {
+        result = assignRoundsBySmallerGroup(allMatchingData, roundCount, tableCount);
+        if (!result) {
+          return;
+        }
+      }
+
+      result.noMatchingTeams = noMatchingTeams;
+      result.roundCount = roundCount;
+      result.tableCount = tableCount;
+      result.assignmentMode = assignmentMode;
+      assignmentResult = result;
+      window.assignmentResult = result;
+
+      renderAssignmentResult(result);
+      markAssignmentDirty();
+
+      document.getElementById('confirmAssignmentBtn').style.display = 'inline-block';
+      document.getElementById('resetAssignmentBtn').style.display = 'inline-block';
+      document.getElementById('clearAssignmentBtn').style.display = 'inline-block';
+
+      loadConfirmedAssignment();
+
+      showNotification(`라운드 배정이 완료되었습니다. (배정: ${result.assigned.length}개, 미배정: ${result.unassigned.length}개, 매칭 없음: ${noMatchingTeams.tech.length + noMatchingTeams.design.length}개)`);
+    }
+
+    function setConfirmButtonState({ disabled, label, pulse } = {}) {
+      const confirmBtn = document.getElementById('confirmAssignmentBtn');
+      if (!confirmBtn) return;
+      if (typeof disabled === 'boolean') {
+        confirmBtn.disabled = disabled;
+      }
+      if (typeof label === 'string') {
+        confirmBtn.innerHTML = label;
+      }
+      if (typeof pulse === 'boolean') {
+        confirmBtn.classList.toggle('btn-pulse', pulse);
+      }
+    }
+
+    function markAssignmentDirty() {
+      setConfirmButtonState({
+        disabled: false,
+        label: '✅ 이대로 확정하기',
+        pulse: true
+      });
+    }
+
+    function markAssignmentConfirmed() {
+      setConfirmButtonState({
+        disabled: true,
+        label: '🎉 확정 완료',
+        pulse: false
+      });
+    }
+
+    async function confirmAssignment() {
+      if (!assignmentResult || !assignmentResult.assignments || assignmentResult.assignments.length === 0) {
+        showNotification('먼저 배정을 생성하거나 수동으로 입력하세요.');
+        return;
+      }
+
+      try {
+        setConfirmButtonState({
+          disabled: true,
+          label: '⏳ 확정 중...',
+          pulse: false
+        });
+
+        const payload = {
+          assignments: assignmentResult.assignments,
+          roundCount: assignmentResult.roundCount || parseInt(document.getElementById('roundCount').value, 10) || 1,
+          tableCount: assignmentResult.tableCount || parseInt(document.getElementById('tableCount').value, 10) || 1
+        };
+
+        const response = await fetch('/api/kidp2025/meetup/assignments/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success) {
+          const message = result?.error || result?.message || '배정 확정 중 오류가 발생했습니다.';
+          throw new Error(message);
+        }
+
+        showNotification(result.message || '라운드 배정을 확정했습니다.');
+        await loadConfirmedAssignment();
+        markAssignmentConfirmed();
+      } catch (error) {
+        console.error('배정 확정 오류:', error);
+        const message = error instanceof Error ? error.message : '배정 확정 중 알 수 없는 오류가 발생했습니다.';
+        showNotification(message);
+        setConfirmButtonState({
+          disabled: false,
+          label: '⚠️ 다시 시도하기',
+          pulse: false
+        });
+      }
+    }
+
+    window.confirmAssignment = confirmAssignment;
+
+    // HTML 이스케이프 함수
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // 배정 통계 표시
+    function displayAssignmentStats(result) {
+      const statsSection = document.getElementById('assignmentStats');
+      const statsContent = document.getElementById('assignmentStatsContent');
+      
+      if (!result || !result.assignments || result.assignments.length === 0) {
+        statsSection.style.display = 'none';
+        return;
+      }
+      
+      // 기업별 배정 라운드 수 계산
+      const companyRounds = new Map(); // companyEmail -> Set of rounds
+      const companyNames = new Map(); // companyEmail -> companyName
+      
+      for (const assignment of result.assignments) {
+        // 기술기업
+        if (!companyRounds.has(assignment.techEmail)) {
+          companyRounds.set(assignment.techEmail, new Set());
+          companyNames.set(assignment.techEmail, assignment.techCompany);
+        }
+        companyRounds.get(assignment.techEmail).add(assignment.round);
+        
+        // 디자인기업
+        if (!companyRounds.has(assignment.designEmail)) {
+          companyRounds.set(assignment.designEmail, new Set());
+          companyNames.set(assignment.designEmail, assignment.designCompany);
+        }
+        companyRounds.get(assignment.designEmail).add(assignment.round);
+      }
+      
+      // 라운드 수별로 그룹화
+      const allRounds = new Set();
+      const threeRounds = [];
+      const twoRounds = [];
+      const oneRound = [];
+      const noRounds = [];
+      
+      const roundCount = result.roundCount || 3;
+      
+      // 매칭 데이터에서 모든 기업 이메일 수집
+      const allTechEmails = new Set();
+      const allDesignEmails = new Set();
+      if (allMatchingData) {
+        for (const matching of allMatchingData) {
+          allTechEmails.add(matching.techEmail);
+          allDesignEmails.add(matching.designEmail);
+        }
+      }
+      
+      // 기술기업 통계
+      for (const email of allTechEmails) {
+        const rounds = companyRounds.get(email) || new Set();
+        const roundCountForCompany = rounds.size;
+        const companyName = companyNames.get(email) || email;
+        
+        if (roundCountForCompany === roundCount) {
+          allRounds.add({ email, name: companyName, type: 'tech' });
+        } else if (roundCountForCompany === 3) {
+          threeRounds.push({ email, name: companyName, type: 'tech' });
+        } else if (roundCountForCompany === 2) {
+          twoRounds.push({ email, name: companyName, type: 'tech' });
+        } else if (roundCountForCompany === 1) {
+          oneRound.push({ email, name: companyName, type: 'tech' });
+        } else {
+          noRounds.push({ email, name: companyName, type: 'tech' });
+        }
+      }
+      
+      // 디자인기업 통계
+      for (const email of allDesignEmails) {
+        const rounds = companyRounds.get(email) || new Set();
+        const roundCountForCompany = rounds.size;
+        const companyName = companyNames.get(email) || email;
+        
+        if (roundCountForCompany === roundCount) {
+          allRounds.add({ email, name: companyName, type: 'design' });
+        } else if (roundCountForCompany === 3) {
+          threeRounds.push({ email, name: companyName, type: 'design' });
+        } else if (roundCountForCompany === 2) {
+          twoRounds.push({ email, name: companyName, type: 'design' });
+        } else if (roundCountForCompany === 1) {
+          oneRound.push({ email, name: companyName, type: 'design' });
+        } else {
+          noRounds.push({ email, name: companyName, type: 'design' });
+        }
+      }
+      
+      let html = '';
+      
+      // 모든 라운드에 배정된 팀
+      if (allRounds.size > 0) {
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #10B981;">
+            <h4 style="color: #10B981; margin-bottom: 15px; font-size: 18px;">✅ 모든 라운드(${roundCount}개)에 배정된 팀 (${allRounds.size}개)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">기술기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const techAll = Array.from(allRounds).filter(c => c.type === 'tech');
+        if (techAll.length > 0) {
+          html += techAll.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">디자인기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const designAll = Array.from(allRounds).filter(c => c.type === 'design');
+        if (designAll.length > 0) {
+          html += designAll.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // 3개 라운드에 배정된 팀
+      if (threeRounds.length > 0 && roundCount > 3) {
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #3B82F6;">
+            <h4 style="color: #3B82F6; margin-bottom: 15px; font-size: 18px;">📅 3개 라운드에 배정된 팀 (${threeRounds.length}개)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">기술기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const techThree = threeRounds.filter(c => c.type === 'tech');
+        if (techThree.length > 0) {
+          html += techThree.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">디자인기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const designThree = threeRounds.filter(c => c.type === 'design');
+        if (designThree.length > 0) {
+          html += designThree.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // 2개 라운드에 배정된 팀
+      if (twoRounds.length > 0) {
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #F59E0B;">
+            <h4 style="color: #F59E0B; margin-bottom: 15px; font-size: 18px;">📅 2개 라운드에 배정된 팀 (${twoRounds.length}개)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">기술기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const techTwo = twoRounds.filter(c => c.type === 'tech');
+        if (techTwo.length > 0) {
+          html += techTwo.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">디자인기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const designTwo = twoRounds.filter(c => c.type === 'design');
+        if (designTwo.length > 0) {
+          html += designTwo.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // 1개 라운드에 배정된 팀
+      if (oneRound.length > 0) {
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #EF4444;">
+            <h4 style="color: #EF4444; margin-bottom: 15px; font-size: 18px;">📅 1개 라운드에 배정된 팀 (${oneRound.length}개)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">기술기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const techOne = oneRound.filter(c => c.type === 'tech');
+        if (techOne.length > 0) {
+          html += techOne.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">디자인기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const designOne = oneRound.filter(c => c.type === 'design');
+        if (designOne.length > 0) {
+          html += designOne.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // 라운드 배정이 없는 팀
+      if (noRounds.length > 0) {
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #DC2626;">
+            <h4 style="color: #DC2626; margin-bottom: 15px; font-size: 18px;">❌ 라운드 배정이 없는 팀 (${noRounds.length}개)</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">기술기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const techNo = noRounds.filter(c => c.type === 'tech');
+        if (techNo.length > 0) {
+          html += techNo.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+              <div>
+                <h5 style="color: #DC2626; margin-bottom: 10px; font-size: 14px;">디자인기업</h5>
+                <div style="max-height: 200px; overflow-y: auto;">
+        `;
+        const designNo = noRounds.filter(c => c.type === 'design');
+        if (designNo.length > 0) {
+          html += designNo.map(c => `
+            <div style="padding: 8px; background: #1a1a1a; border-radius: 6px; margin-bottom: 6px; font-size: 13px; color: #ffffff;">
+              ${escapeHtml(c.name)}
+            </div>
+          `).join('');
+        } else {
+          html += '<div style="color: #666; font-size: 13px;">없음</div>';
+        }
+        html += `
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      statsContent.innerHTML = html;
+      statsSection.style.display = 'block';
+      
+      // 전체 기업 리스트 표시
+      displayAllCompaniesList(result);
+    }
+    
+    // 전체 기업 리스트 표시 (라운드 수 기준)
+    function displayAllCompaniesList(result) {
+      const allCompaniesSection = document.getElementById('allCompaniesList');
+      const techListDiv = document.getElementById('allTechCompaniesList');
+      const designListDiv = document.getElementById('allDesignCompaniesList');
+      
+      if (!result || !result.assignments || result.assignments.length === 0) {
+        allCompaniesSection.style.display = 'none';
+        return;
+      }
+      
+      // 기업별 라운드 수 계산
+      const companyRounds = new Map(); // companyEmail -> { name: string, rounds: Set<number>, type: 'tech' | 'design' }
+      
+      // 배정 데이터에서 기업별 라운드 수 계산
+      for (const assignment of result.assignments) {
+        // 기술기업
+        if (!companyRounds.has(assignment.techEmail)) {
+          companyRounds.set(assignment.techEmail, {
+            name: assignment.techCompany,
+            rounds: new Set(),
+            type: 'tech'
+          });
+        }
+        companyRounds.get(assignment.techEmail).rounds.add(assignment.round);
+        
+        // 디자인기업
+        if (!companyRounds.has(assignment.designEmail)) {
+          companyRounds.set(assignment.designEmail, {
+            name: assignment.designCompany,
+            rounds: new Set(),
+            type: 'design'
+          });
+        }
+        companyRounds.get(assignment.designEmail).rounds.add(assignment.round);
+      }
+      
+      // selections 데이터에서 모든 기업 정보 수집 (배정되지 않은 기업도 포함)
+      if (allSelectionsData && allSelectionsData.length > 0) {
+        for (const selection of allSelectionsData) {
+          const email = (selection.email || '').toLowerCase().trim();
+          if (!email) continue;
+          const fallbackName = selection.userCompany || selection.email || email;
+          const normalizedName = getCompanyNameByEmail(email, fallbackName);
+          
+          if (!companyRounds.has(email)) {
+            if (selection.listType === 'design') {
+              companyRounds.set(email, {
+                name: normalizedName,
+                rounds: new Set(),
+                type: 'tech'
+              });
+            } else if (selection.listType === 'tech') {
+              companyRounds.set(email, {
+                name: normalizedName,
+                rounds: new Set(),
+                type: 'design'
+              });
+            }
+          } else if (normalizedName) {
+            companyRounds.get(email).name = normalizedName;
+          }
+        }
+      }
+      
+      // 기술기업과 디자인기업 분리
+      const techCompanies = [];
+      const designCompanies = [];
+      
+      for (const [email, data] of companyRounds.entries()) {
+        const roundCount = data.rounds.size;
+        const companyInfo = {
+          email,
+          name: data.name,
+          roundCount,
+          rounds: Array.from(data.rounds).sort((a, b) => a - b)
+        };
+        
+        if (data.type === 'tech') {
+          techCompanies.push(companyInfo);
+        } else {
+          designCompanies.push(companyInfo);
+        }
+      }
+      
+      // 라운드 수 기준으로 정렬 (내림차순)
+      techCompanies.sort((a, b) => {
+        if (b.roundCount !== a.roundCount) {
+          return b.roundCount - a.roundCount;
+        }
+        return a.name.localeCompare(b.name, 'ko');
+      });
+      
+      designCompanies.sort((a, b) => {
+        if (b.roundCount !== a.roundCount) {
+          return b.roundCount - a.roundCount;
+        }
+        return a.name.localeCompare(b.name, 'ko');
+      });
+      
+      // 기술기업 리스트 렌더링
+      if (techCompanies.length > 0) {
+        techListDiv.innerHTML = techCompanies.map((company, index) => {
+          const roundsText = company.rounds.length > 0 
+            ? `라운드 ${company.rounds.join(', ')}` 
+            : '배정 없음';
+          const badgeColor = company.roundCount > 0 ? '#10B981' : '#666';
+          
+          return `
+            <div style="padding: 12px; background: #1a1a1a; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid ${badgeColor};">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="font-size: 14px; color: #ffffff; font-weight: 600;">${index + 1}. ${escapeHtml(company.name)}</div>
+                <div style="font-size: 12px; color: ${badgeColor}; font-weight: 600; background: ${badgeColor}20; padding: 4px 8px; border-radius: 4px;">
+                  ${company.roundCount}개 라운드
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #a0a0a0;">${roundsText}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        techListDiv.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">기술기업 데이터가 없습니다.</div>';
+      }
+      
+      // 디자인기업 리스트 렌더링
+      if (designCompanies.length > 0) {
+        designListDiv.innerHTML = designCompanies.map((company, index) => {
+          const roundsText = company.rounds.length > 0 
+            ? `라운드 ${company.rounds.join(', ')}` 
+            : '배정 없음';
+          const badgeColor = company.roundCount > 0 ? '#10B981' : '#666';
+          
+          return `
+            <div style="padding: 12px; background: #1a1a1a; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid ${badgeColor};">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="font-size: 14px; color: #ffffff; font-weight: 600;">${index + 1}. ${escapeHtml(company.name)}</div>
+                <div style="font-size: 12px; color: ${badgeColor}; font-weight: 600; background: ${badgeColor}20; padding: 4px 8px; border-radius: 4px;">
+                  ${company.roundCount}개 라운드
+                </div>
+              </div>
+              <div style="font-size: 12px; color: #a0a0a0;">${roundsText}</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        designListDiv.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">디자인기업 데이터가 없습니다.</div>';
+      }
+      
+      allCompaniesSection.style.display = 'block';
+    }
+    
+    // 배정 결과 렌더링
+    function renderAssignmentResult(result) {
+      const resultDiv = document.getElementById('assignmentResult');
+      const summarySpan = document.getElementById('assignmentSummary');
+      const tablesDiv = document.getElementById('assignmentTables');
+      const unassignedSection = document.getElementById('unassignedSection');
+      
+      // 요약 정보 (미배정은 표시하지 않음)
+      const totalSlots = result.roundCount * result.tableCount;
+      const assignedCount = result.assignments.length;
+      const noMatchingCount = result.noMatchingTeams ? (result.noMatchingTeams.tech.length + result.noMatchingTeams.design.length) : 0;
+      summarySpan.textContent = `총 ${totalSlots}개 슬롯 중 ${assignedCount}개 배정 완료, 매칭 없음: ${noMatchingCount}개`;
+      
+      // 배정 결과 테이블 생성
+      let html = '';
+      for (let round = 1; round <= result.roundCount; round++) {
+        const roundAssignments = result.assignments.filter(a => a.round === round);
+        html += `
+          <div style="margin-bottom: 30px;">
+            <h3 style="color: #DC2626; margin-bottom: 15px;">라운드 ${round}</h3>
+            <div class="table-container" style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 8px; overflow: hidden;">
+                <thead>
+                  <tr style="background: #2a2a2a;">
+                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; width: 80px;">테이블</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">기술기업</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600;">디자인기업</th>
+                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #3a3a3a; color: #DC2626; font-weight: 600; width: 100px;">매칭 점수</th>
+                  </tr>
+                </thead>
+                <tbody>
+        `;
+        
+        // 배정된 테이블
+        for (let table = 1; table <= result.tableCount; table++) {
+          const assignment = roundAssignments.find(a => a.table === table);
+          if (assignment) {
+            html += `
+              <tr>
+                <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff; font-weight: 600;">${table}</td>
+                <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${escapeHtml(assignment.techCompany)}</td>
+                <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${escapeHtml(assignment.designCompany)}</td>
+                <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a; background: #1a1a1a; color: #DC2626; font-weight: 600;">${assignment.score}점</td>
+              </tr>
+            `;
+          } else {
+            html += `
+              <tr>
+                <td style="padding: 12px; text-align: center; border: 1px solid #3a3a3a; background: #1a1a1a; color: #666;">${table}</td>
+                <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #666;" colspan="3">-</td>
+              </tr>
+            `;
+          }
+        }
+        
+        html += `
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+      
+      tablesDiv.innerHTML = html;
+      resultDiv.style.display = 'block';
+      
+      // 배정 통계 표시
+      displayAssignmentStats(result);
+      
+      // 매칭이 없는 팀 목록
+      const noMatchingSection = document.getElementById('noMatchingSection');
+      if (result.noMatchingTeams && (result.noMatchingTeams.tech.length > 0 || result.noMatchingTeams.design.length > 0)) {
+        // 기술기업 목록
+        const techTbody = document.getElementById('noMatchingTechTableBody');
+        if (result.noMatchingTeams.tech.length > 0) {
+          techTbody.innerHTML = result.noMatchingTeams.tech.map((company, index) => `
+            <tr>
+              <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${index + 1}</td>
+              <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${escapeHtml(company.companyName || company.email)}</td>
+            </tr>
+          `).join('');
+        } else {
+          techTbody.innerHTML = '<tr><td colspan="2" style="padding: 12px; text-align: center; border: 1px solid #3a3a3a; background: #1a1a1a; color: #666;">없음</td></tr>';
+        }
+        
+        // 디자인기업 목록
+        const designTbody = document.getElementById('noMatchingDesignTableBody');
+        if (result.noMatchingTeams.design.length > 0) {
+          designTbody.innerHTML = result.noMatchingTeams.design.map((company, index) => `
+            <tr>
+              <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${index + 1}</td>
+              <td style="padding: 12px; border: 1px solid #3a3a3a; background: #1a1a1a; color: #ffffff;">${escapeHtml(company.companyName || company.email)}</td>
+            </tr>
+          `).join('');
+        } else {
+          designTbody.innerHTML = '<tr><td colspan="2" style="padding: 12px; text-align: center; border: 1px solid #3a3a3a; background: #1a1a1a; color: #666;">없음</td></tr>';
+        }
+        
+        noMatchingSection.style.display = 'block';
+      } else {
+        noMatchingSection.style.display = 'none';
+      }
+    }
+    
+    // 배정 결과 CSV 다운로드
+    function exportAssignmentCSV() {
+      if (!assignmentResult) {
+        showNotification('먼저 배정을 생성해주세요.');
+        return;
+      }
+      
+      let csv = '\uFEFF'; // BOM for Excel
+      csv += '라운드,테이블,기술기업,디자인기업,매칭점수\n';
+      
+      for (const assignment of assignmentResult.assignments) {
+        csv += `${assignment.round},${assignment.table},"${assignment.techCompany}","${assignment.designCompany}",${assignment.score}\n`;
+      }
+      
+      // 미배정 팀도 추가
+      if (assignmentResult.unassigned.length > 0) {
+        csv += '\n미배정 팀\n';
+        csv += '순위,기술기업,디자인기업,매칭점수\n';
+        assignmentResult.unassigned.forEach((matching, index) => {
+          csv += `${index + 1},"${matching.techCompany}","${matching.designCompany}",${matching.totalScore}\n`;
+        });
+      }
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `라운드배정_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showNotification('라운드 배정 CSV 파일이 다운로드되었습니다.');
+    }
+    
+    // 페이지 로드 시 저장된 데이터 불러오기
+    window.addEventListener('load', () => {
+      // 저장된 Google Sheets URL 불러오기 (없으면 기본값 사용)
+      const techSheetUrl = localStorage.getItem('kidp2025_tech_sheet_url') || TECH_SHEET_EDIT_URL;
+      const designSheetUrl = localStorage.getItem('kidp2025_design_sheet_url') || DESIGN_SHEET_EDIT_URL;
+      
+      document.getElementById('techSheetUrl').value = techSheetUrl;
+      document.getElementById('designSheetUrl').value = designSheetUrl;
+      
+      // 기본적으로 Google Sheets 로드
+      loadSheet('tech');
+      loadSheet('design');
+      
+      // 로컬 테이블 데이터는 필요시에만 불러오기
+      // loadData('tech');
+      // loadData('design');
+    });
+    
+    // 자동 저장 (입력 후 2초 지연)
+    let saveTimeout;
+    document.addEventListener('input', (e) => {
+      if (e.target.tagName === 'INPUT' && e.target.dataset.field) {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          saveData(currentTab);
+        }, 2000);
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webapp",
+  "compatibility_date": "2025-10-24",
+  "pages_build_output_dir": "./dist",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "epicstage-production",
+      "database_id": "004d3ed8-8f20-4b01-85ce-27790a1f18b8"
+    }
+  ],
+  "vars": {
+    "GOOGLE_CLIENT_ID": "1010572914945-e3084nfluojn6r9u5k0ufq946jmg2aul",
+    "GOOGLE_CLIENT_SECRET": "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",
+    "OAUTH_REDIRECT_URI": "https://solutions.epicstage.co.kr/auth/callback",
+    "JWT_SECRET": "ISgbCKCsPyXlxaPbooUm/vxkGSTZaaMIKv1AGKw1BMA=",
+    "ADMIN_EMAILS": "pd@epicstage.co.kr"
+  }
+  // Note: Secrets restored from backup
+}
+

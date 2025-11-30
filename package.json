@@ -1,0 +1,20 @@
+{
+  "name": "kidp2025-meetup",
+  "version": "1.0.0",
+  "description": "KIDP2025 밋업 플랫폼 - 기술기업과 디자인전문기업 간의 매칭 및 밋업 관리",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public --project-name kidp2025-meetup",
+    "deploy:prod": "wrangler pages deploy public --project-name kidp2025-meetup --branch main",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "hono": "^3.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241106.0",
+    "wrangler": "^3.0.0"
+  }
+}
+

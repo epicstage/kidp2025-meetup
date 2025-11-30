@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선호 입력 - EpicStage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 모달 애니메이션 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-overlay {
+            animation: fadeIn 0.2s ease-out;
+        }
+        .modal-content {
+            animation: slideUp 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 이름·회사명 재확인 모달 -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 modal-overlay z-50 flex items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl modal-content max-w-md w-full p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">본인 확인</h2>
+            <div class="space-y-3 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                    <div class="text-lg font-semibold text-gray-900" id="confirmName"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">회사명</label>
+                    <div class="text-lg font-semibold text-gray-900" id="confirmCompany"></div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="confirmCancel" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                    취소
+                </button>
+                <button id="confirmOk" class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div id="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-gray-600">로딩 중...</p>
+        </div>
+
+        <div id="error" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+            <p id="errorMessage"></p>
+        </div>
+
+        <div id="content" class="hidden">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">선호 입력</h1>
+            <p class="text-gray-600 mb-8">만나고 싶은 팀을 선택해주세요.</p>
+            
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">참가자 정보</h2>
+                    <div class="text-gray-700">
+                        <p><span class="font-medium">이름:</span> <span id="participantName"></span></p>
+                        <p><span class="font-medium">회사:</span> <span id="participantCompany"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL에서 이벤트 ID와 토큰 추출
+        // PRD에 따르면 /pref?event=123&token=... 형식
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const eventId = urlParams.get('event');
+
+        let participantData = null;
+
+        // 모달 요소
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmName = document.getElementById('confirmName');
+        const confirmCompany = document.getElementById('confirmCompany');
+        const confirmOk = document.getElementById('confirmOk');
+        const confirmCancel = document.getElementById('confirmCancel');
+
+        // 2초 타이머로 모달 자동 표시
+        let confirmTimer = null;
+
+        // 토큰 검증 및 참가자 정보 로드
+        async function loadParticipantData() {
+            if (!token || !eventId) {
+                showError('토큰 또는 이벤트 ID가 없습니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/events/${eventId}/preferences/form?token=${encodeURIComponent(token)}`);
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    showError(error.error || '인증에 실패했습니다.');
+                    return;
+                }
+
+                const data = await response.json();
+                participantData = data.participant;
+
+                // 2초 후 모달 표시
+                confirmTimer = setTimeout(() => {
+                    showConfirmModal();
+                }, 2000);
+
+                // 참가자 정보 표시
+                displayParticipantInfo();
+            } catch (error) {
+                console.error('로드 오류:', error);
+                showError('데이터를 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 참가자 정보 표시
+        function displayParticipantInfo() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+            
+            document.getElementById('participantName').textContent = participantData.name || '-';
+            document.getElementById('participantCompany').textContent = participantData.company || '-';
+        }
+
+        // 재확인 모달 표시
+        function showConfirmModal() {
+            if (!participantData) return;
+
+            confirmName.textContent = participantData.name || '-';
+            confirmCompany.textContent = participantData.company || '-';
+            confirmModal.style.display = 'flex';
+        }
+
+        // 모달 확인 버튼
+        confirmOk.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            if (confirmTimer) {
+                clearTimeout(confirmTimer);
+                confirmTimer = null;
+            }
+        });
+
+        // 모달 취소 버튼
+        confirmCancel.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            if (confirmTimer) {
+                clearTimeout(confirmTimer);
+                confirmTimer = null;
+            }
+        });
+
+        // 에러 표시
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        // 페이지 로드 시 실행
+        loadParticipantData();
+    </script>
+</body>
+</html>
+

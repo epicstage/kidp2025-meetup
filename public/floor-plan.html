@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>좌석 배치도 - 2025 디자인-기술 협업 전주기지원</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #DC2626, #EF4444);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .logo-icon {
+      font-size: 36px;
+    }
+    
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #DC2626, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: #a0a0a0;
+      font-weight: 400;
+    }
+    
+    /* 좌석 검색 섹션 */
+    .seat-finder {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+    
+    .seat-finder-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .search-input-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 10px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: #DC2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    
+    .search-hint {
+      text-align: center;
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-bottom: 20px;
+    }
+    
+    .loading-indicator {
+      text-align: center;
+      padding: 20px;
+      color: #a0a0a0;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .loading-indicator.show {
+      display: block;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(220, 38, 38, 0.3);
+      border-top-color: #DC2626;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .search-results-header {
+      text-align: center;
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-bottom: 10px;
+      display: none;
+    }
+    
+    .search-results-header.show {
+      display: block;
+    }
+    
+    .search-results {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .search-result-item {
+      padding: 12px 16px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .search-result-item:hover {
+      background: #2a2a2a;
+      border-color: #DC2626;
+      transform: translateX(5px);
+    }
+    
+    .search-result-name {
+      font-size: 15px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    .seat-info-display {
+      max-width: 800px;
+      margin: 30px auto 0;
+      padding: 25px;
+      background: #1a1a1a;
+      border: 2px solid #DC2626;
+      border-radius: 16px;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .seat-info-display.show {
+      display: block;
+    }
+    
+    .seat-info-text {
+      font-size: 20px;
+      line-height: 1.8;
+      color: #ffffff;
+      font-weight: 500;
+    }
+    
+    .seat-info-name {
+      color: #DC2626;
+      font-weight: 700;
+      font-size: 22px;
+    }
+    
+    .seat-info-location {
+      color: #DC2626;
+      font-weight: 700;
+    }
+    
+    .session-card {
+      background: #1a1a1a;
+      border: 2px solid #DC2626;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 15px;
+    }
+    
+    .session-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #DC2626;
+      margin-bottom: 8px;
+    }
+    
+    .session-time {
+      font-size: 15px;
+      color: #DC2626;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    
+    .session-row {
+      font-size: 14px;
+      color: #ffffff;
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+    
+    .session-label {
+      color: #a0a0a0;
+      font-size: 13px;
+      display: inline-block;
+      width: 70px;
+    }
+    
+    .session-value {
+      color: #ffffff;
+      font-weight: 500;
+    }
+    
+    .floor-plan-container {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      overflow: hidden;
+    }
+    
+    .floor-plan-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+      animation: fadeIn 0.8s ease-out 0.4s both;
+    }
+    
+    .nav-button {
+      display: inline-block;
+      padding: 16px 40px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-button:hover {
+      transform: translateY(-3px);
+      background: #2a2a2a;
+      border-color: #DC2626;
+      color: #ffffff;
+    }
+    
+    .nav-button:active {
+      transform: translateY(-1px);
+    }
+    
+    .nav-button.primary {
+      background: #DC2626;
+      color: #FFFFFF;
+      border-color: #DC2626;
+    }
+    
+    .nav-button.primary:hover {
+      background: #B91C1C;
+      border-color: #B91C1C;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #2a2a2a;
+      animation: fadeIn 0.8s ease-out 0.6s both;
+    }
+    
+    .footer-text {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .footer-org {
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .footer-logo {
+      font-size: 12px;
+      color: #707070;
+    }
+    
+    /* 스크롤바 스타일 */
+    .search-results::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .search-results::-webkit-scrollbar-track {
+      background: #1a1a1a;
+      border-radius: 4px;
+    }
+    
+    .search-results::-webkit-scrollbar-thumb {
+      background: #DC2626;
+      border-radius: 4px;
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        box-shadow: 0 20px 80px rgba(220, 38, 38, 0.6);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .header {
+        margin-bottom: 30px;
+      }
+      
+      .logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+      }
+      
+      .logo-icon {
+        font-size: 30px;
+      }
+      
+      h1 {
+        font-size: 26px;
+      }
+      
+      .subtitle {
+        font-size: 15px;
+      }
+      
+      .seat-finder {
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      
+      .seat-finder-title {
+        font-size: 22px;
+        margin-bottom: 18px;
+      }
+      
+      .search-input {
+        padding: 14px 18px;
+        font-size: 15px;
+        border-width: 2px;
+      }
+      
+      .seat-info-text {
+        font-size: 15px;
+      }
+      
+      .seat-info-name {
+        font-size: 19px;
+      }
+      
+      .floor-plan-container {
+        padding: 20px;
+      }
+      
+      .navigation {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .nav-button {
+        font-size: 14px;
+        padding: 12px 24px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 12px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+      
+      .seat-finder {
+        padding: 20px;
+      }
+      
+      .seat-finder-title {
+        font-size: 20px;
+      }
+      
+      .seat-info-text {
+        font-size: 14px;
+      }
+      
+      .seat-info-name {
+        font-size: 18px;
+      }
+      
+      .floor-plan-container {
+        padding: 15px;
+      }
+      
+      .navigation {
+        gap: 10px;
+      }
+      
+      .nav-button {
+        font-size: 13px;
+        padding: 12px 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      .logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 12px;
+      }
+      
+      .logo-icon {
+        font-size: 24px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      .subtitle {
+        font-size: 13px;
+      }
+      
+      .seat-finder {
+        padding: 16px;
+        border-width: 2px;
+      }
+      
+      .seat-finder-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+      
+      .search-input {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+      
+      .seat-info-text {
+        font-size: 13px;
+      }
+      
+      .seat-info-name {
+        font-size: 16px;
+      }
+      
+      .floor-plan-container {
+        padding: 12px;
+      }
+      
+      .nav-button {
+        font-size: 12px;
+        padding: 10px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">📍</span>
+      </div>
+      <h1>좌석 배치도</h1>
+      <p class="subtitle">2025 디자인-기술 협업 전주기지원</p>
+    </div>
+    
+    <!-- 좌석 검색 섹션 -->
+    <div class="seat-finder">
+      <h2 class="seat-finder-title">🪑 저 어디 앉아요?</h2>
+      
+      <div class="search-input-container">
+        <input 
+          type="text" 
+          id="seatSearch" 
+          class="search-input" 
+          placeholder="이름 또는 회사명 입력..."
+          autocomplete="off"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+      
+      <p class="search-hint">회사명이나 이름을 입력해 주세요</p>
+      
+      <div id="loadingIndicator" class="loading-indicator">
+        <span class="loading-spinner"></span>
+        데이터를 불러오는 중...
+      </div>
+      
+      <div id="searchResultsHeader" class="search-results-header"></div>
+      <div id="searchResults" class="search-results"></div>
+      
+      <div id="seatInfo" class="seat-info-display">
+        <p class="seat-info-text" id="seatInfoText">
+          <!-- 동적으로 생성됩니다 -->
+        </p>
+      </div>
+      
+      <!-- 라운드별 배정 정보 표시 -->
+      <div id="roundAssignments" style="margin-top: 30px; display: none;">
+        <h3 style="color: #DC2626; margin-bottom: 20px; text-align: center; font-size: 20px;">📅 라운드별 배정 현황</h3>
+        <div id="roundAssignmentsContent"></div>
+      </div>
+    </div>
+    
+    <div class="navigation">
+      <a href="javascript:history.back()" class="nav-button">
+        ← 뒤로 가기
+      </a>
+      <a href="index.html" class="nav-button primary">
+        홈으로 돌아가기
+      </a>
+    </div>
+    
+    <div class="footer">
+      <p class="footer-text">2025 디자인-기술 협업 전주기지원</p>
+      <p class="footer-org">주최: 산업통상부, 주관: 한국디자인진흥원, 운영: MYSC</p>
+      <p class="footer-logo">Powered by EpicStage</p>
+    </div>
+  </div>
+  
+  <script>
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdxkwUoTKh5y5xLeMwerXez9IpL6_QEY09ipRULpS-R60XiiSVMWC3LEjgVzHU57_EjlIVvg1LfSw_/pub?output=csv';
+    
+    let techCompanyData = [];
+    let designCompanyData = [];
+    let assignmentData = null;
+    
+    // CSV 파싱 함수 (RFC 4180 표준)
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = '';
+      let insideQuotes = false;
+      
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+        
+        if (char === '"') {
+          currentRow += '"';
+          if (insideQuotes && nextChar === '"') {
+            currentRow += '"';
+            i++;
+          } else {
+            insideQuotes = !insideQuotes;
+          }
+        } else if (char === '\n' && !insideQuotes) {
+          if (currentRow.trim()) {
+            rows.push(currentRow);
+          }
+          currentRow = '';
+        } else {
+          currentRow += char;
+        }
+      }
+      
+      if (currentRow.trim()) {
+        rows.push(currentRow);
+      }
+      
+      return rows;
+    }
+    
+    // CSV 행을 필드로 분리
+    function splitLine(line) {
+      const fields = [];
+      let currentField = '';
+      let insideQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (insideQuotes && nextChar === '"') {
+            currentField += '"';
+            i++;
+          } else {
+            insideQuotes = !insideQuotes;
+          }
+        } else if (char === ',' && !insideQuotes) {
+          fields.push(currentField.trim());
+          currentField = '';
+        } else {
+          currentField += char;
+        }
+      }
+      
+      fields.push(currentField.trim());
+      return fields;
+    }
+    
+    // 라운드 배정 데이터 로드
+    async function loadAssignmentData() {
+      try {
+        // 캐시를 무시하고 최신 데이터 가져오기
+        const response = await fetch('/api/kidp2025/meetup/assignments?' + new Date().getTime(), {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            // assignments가 빈 배열이어도 데이터로 설정 (초기화 상태 표시를 위해)
+            assignmentData = data;
+            displayRoundAssignments();
+          } else {
+            // success가 false인 경우도 빈 데이터로 처리
+            assignmentData = { success: true, assignments: [] };
+            displayRoundAssignments();
+          }
+        } else {
+          // 응답이 실패한 경우 빈 데이터로 처리
+          assignmentData = { success: true, assignments: [] };
+          displayRoundAssignments();
+        }
+      } catch (error) {
+        console.warn('라운드 배정 데이터를 불러올 수 없습니다:', error);
+        // 오류 발생 시에도 빈 데이터로 설정하여 UI 업데이트
+        assignmentData = { success: true, assignments: [] };
+        displayRoundAssignments();
+      }
+    }
+    
+    // 라운드별 배정 정보 표시
+    function displayRoundAssignments() {
+      const container = document.getElementById('roundAssignments');
+      const content = document.getElementById('roundAssignmentsContent');
+      
+      if (!assignmentData || !assignmentData.assignments || assignmentData.assignments.length === 0) {
+        // 데이터가 없으면 컨테이너 숨기고 내용 비우기
+        if (container) {
+          container.style.display = 'none';
+        }
+        if (content) {
+          content.innerHTML = '';
+        }
+        return;
+      }
+      
+      // 라운드별로 그룹화
+      const rounds = {};
+      for (const assignment of assignmentData.assignments) {
+        if (!rounds[assignment.round]) {
+          rounds[assignment.round] = [];
+        }
+        rounds[assignment.round].push(assignment);
+      }
+      
+      let html = '';
+      for (const roundNum of Object.keys(rounds).sort((a, b) => parseInt(a) - parseInt(b))) {
+        const roundAssignments = rounds[roundNum];
+        html += `
+          <div style="margin-bottom: 25px; padding: 20px; background: #2a2a2a; border-radius: 12px; border-left: 4px solid #DC2626;">
+            <h4 style="color: #DC2626; margin-bottom: 15px; font-size: 18px;">라운드 ${roundNum}</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
+        `;
+        
+        for (const assignment of roundAssignments.sort((a, b) => a.table - b.table)) {
+          html += `
+            <div style="padding: 12px; background: #1a1a1a; border-radius: 8px; border: 1px solid #3a3a3a;">
+              <div style="color: #DC2626; font-weight: 600; margin-bottom: 8px;">테이블 ${assignment.table}</div>
+              <div style="font-size: 14px; color: #ffffff; margin-bottom: 4px;">${escapeHtml(assignment.techCompany)}</div>
+              <div style="font-size: 14px; color: #ffffff;">${escapeHtml(assignment.designCompany)}</div>
+            </div>
+          `;
+        }
+        
+        html += `
+            </div>
+          </div>
+        `;
+      }
+      
+      content.innerHTML = html;
+      container.style.display = 'block';
+    }
+    
+    // HTML 이스케이프 함수
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // CSV URL 상수 정의
+    const TECH_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdxkwUoTKh5y5xLeMwerXez9IpL6_QEY09ipRULpS-R60XiiSVMWC3LEjgVzHU57_EjlIVvg1LfSw_/pub?output=csv';
+    const DESIGN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRH6aVLkutbRv8_gv9kSdHS62fmcYV6_sLBRjGoPQyHHahyWMBdEm7nLVLPlkrnGccKXB462N9ZgKyK/pub?output=csv';
+    
+    // 기술기업 데이터 로드
+    async function loadSeatData() {
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      loadingIndicator.classList.add('show');
+      
+      try {
+        // 라운드 배정 데이터 먼저 로드 (항상 최신 데이터)
+        await loadAssignmentData();
+        
+        // CSV 데이터 로드
+        const response = await fetch(TECH_CSV_URL);
+        
+        if (!response.ok) {
+          throw new Error(`데이터를 불러올 수 없습니다. (상태 코드: ${response.status})`);
+        }
+        
+        const text = await response.text();
+        const rows = parseCSV(text);
+        
+        if (rows.length < 2) {
+          throw new Error('CSV 파일에 데이터가 없습니다. 관리자 페이지에서 데이터가 입력되어 있는지 확인해주세요.');
+        }
+        
+        const headers = splitLine(rows[0]);
+        const nameIndex = headers.findIndex(h => h === '기업명' || h === '멘토명' || h === '기술기업명');
+        const fixedSeatIndex = headers.findIndex(h => h === '지정석');
+        const session1Index = headers.findIndex(h => h === '1세션');
+        const designCompany1Index = headers.findIndex(h => h === '1_스타트업' || h === '1_디자인전문기업');
+        const session2Index = headers.findIndex(h => h === '2세션');
+        const designCompany2Index = headers.findIndex(h => h === '2_스타트업' || h === '2_디자인전문기업');
+        const session3Index = headers.findIndex(h => h === '3세션');
+        const designCompany3Index = headers.findIndex(h => h === '3_스타트업' || h === '3_디자인전문기업');
+        const session4Index = headers.findIndex(h => h === '4세션');
+        const designCompany4Index = headers.findIndex(h => h === '4_스타트업' || h === '4_디자인전문기업');
+        
+        if (nameIndex === -1) {
+          throw new Error('CSV 파일 형식이 올바르지 않습니다. "기업명", "기술기업명" 또는 "멘토명" 컬럼을 찾을 수 없습니다.');
+        }
+        
+        techCompanyData = [];
+        for (let i = 1; i < rows.length; i++) {
+          const cells = splitLine(rows[i]);
+          if (cells[nameIndex] && cells[nameIndex].trim()) {
+            techCompanyData.push({
+              name: cells[nameIndex].trim(),
+              fixedSeat: cells[fixedSeatIndex]?.trim() || '미정',
+              session1: cells[session1Index]?.trim() || '',
+              designCompany1: cells[designCompany1Index]?.trim() || '미정',
+              session2: cells[session2Index]?.trim() || '',
+              designCompany2: cells[designCompany2Index]?.trim() || '미정',
+              session3: cells[session3Index]?.trim() || '',
+              designCompany3: cells[designCompany3Index]?.trim() || '미정',
+              session4: cells[session4Index]?.trim() || '',
+              designCompany4: cells[designCompany4Index]?.trim() || '미정'
+            });
+          }
+        }
+        
+        if (techCompanyData.length === 0) {
+          throw new Error('로드된 데이터가 없습니다. 관리자 페이지에서 기술기업 정보가 입력되어 있는지 확인해주세요.');
+        }
+        
+        console.log('좌석 데이터 로드 완료:', techCompanyData.length, '개');
+        
+        // 디자인기업 데이터도 로드
+        try {
+          const designResponse = await fetch(DESIGN_CSV_URL);
+          if (designResponse.ok) {
+            const designText = await designResponse.text();
+            const designRows = parseCSV(designText);
+            
+            if (designRows.length >= 2) {
+              const designHeaders = splitLine(designRows[0]);
+              const designNameIndex = designHeaders.findIndex(h => h === '기업명' || h === '멘토명' || h === '디자인전문기업');
+              
+              if (designNameIndex !== -1) {
+                designCompanyData = [];
+                for (let i = 1; i < designRows.length; i++) {
+                  const cells = splitLine(designRows[i]);
+                  if (cells[designNameIndex] && cells[designNameIndex].trim()) {
+                    designCompanyData.push({
+                      name: cells[designNameIndex].trim()
+                    });
+                  }
+                }
+                console.log('디자인기업 데이터 로드 완료:', designCompanyData.length, '개');
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('디자인기업 데이터 로드 실패:', error);
+        }
+        
+        loadingIndicator.classList.remove('show');
+      } catch (error) {
+        console.error('CSV 로드 오류:', error);
+        loadingIndicator.classList.add('show');
+        loadingIndicator.innerHTML = `
+          <div style="color: #DC2626; line-height: 1.6;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">⚠️ 데이터 로드 실패</div>
+            <div style="font-size: 14px;">${error.message}</div>
+            <div style="font-size: 13px; color: #a0a0a0; margin-top: 12px;">
+              해결 방법:<br>
+              • 인터넷 연결을 확인해주세요<br>
+              • 페이지를 새로고침해주세요 (F5 또는 Ctrl+R)<br>
+              • 문제가 계속되면 운영진에 문의해주세요
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // 검색 결과 표시
+    function showSearchResults(query) {
+      const resultsContainer = document.getElementById('searchResults');
+      const resultsHeader = document.getElementById('searchResultsHeader');
+      
+      if (!query.trim()) {
+        resultsContainer.innerHTML = '';
+        resultsHeader.classList.remove('show');
+        resultsHeader.innerHTML = '';
+        return;
+      }
+      
+      // 기술기업과 디자인기업 모두에서 검색
+      const techFiltered = techCompanyData.filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      const designFiltered = designCompanyData.filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      const allFiltered = [...techFiltered, ...designFiltered];
+      
+      if (allFiltered.length === 0) {
+        resultsContainer.innerHTML = '<div style="text-align: center; color: #a0a0a0; padding: 20px;">검색 결과가 없습니다</div>';
+        resultsHeader.classList.remove('show');
+        resultsHeader.innerHTML = '';
+        return;
+      }
+      
+      // 검색 결과 개수 표시
+      resultsHeader.classList.add('show');
+      resultsHeader.innerHTML = `검색 결과: <span style="color: #DC2626; font-weight: 600;">${allFiltered.length}건</span>`;
+      
+      resultsContainer.innerHTML = allFiltered.map((item, index) => {
+        const itemId = `search-item-${index}`;
+        // 데이터 속성에 저장하여 안전하게 전달
+        return `
+        <div class="search-result-item" data-company-name="${escapeHtml(item.name).replace(/"/g, "&quot;")}" onclick="selectPersonFromElement(this)">
+          <div class="search-result-name">${escapeHtml(item.name)}</div>
+        </div>
+      `;
+      }).join('');
+    }
+    
+    // 기술기업 또는 디자인기업 선택 (요소에서)
+    function selectPersonFromElement(element) {
+      const name = element.getAttribute('data-company-name');
+      if (!name) return;
+      selectPerson(name);
+    }
+    
+    // 기술기업 또는 디자인기업 선택
+    function selectPerson(name) {
+      // 기술기업에서 찾기
+      let company = techCompanyData.find(p => p.name === name);
+      let isTech = true;
+      
+      // 기술기업에서 못 찾으면 디자인기업에서 찾기
+      if (!company) {
+        company = designCompanyData.find(p => p.name === name);
+        isTech = false;
+      }
+      
+      if (!company) return;
+      
+      // 라운드 배정 정보 찾기
+      const assignments = [];
+      if (assignmentData && assignmentData.assignments) {
+        // 기업명 정규화 (공백 제거, 소문자 변환)
+        const normalizedName = name.trim().toLowerCase();
+        
+        if (isTech) {
+          // 기술기업인 경우 - 정확히 일치하는 것만 찾기
+          assignments.push(...assignmentData.assignments.filter(a => {
+            if (!a.techCompany) return false;
+            const normalizedTechCompany = a.techCompany.trim().toLowerCase();
+            return normalizedTechCompany === normalizedName;
+          }));
+        } else {
+          // 디자인기업인 경우 - 정확히 일치하는 것만 찾기
+          assignments.push(...assignmentData.assignments.filter(a => {
+            if (!a.designCompany) return false;
+            const normalizedDesignCompany = a.designCompany.trim().toLowerCase();
+            return normalizedDesignCompany === normalizedName;
+          }));
+        }
+      }
+      
+      // 디버깅: 찾은 배정 정보 로그
+      console.log(`기업 "${name}" 검색 결과:`, {
+        isTech,
+        totalAssignments: assignmentData?.assignments?.length || 0,
+        foundAssignments: assignments.length,
+        assignments: assignments.map(a => ({ round: a.round, table: a.table }))
+      });
+      
+      // 세션 정보를 카드 형식으로 생성
+      let sessionInfoHTML = `<span class="seat-info-name">${company.name}</span>`;
+      
+      if (company.fixedSeat && company.fixedSeat !== '미정') {
+        sessionInfoHTML += ` 님의 지정석: <span class="seat-info-location">${company.fixedSeat}</span><br>`;
+      } else {
+        sessionInfoHTML += '<br>';
+      }
+      
+      const sessionCards = [];
+      
+      // 라운드 배정 정보 추가
+      if (assignments.length > 0) {
+        sessionCards.push(`
+          <div class="session-card" style="border-color: #10B981;">
+            <div class="session-header" style="color: #10B981;">📅 라운드 배정</div>
+        `);
+        
+        for (const assignment of assignments.sort((a, b) => a.round - b.round)) {
+          if (isTech) {
+            sessionCards.push(`
+              <div class="session-row">
+                <span class="session-label">라운드 ${assignment.round}</span>
+                <span class="session-value">테이블 ${assignment.table} - ${escapeHtml(assignment.designCompany)}</span>
+              </div>
+            `);
+          } else {
+            sessionCards.push(`
+              <div class="session-row">
+                <span class="session-label">라운드 ${assignment.round}</span>
+                <span class="session-value">테이블 ${assignment.table} - ${escapeHtml(assignment.techCompany)}</span>
+              </div>
+            `);
+          }
+        }
+        
+        sessionCards.push('</div>');
+      }
+      
+      // 기존 세션 정보 (CSV 기반)
+      if (company.designCompany1 && company.designCompany1 !== '미정') {
+        sessionCards.push(`
+          <div class="session-card">
+            <div class="session-header">1세션<span class="session-time">${company.session1 || ''}</span></div>
+            <div class="session-row"><span class="session-label">디자인전문기업</span><span class="session-value">${company.designCompany1}</span></div>
+          </div>
+        `);
+      }
+      
+      if (company.designCompany2 && company.designCompany2 !== '미정') {
+        sessionCards.push(`
+          <div class="session-card">
+            <div class="session-header">2세션<span class="session-time">${company.session2 || ''}</span></div>
+            <div class="session-row"><span class="session-label">디자인전문기업</span><span class="session-value">${company.designCompany2}</span></div>
+          </div>
+        `);
+      }
+      
+      if (company.designCompany3 && company.designCompany3 !== '미정') {
+        sessionCards.push(`
+          <div class="session-card">
+            <div class="session-header">3세션<span class="session-time">${company.session3 || ''}</span></div>
+            <div class="session-row"><span class="session-label">디자인전문기업</span><span class="session-value">${company.designCompany3}</span></div>
+          </div>
+        `);
+      }
+      
+      if (company.designCompany4 && company.designCompany4 !== '미정' && company.designCompany4.trim() !== '') {
+        sessionCards.push(`
+          <div class="session-card">
+            <div class="session-header">3세션 (동시예약)<span class="session-time">${company.session4 || ''}</span></div>
+            <div class="session-row"><span class="session-label">디자인전문기업</span><span class="session-value">${company.designCompany4}</span></div>
+          </div>
+        `);
+      }
+      
+      if (sessionCards.length > 0) {
+        sessionInfoHTML += sessionCards.join('');
+      } else {
+        sessionInfoHTML += '<br><span style="font-size: 16px; color: #a0a0a0;">예정된 만남이 없습니다.</span>';
+      }
+      
+      document.getElementById('seatInfoText').innerHTML = sessionInfoHTML;
+      document.getElementById('seatInfo').classList.add('show');
+      
+      // 검색창 비우기
+      document.getElementById('seatSearch').value = '';
+      document.getElementById('searchResults').innerHTML = '';
+      document.getElementById('searchResultsHeader').classList.remove('show');
+      document.getElementById('searchResultsHeader').innerHTML = '';
+    }
+    
+    // 이벤트 리스너
+    document.getElementById('seatSearch').addEventListener('input', (e) => {
+      showSearchResults(e.target.value);
+    });
+    
+    // 페이지 로드 시 데이터 로드
+    // 초기 로드
+    loadSeatData();
+    
+    // 페이지가 포커스될 때마다 데이터 다시 로드 (초기화 후 반영을 위해)
+    let isPageVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && isPageVisible) {
+        // 페이지가 다시 보일 때 데이터 다시 로드
+        loadAssignmentData();
+      }
+      isPageVisible = !document.hidden;
+    });
+    
+    // 페이지가 포커스를 받을 때도 데이터 다시 로드
+    window.addEventListener('focus', () => {
+      loadAssignmentData();
+    });
+  </script>
+</body>
+</html>

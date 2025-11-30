@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선호 입력 - EpicStage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/common-styles.css">
+    <!-- Swing.js for card swipe -->
+    <script src="https://cdn.jsdelivr.net/npm/swing@3.1.1/dist/swing.min.js"></script>
+    <!-- Fuse.js for search -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+    <!-- Sortable.js for drag and drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <style>
+        body {
+            background: #FFFFFF;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        }
+        /* 모달 애니메이션 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-overlay {
+            animation: fadeIn 0.2s ease-out;
+        }
+        .modal-content {
+            animation: slideUp 0.3s ease-out;
+        }
+        /* 카드 스와이프 스타일 */
+        #cardStack {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        .swing-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+        .swing-card:active {
+            cursor: grabbing;
+        }
+        .swing-card.dragging {
+            transition: none;
+        }
+        .card-initials {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- 이름·회사명 재확인 모달 -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 modal-overlay z-50 flex items-center justify-center p-4" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl modal-content max-w-md w-full p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">본인 확인</h2>
+            <div class="space-y-3 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                    <div class="text-lg font-semibold text-gray-900" id="confirmName"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">회사명</label>
+                    <div class="text-lg font-semibold text-gray-900" id="confirmCompany"></div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="confirmCancel" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                    취소
+                </button>
+                <button id="confirmOk" class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div id="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-gray-600">로딩 중...</p>
+        </div>
+
+        <div id="error" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-4">
+            <p id="errorMessage"></p>
+        </div>
+
+        <!-- Step 1: 카드 브라우징 -->
+        <div id="step1" class="hidden">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">만나고 싶은 팀을 담아보세요</h1>
+            <p class="text-gray-600 mb-6">마음에 드는 팀은 '담기'를 눌러주세요. 나중에 이 중에서 5개만 골라 순위를 정합니다.</p>
+            
+            <!-- 검색 및 필터 -->
+            <div class="mb-6 space-y-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="이름, 회사명, 키워드로 검색..." 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    <svg class="absolute right-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <select id="industryFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="">전체 산업</option>
+                    </select>
+                    <select id="stageFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                        <option value="">전체 단계</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 카드 스택 -->
+            <div id="cardStack" class="mb-6"></div>
+
+            <!-- 담은 팀 카운트 및 다음 단계 버튼 -->
+            <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
+                <div class="container mx-auto max-w-4xl flex items-center justify-between">
+                    <div class="text-gray-700">
+                        <span class="font-semibold" id="shortlistCount">0</span>개 담음
+                    </div>
+                    <button 
+                        id="nextStepBtn" 
+                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled
+                    >
+                        다음 단계 → 순위 정하기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: 순위 설정 -->
+        <div id="step2" class="hidden">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">순위를 정해주세요</h1>
+            <p class="text-gray-600 mb-6">담은 팀 중에서 최대 5개를 선택하여 순위를 정해주세요. 1순위는 필수입니다.</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-24">
+                <!-- 나의 카드함 (Shortlist) -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">나의 카드함</h2>
+                    <div id="shortlistContainer" class="space-y-3 min-h-[200px]">
+                        <!-- 카드들이 여기에 동적으로 추가됨 -->
+                    </div>
+                </div>
+
+                <!-- 선호 순위 리스트 (1~5) -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">선호 순위</h2>
+                    <div id="rankList" class="space-y-3">
+                        <div class="rank-slot" data-rank="1">
+                            <div class="text-sm font-medium text-gray-500 mb-2">1순위 (필수)</div>
+                            <div class="min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item">
+                                비어있음
+                            </div>
+                        </div>
+                        <div class="rank-slot" data-rank="2">
+                            <div class="text-sm font-medium text-gray-500 mb-2">2순위</div>
+                            <div class="min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item">
+                                비어있음
+                            </div>
+                        </div>
+                        <div class="rank-slot" data-rank="3">
+                            <div class="text-sm font-medium text-gray-500 mb-2">3순위</div>
+                            <div class="min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item">
+                                비어있음
+                            </div>
+                        </div>
+                        <div class="rank-slot" data-rank="4">
+                            <div class="text-sm font-medium text-gray-500 mb-2">4순위</div>
+                            <div class="min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item">
+                                비어있음
+                            </div>
+                        </div>
+                        <div class="rank-slot" data-rank="5">
+                            <div class="text-sm font-medium text-gray-500 mb-2">5순위</div>
+                            <div class="min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item">
+                                비어있음
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 만나고 싶은 팀 없음 옵션 -->
+            <div class="mb-6">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" id="noneFlag" class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                    <span class="text-gray-700">만나고 싶은 팀이 없습니다</span>
+                </label>
+            </div>
+
+            <!-- 하단 버튼 -->
+            <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
+                <div class="container mx-auto max-w-4xl flex items-center justify-between">
+                    <button 
+                        id="backToStep1Btn" 
+                        class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                    >
+                        ← 이전 단계
+                    </button>
+                    <div class="flex gap-3">
+                        <button 
+                            id="saveDraftBtn" 
+                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                        >
+                            임시 저장
+                        </button>
+                        <button 
+                            id="submitBtn" 
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled
+                        >
+                            제출하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL에서 이벤트 ID와 토큰 추출
+        // PRD에 따르면 /pref?event=123&token=... 형식
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const eventId = urlParams.get('event');
+
+        let participantData = null;
+        let allParticipants = [];
+        let filteredParticipants = [];
+        let shortlist = [];
+        let swingStack = null;
+        let fuse = null;
+        const MAX_SHORTLIST = 15;
+        let rankings = {}; // {1: participantId, 2: participantId, ...}
+        let sortableShortlist = null;
+        let sortableRanks = null;
+
+        // 모달 요소
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmName = document.getElementById('confirmName');
+        const confirmCompany = document.getElementById('confirmCompany');
+        const confirmOk = document.getElementById('confirmOk');
+        const confirmCancel = document.getElementById('confirmCancel');
+
+        // 2초 타이머로 모달 자동 표시
+        let confirmTimer = null;
+
+        // 토큰 검증 및 참가자 정보 로드
+        async function loadParticipantData() {
+            if (!token || !eventId) {
+                showError('토큰 또는 이벤트 ID가 없습니다.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/events/${eventId}/preferences/form?token=${encodeURIComponent(token)}`);
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    showError(error.error || '인증에 실패했습니다.');
+                    return;
+                }
+
+                const data = await response.json();
+                participantData = data.participant;
+
+                // 2초 후 모달 표시
+                confirmTimer = setTimeout(() => {
+                    showConfirmModal();
+                }, 2000);
+
+                // 참가자 정보 표시
+                displayParticipantInfo();
+            } catch (error) {
+                console.error('로드 오류:', error);
+                showError('데이터를 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 참가자 정보 표시 및 데이터 로드
+        async function displayParticipantInfo() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            
+            // 참가자 목록 로드
+            await loadParticipants();
+            
+            // Shortlist 로드
+            loadShortlist();
+            
+            // Fuse.js 초기화
+            initFuse();
+            
+            // 필터 옵션 초기화
+            initFilters();
+            
+            // Swing.js 초기화
+            initSwing();
+            
+            // 이벤트 리스너 설정
+            setupEventListeners();
+            
+            // 카드 렌더링
+            renderCards();
+        }
+
+        // 참가자 목록 로드
+        async function loadParticipants() {
+            try {
+                const response = await fetch(`/api/events/${eventId}/participants?token=${encodeURIComponent(token)}`);
+                if (!response.ok) {
+                    throw new Error('참가자 목록을 불러올 수 없습니다.');
+                }
+                const data = await response.json();
+                allParticipants = data.participants || [];
+                filteredParticipants = [...allParticipants];
+            } catch (error) {
+                console.error('참가자 목록 로드 오류:', error);
+                showError('참가자 목록을 불러오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        // Shortlist localStorage에서 로드
+        function loadShortlist() {
+            const stored = localStorage.getItem(`shortlist_${eventId}_${token}`);
+            if (stored) {
+                try {
+                    shortlist = JSON.parse(stored);
+                    updateShortlistCount();
+                } catch (e) {
+                    shortlist = [];
+                }
+            }
+        }
+
+        // Shortlist localStorage에 저장
+        function saveShortlist() {
+            localStorage.setItem(`shortlist_${eventId}_${token}`, JSON.stringify(shortlist));
+            updateShortlistCount();
+        }
+
+        // Shortlist 카운트 업데이트
+        function updateShortlistCount() {
+            const count = shortlist.length;
+            document.getElementById('shortlistCount').textContent = count;
+            document.getElementById('nextStepBtn').disabled = count === 0;
+        }
+
+        // Fuse.js 초기화
+        function initFuse() {
+            fuse = new Fuse(allParticipants, {
+                keys: ['name', 'company', 'industry_tags', 'interests', 'business_type', 'team_info'],
+                threshold: 0.3,
+                includeScore: true
+            });
+        }
+
+        // 필터 옵션 초기화
+        function initFilters() {
+            const industries = new Set();
+            const stages = new Set();
+            
+            allParticipants.forEach(p => {
+                if (p.industry_tags) {
+                    p.industry_tags.split(',').forEach(tag => industries.add(tag.trim()));
+                }
+                if (p.business_type) {
+                    stages.add(p.business_type.trim());
+                }
+            });
+
+            const industryFilter = document.getElementById('industryFilter');
+            Array.from(industries).sort().forEach(industry => {
+                const option = document.createElement('option');
+                option.value = industry;
+                option.textContent = industry;
+                industryFilter.appendChild(option);
+            });
+
+            const stageFilter = document.getElementById('stageFilter');
+            Array.from(stages).sort().forEach(stage => {
+                const option = document.createElement('option');
+                option.value = stage;
+                option.textContent = stage;
+                stageFilter.appendChild(option);
+            });
+        }
+
+        // Swing.js 초기화
+        function initSwing() {
+            if (typeof Swing === 'undefined') {
+                console.warn('Swing.js가 로드되지 않았습니다. 스와이프 기능이 제한될 수 있습니다.');
+                return;
+            }
+
+            const stack = Swing.Stack({
+                allowedDirections: [Swing.DIRECTION.LEFT, Swing.DIRECTION.RIGHT],
+                throwOutConfidence: (xOffset, yOffset, element) => {
+                    return Math.min(Math.abs(xOffset) / (element.offsetWidth / 2), 1);
+                }
+            });
+
+            swingStack = stack;
+        }
+
+        // 이벤트 리스너 설정
+        function setupEventListeners() {
+            // 검색
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            
+            // 필터
+            document.getElementById('industryFilter').addEventListener('change', handleFilter);
+            document.getElementById('stageFilter').addEventListener('change', handleFilter);
+            
+            // 다음 단계 버튼
+            document.getElementById('nextStepBtn').addEventListener('click', () => {
+                showStep2();
+            });
+
+            // Step 2 이벤트 리스너
+            document.getElementById('backToStep1Btn').addEventListener('click', () => {
+                showStep1();
+            });
+
+            document.getElementById('saveDraftBtn').addEventListener('click', () => {
+                saveRankings();
+                showNotification('임시 저장되었습니다.', 'success');
+            });
+
+            document.getElementById('submitBtn').addEventListener('click', () => {
+                submitRankings();
+            });
+
+            document.getElementById('noneFlag').addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    // 모든 순위 비우기
+                    clearAllRanks();
+                }
+                updateSubmitButton();
+            });
+        }
+
+        // 검색 처리
+        function handleSearch(e) {
+            const query = e.target.value.trim();
+            if (!query) {
+                filteredParticipants = [...allParticipants];
+            } else {
+                const results = fuse.search(query);
+                filteredParticipants = results.map(r => r.item);
+            }
+            applyFilters();
+        }
+
+        // 필터 적용
+        function handleFilter() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const industry = document.getElementById('industryFilter').value;
+            const stage = document.getElementById('stageFilter').value;
+
+            let filtered = [...filteredParticipants];
+
+            if (industry) {
+                filtered = filtered.filter(p => 
+                    p.industry_tags && p.industry_tags.includes(industry)
+                );
+            }
+
+            if (stage) {
+                filtered = filtered.filter(p => 
+                    p.business_type && p.business_type.includes(stage)
+                );
+            }
+
+            filteredParticipants = filtered;
+            renderCards();
+        }
+
+        // 카드 렌더링
+        function renderCards() {
+            const stack = document.getElementById('cardStack');
+            stack.innerHTML = '';
+
+            // 이미 담긴 카드는 제외
+            const available = filteredParticipants.filter(p => 
+                !shortlist.includes(p.id)
+            );
+
+            if (available.length === 0) {
+                stack.innerHTML = '<div class="text-center text-gray-500 py-20">더 이상 표시할 카드가 없습니다.</div>';
+                return;
+            }
+
+            // 최대 5장의 카드만 표시 (성능 최적화)
+            const cardsToShow = available.slice(0, 5);
+
+            cardsToShow.forEach((participant, index) => {
+                const card = createCard(participant, index);
+                stack.appendChild(card);
+            });
+
+            // Swing.js 카드 등록 및 이벤트 리스너
+            if (swingStack && typeof Swing !== 'undefined') {
+                Array.from(stack.children).forEach((card) => {
+                    swingStack.createCard(card);
+                    
+                    card.addEventListener('throwout', (e) => {
+                        // 카드가 스와이프되면 다음 카드 표시
+                        setTimeout(() => {
+                            renderCards();
+                        }, 300);
+                    });
+                });
+            }
+        }
+
+        // 카드 생성
+        function createCard(participant, index) {
+            const card = document.createElement('div');
+            card.className = 'swing-card';
+            card.style.zIndex = 100 - index;
+            card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
+            card.dataset.participantId = participant.id;
+
+            const initials = (participant.company || participant.name || '?')
+                .substring(0, 2)
+                .toUpperCase();
+
+            const isInShortlist = shortlist.includes(participant.id);
+
+            card.innerHTML = `
+                <div class="card-initials">${initials}</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">${participant.company || '-'}</h3>
+                <p class="text-gray-600 mb-4">${participant.name || '-'}</p>
+                ${participant.team_info ? `<p class="text-sm text-gray-500 mb-2">${participant.team_info}</p>` : ''}
+                ${participant.industry_tags ? `<div class="flex flex-wrap gap-2 mb-4">
+                    ${participant.industry_tags.split(',').map(tag => 
+                        `<span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">${tag.trim()}</span>`
+                    ).join('')}
+                </div>` : ''}
+                <div class="flex gap-2 mt-6">
+                    <button class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50" onclick="toggleShortlist(${participant.id})">
+                        ${isInShortlist ? '✓ 담김' : '🤝 담기'}
+                    </button>
+                    <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50" onclick="showCardDetail(${participant.id})">
+                        더보기
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Shortlist 토글
+        function toggleShortlist(participantId) {
+            const index = shortlist.indexOf(participantId);
+            if (index > -1) {
+                // 이미 담겨있으면 제거
+                shortlist.splice(index, 1);
+            } else {
+                // 최대 개수 확인
+                if (shortlist.length >= MAX_SHORTLIST) {
+                    alert(`최대 ${MAX_SHORTLIST}개까지 담을 수 있습니다.`);
+                    return;
+                }
+                shortlist.push(participantId);
+            }
+            saveShortlist();
+            renderCards();
+        }
+
+        // 카드 상세 보기 (추후 구현)
+        function showCardDetail(participantId) {
+            const participant = allParticipants.find(p => p.id === participantId);
+            if (participant) {
+                alert(`${participant.company}\n${participant.name}\n${participant.team_info || ''}`);
+            }
+        }
+
+        // Step 2 표시
+        function showStep2() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            
+            // Shortlist 카드함 렌더링
+            renderShortlist();
+            
+            // 순위 리스트 초기화
+            initRankList();
+            
+            // Sortable.js 초기화
+            initSortable();
+            
+            // 기존 순위 로드
+            loadRankings();
+        }
+
+        // Step 1 표시
+        function showStep1() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+            renderCards();
+        }
+
+        // Shortlist 카드함 렌더링
+        function renderShortlist() {
+            const container = document.getElementById('shortlistContainer');
+            container.innerHTML = '';
+
+            if (shortlist.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-8">담은 팀이 없습니다.</p>';
+                return;
+            }
+
+            shortlist.forEach(participantId => {
+                const participant = allParticipants.find(p => p.id === participantId);
+                if (!participant) return;
+
+                const card = createShortlistCard(participant);
+                container.appendChild(card);
+            });
+        }
+
+        // Shortlist 카드 생성
+        function createShortlistCard(participant) {
+            const card = document.createElement('div');
+            card.className = 'bg-gray-50 rounded-lg p-4 cursor-move border border-gray-200 hover:border-blue-500 transition';
+            card.draggable = true;
+            card.dataset.participantId = participant.id;
+
+            const initials = (participant.company || participant.name || '?')
+                .substring(0, 2)
+                .toUpperCase();
+
+            card.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                        ${initials}
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-gray-900">${participant.company || '-'}</h3>
+                        <p class="text-sm text-gray-600">${participant.name || '-'}</p>
+                    </div>
+                    <button 
+                        onclick="removeFromShortlist(${participant.id})" 
+                        class="text-gray-400 hover:text-red-500 transition"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // 순위 리스트 초기화
+        function initRankList() {
+            rankings = {};
+            const rankSlots = document.querySelectorAll('.rank-slot');
+            rankSlots.forEach(slot => {
+                const rankItem = slot.querySelector('.rank-item');
+                rankItem.innerHTML = '비어있음';
+                rankItem.className = 'min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item';
+                rankItem.dataset.participantId = '';
+            });
+        }
+
+        // Sortable.js 초기화
+        function initSortable() {
+            // Shortlist 컨테이너
+            const shortlistContainer = document.getElementById('shortlistContainer');
+            if (sortableShortlist) {
+                sortableShortlist.destroy();
+            }
+            sortableShortlist = Sortable.create(shortlistContainer, {
+                group: {
+                    name: 'ranks',
+                    pull: 'clone',
+                    put: false
+                },
+                sort: false,
+                animation: 150
+            });
+
+            // 각 순위 슬롯에 Sortable 적용
+            document.querySelectorAll('.rank-slot').forEach(slot => {
+                const rankItem = slot.querySelector('.rank-item');
+                const rank = parseInt(slot.dataset.rank);
+                
+                // 기존 Sortable 인스턴스 제거
+                if (rankItem.sortableInstance) {
+                    rankItem.sortableInstance.destroy();
+                }
+                
+                rankItem.sortableInstance = Sortable.create(rankItem, {
+                    group: 'ranks',
+                    animation: 150,
+                    onAdd: function(evt) {
+                        const participantId = parseInt(evt.item.dataset.participantId);
+                        
+                        // 기존 순위에 같은 참가자가 있으면 제거
+                        Object.keys(rankings).forEach(r => {
+                            if (rankings[r] === participantId) {
+                                delete rankings[r];
+                                updateRankSlot(parseInt(r));
+                            }
+                        });
+
+                        rankings[rank] = participantId;
+                        updateRankSlot(rank);
+                        updateSubmitButton();
+                        
+                        // 클론된 요소 제거
+                        if (evt.item.parentElement !== rankItem) {
+                            evt.item.remove();
+                        }
+                    },
+                    onRemove: function(evt) {
+                        const participantId = parseInt(evt.item.dataset.participantId);
+                        if (rankings[rank] === participantId) {
+                            delete rankings[rank];
+                            updateRankSlot(rank);
+                            updateSubmitButton();
+                        }
+                    }
+                });
+            });
+        }
+
+        // 순위 슬롯 업데이트
+        function updateRankSlot(rank) {
+            const slot = document.querySelector(`.rank-slot[data-rank="${rank}"]`);
+            if (!slot) return;
+
+            const rankItem = slot.querySelector('.rank-item');
+            const participantId = rankings[rank];
+
+            if (participantId) {
+                const participant = allParticipants.find(p => p.id === participantId);
+                if (participant) {
+                    const initials = (participant.company || participant.name || '?')
+                        .substring(0, 2)
+                        .toUpperCase();
+                    
+                    rankItem.innerHTML = `
+                        <div class="flex items-center justify-between w-full">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                                    ${initials}
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">${participant.company || '-'}</h4>
+                                    <p class="text-sm text-gray-600">${participant.name || '-'}</p>
+                                </div>
+                            </div>
+                            <button 
+                                onclick="removeFromRank(${rank})" 
+                                class="text-gray-400 hover:text-red-500 transition"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    rankItem.className = 'min-h-[80px] border-2 border-blue-500 rounded-lg p-4 bg-blue-50 rank-item';
+                    rankItem.dataset.participantId = participantId;
+                }
+            } else {
+                rankItem.innerHTML = '비어있음';
+                rankItem.className = 'min-h-[80px] border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center justify-center text-gray-400 rank-item';
+                rankItem.dataset.participantId = '';
+            }
+        }
+
+        // 순위에서 제거
+        function removeFromRank(rank) {
+            delete rankings[rank];
+            updateRankSlot(rank);
+            renderShortlist();
+            initSortable();
+            updateSubmitButton();
+        }
+
+        // Shortlist에서 제거
+        function removeFromShortlist(participantId) {
+            const index = shortlist.indexOf(participantId);
+            if (index > -1) {
+                shortlist.splice(index, 1);
+                saveShortlist();
+            }
+            
+            // 순위에서도 제거
+            Object.keys(rankings).forEach(rank => {
+                if (rankings[rank] === participantId) {
+                    delete rankings[rank];
+                    updateRankSlot(parseInt(rank));
+                }
+            });
+            
+            renderShortlist();
+            initSortable();
+            updateSubmitButton();
+        }
+
+        // 순위 저장 (localStorage)
+        function saveRankings() {
+            const data = {
+                rankings: rankings,
+                noneFlag: document.getElementById('noneFlag').checked
+            };
+            localStorage.setItem(`rankings_${eventId}_${token}`, JSON.stringify(data));
+        }
+
+        // 순위 로드 (localStorage)
+        function loadRankings() {
+            const stored = localStorage.getItem(`rankings_${eventId}_${token}`);
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    rankings = data.rankings || {};
+                    document.getElementById('noneFlag').checked = data.noneFlag || false;
+                    
+                    // 순위 슬롯 업데이트
+                    Object.keys(rankings).forEach(rank => {
+                        updateRankSlot(parseInt(rank));
+                    });
+                    
+                    updateSubmitButton();
+                } catch (e) {
+                    console.error('순위 로드 오류:', e);
+                }
+            }
+        }
+
+        // 제출 버튼 상태 업데이트
+        function updateSubmitButton() {
+            const noneFlag = document.getElementById('noneFlag').checked;
+            const hasRank1 = rankings[1] !== undefined;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            submitBtn.disabled = !noneFlag && !hasRank1;
+        }
+
+        // 모든 순위 비우기
+        function clearAllRanks() {
+            rankings = {};
+            document.querySelectorAll('.rank-slot').forEach(slot => {
+                const rank = parseInt(slot.dataset.rank);
+                updateRankSlot(rank);
+            });
+        }
+
+        // 순위 제출
+        async function submitRankings() {
+            const noneFlag = document.getElementById('noneFlag').checked;
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!noneFlag && !rankings[1]) {
+                showNotification('1순위를 선택하거나 "만나고 싶은 팀 없음"을 선택해주세요.', 'error');
+                return;
+            }
+
+            // 제출 전 백업 저장
+            const backupData = {
+                rankings: {...rankings},
+                noneFlag: noneFlag,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(`backup_rankings_${eventId}_${token}`, JSON.stringify(backupData));
+
+            // 제출 버튼 비활성화 및 로딩 표시
+            submitBtn.disabled = true;
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '제출 중...';
+
+            try {
+                const response = await fetch(`/api/events/${eventId}/preferences?token=${encodeURIComponent(token)}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rankings: noneFlag ? {} : rankings,
+                        special_flag: noneFlag ? 'NONE' : null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // 에러 응답 처리
+                    const errorMessage = data.error || '제출에 실패했습니다.';
+                    const errorDetails = data.details ? `\n상세: ${data.details}` : '';
+                    
+                    // 백업 데이터 복원 옵션 제공
+                    const shouldRestore = confirm(
+                        `제출 중 오류가 발생했습니다.\n\n${errorMessage}${errorDetails}\n\n백업 데이터를 복원하시겠습니까?`
+                    );
+                    
+                    if (shouldRestore) {
+                        restoreFromBackup();
+                    }
+                    
+                    throw new Error(errorMessage);
+                }
+
+                // 성공 시 백업 데이터 삭제
+                localStorage.removeItem(`backup_rankings_${eventId}_${token}`);
+                
+                // 제출 완료 화면 표시
+                showSubmitComplete();
+            } catch (error) {
+                console.error('제출 오류:', error);
+                showNotification('제출 중 오류가 발생했습니다: ' + error.message, 'error');
+                
+                // 제출 버튼 복원
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // 백업 데이터 복원
+        function restoreFromBackup() {
+            const backup = localStorage.getItem(`backup_rankings_${eventId}_${token}`);
+            if (backup) {
+                try {
+                    const data = JSON.parse(backup);
+                    rankings = data.rankings || {};
+                    document.getElementById('noneFlag').checked = data.noneFlag || false;
+                    
+                    // 순위 슬롯 업데이트
+                    Object.keys(rankings).forEach(rank => {
+                        updateRankSlot(parseInt(rank));
+                    });
+                    
+                    // Sortable 인스턴스 재초기화
+                    initSortable();
+                    
+                    updateSubmitButton();
+                    showNotification('백업 데이터가 복원되었습니다.', 'success');
+                } catch (e) {
+                    console.error('백업 복원 오류:', e);
+                    showNotification('백업 데이터 복원에 실패했습니다.', 'error');
+                }
+            }
+        }
+
+        // 알림 표시 함수
+        function showNotification(message, type = 'info') {
+            // 기존 알림 제거
+            const existing = document.getElementById('notification');
+            if (existing) {
+                existing.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.id = 'notification';
+            const bgColor = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500';
+            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-md`;
+            notification.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 5초 후 자동 제거
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // 제출 완료 화면
+        function showSubmitComplete() {
+            document.getElementById('step2').innerHTML = `
+                <div class="text-center py-20">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">제출이 완료되었습니다</h2>
+                    <p class="text-gray-600 mb-8">마감 전까지 언제든 수정 가능합니다.</p>
+                    <div class="flex gap-4 justify-center">
+                        <button 
+                            onclick="showStep2()" 
+                            class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                        >
+                            다시 보기
+                        </button>
+                        <button 
+                            onclick="window.close()" 
+                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                        >
+                            닫기
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 전역 함수로 등록
+        window.toggleShortlist = toggleShortlist;
+        window.showCardDetail = showCardDetail;
+        window.removeFromRank = removeFromRank;
+        window.removeFromShortlist = removeFromShortlist;
+
+        // 재확인 모달 표시
+        function showConfirmModal() {
+            if (!participantData) return;
+
+            confirmName.textContent = participantData.name || '-';
+            confirmCompany.textContent = participantData.company || '-';
+            confirmModal.style.display = 'flex';
+        }
+
+        // 모달 확인 버튼
+        confirmOk.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            if (confirmTimer) {
+                clearTimeout(confirmTimer);
+                confirmTimer = null;
+            }
+        });
+
+        // 모달 취소 버튼
+        confirmCancel.addEventListener('click', () => {
+            confirmModal.style.display = 'none';
+            if (confirmTimer) {
+                clearTimeout(confirmTimer);
+                confirmTimer = null;
+            }
+        });
+
+        // 에러 표시
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        // 페이지 로드 시 실행
+        loadParticipantData();
+    </script>
+</body>
+</html>
+

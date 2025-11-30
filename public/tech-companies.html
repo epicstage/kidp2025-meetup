@@ -1,0 +1,1662 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>기술기업 목록 - 2025 디자인-기술 협업 전주기지원</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 12px;
+      margin-bottom: 30px;
+    }
+    
+    header .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #DC2626;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin: 0;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    
+    .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 8px;
+      color: #ffffff;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+    
+    .back-btn:hover {
+      background: #DC2626;
+      color: #FFFFFF;
+      border-color: #DC2626;
+    }
+    
+    .search-box {
+      margin-bottom: 30px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #2a2a2a;
+      border-radius: 12px;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-size: 16px;
+      box-sizing: border-box;
+      transition: all 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: #DC2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+    
+    .filter-section {
+      margin-bottom: 25px;
+    }
+    
+    .filter-label {
+      color: #a0a0a0;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .filter-btn {
+      padding: 10px 18px;
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover {
+      background: #2a2a2a;
+      border-color: #DC2626;
+    }
+    
+    .filter-btn.active {
+      background: #DC2626;
+      border-color: #DC2626;
+      color: #ffffff;
+    }
+    
+    .search-input::placeholder {
+      color: #999999;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .card {
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(220, 38, 38, 0.3);
+      border-color: #DC2626;
+    }
+    
+    .card h3 {
+      color: #DC2626;
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .card-desc {
+      color: #a0a0a0;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      word-break: break-word;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+    
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .card-badge {
+      padding: 6px 12px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    .muted {
+      color: #a0a0a0;
+      font-size: 14px;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      overflow: auto;
+    }
+    
+    .modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: #1a1a1a;
+      margin: 20px;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 700px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      border: 2px solid #2a2a2a;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content h2 {
+      color: #DC2626;
+      margin-top: 0;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 12px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      font-size: 24px;
+    }
+    
+    .modal-close {
+      float: right;
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffffff;
+      cursor: pointer;
+      line-height: 1;
+      margin-top: -5px;
+      transition: color 0.2s;
+    }
+    
+    .modal-close:hover {
+      color: #DC2626;
+    }
+    
+    .modal-row {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    
+    .modal-row:last-child {
+      border-bottom: none;
+    }
+    
+    .modal-label {
+      color: #a0a0a0;
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .modal-value {
+      color: #ffffff;
+      font-size: 15px;
+      line-height: 1.6;
+      word-break: break-word;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+    
+    /* 밋업 신청 슬롯 영역 */
+    .meetup-slots {
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .readonly-banner {
+      margin: 20px 0;
+      padding: 16px;
+      background: rgba(220, 38, 38, 0.12);
+      border: 1px solid #DC2626;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .meetup-slots h2 {
+      color: #DC2626;
+      font-size: 18px;
+      margin: 0 0 15px 0;
+      font-weight: 700;
+    }
+    
+    .meetup-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+    
+    .submit-btn, .reset-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .submit-btn {
+      background: #DC2626;
+      color: #ffffff;
+    }
+    
+    .submit-btn:hover {
+      background: #B91C1C;
+    }
+    
+    .submit-btn:disabled {
+      background: #666666;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    .reset-btn {
+      background: #2a2a2a;
+      color: #ffffff;
+      border: 2px solid #2a2a2a;
+    }
+    
+    .reset-btn:hover {
+      background: #1a1a1a;
+      border-color: #DC2626;
+    }
+    
+    .slots-container {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      padding: 10px;
+    }
+    
+    .slot {
+      background: #0a0a0a;
+      border: 2px dashed #2a2a2a;
+      border-radius: 8px;
+      padding: 20px 15px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    
+    .slot:hover {
+      border-color: #DC2626;
+      background: #1a1a1a;
+    }
+    
+    
+    .slot.filled {
+      border-style: solid;
+      border-color: #DC2626;
+      background: #1a1a1a;
+    }
+    
+    .slot-number {
+      color: #a0a0a0;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .slot-content {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.4;
+    }
+    
+    .slot-remove {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      background: #DC2626;
+      border: none;
+      border-radius: 50%;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .slot.filled:hover .slot-remove {
+      opacity: 1;
+    }
+    
+    .slot-empty-text {
+      color: #666666;
+      font-size: 11px;
+      text-align: center;
+    }
+    
+    /* 카드 선택 표시 */
+    .card.selected {
+      border-color: #DC2626;
+      background: rgba(220, 38, 38, 0.05);
+    }
+    
+    .card-selected-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #DC2626;
+      color: #ffffff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+    }
+    
+    .card {
+      position: relative;
+    }
+    
+    
+    /* 밋업 신청 버튼 */
+    .meetup-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 6px 12px;
+      background: #DC2626;
+      border: none;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    
+    .meetup-btn:hover {
+      background: #B91C1C;
+      transform: scale(1.05);
+    }
+    
+    .meetup-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .meetup-btn.added {
+      background: #10B981;
+    }
+    
+    .meetup-btn.added:hover {
+      background: #059669;
+    }
+    
+    /* 모달 내부 버튼 */
+    .modal-meetup-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: #DC2626;
+      border: none;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+    }
+    
+    .modal-meetup-btn:hover {
+      background: #B91C1C;
+    }
+    
+    .modal-meetup-btn:active {
+      transform: scale(0.98);
+    }
+    
+    .modal-meetup-btn.added {
+      background: #10B981;
+    }
+    
+    .modal-meetup-btn.added:hover {
+      background: #059669;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .wrap {
+        padding: 0;
+      }
+      
+      header {
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      .back-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      
+      .search-box {
+        margin-bottom: 20px;
+      }
+      
+      .search-input {
+        padding: 14px 16px;
+        font-size: 15px;
+        border-width: 2px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .card {
+        padding: 16px;
+        border-width: 2px;
+      }
+      
+      .card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      
+      .card-desc {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+      
+      .card-badge {
+        padding: 5px 10px;
+        font-size: 11px;
+      }
+      
+      .modal-content {
+        margin: 10px;
+        padding: 20px;
+        width: calc(100% - 20px);
+        max-height: 90vh;
+        border-width: 2px;
+      }
+      
+      .modal-content h2 {
+        font-size: 20px;
+        padding-bottom: 10px;
+      }
+      
+      .modal-close {
+        font-size: 28px;
+      }
+      
+      .modal-row {
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+      }
+      
+      .modal-label {
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+      
+      .modal-value {
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+      
+      header {
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+      }
+      
+      header .dot {
+        width: 10px;
+        height: 10px;
+      }
+      
+      h1 {
+        font-size: 18px;
+      }
+      
+      .back-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      
+      .search-input {
+        padding: 12px 14px;
+        font-size: 14px;
+      }
+      
+      .grid {
+        gap: 12px;
+      }
+      
+      .card {
+        padding: 14px;
+      }
+      
+      .card h3 {
+        font-size: 16px;
+      }
+      
+      .card-desc {
+        font-size: 12px;
+      }
+      
+      .modal-content {
+        margin: 5px;
+        padding: 16px;
+        width: calc(100% - 10px);
+      }
+      
+      .modal-content h2 {
+        font-size: 18px;
+      }
+      
+      .modal-close {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="index.html" class="back-btn">← 홈으로 돌아가기</a>
+    <header>
+      <div class="dot"></div>
+      <h1>기술기업 목록</h1>
+    </header>
+
+    <!-- 밋업 신청 슬롯 영역 -->
+    <div class="meetup-slots">
+      <h2>밋업 신청 (최대 7개 선택)</h2>
+      <div class="slots-container" id="slotsContainer">
+        <!-- 슬롯은 JavaScript로 동적 생성 -->
+      </div>
+      <div class="meetup-actions">
+        <button class="reset-btn" onclick="resetSelections()">다시선택하기</button>
+        <button class="submit-btn" id="submitBtn" onclick="submitSelections()">제출하기</button>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <input 
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="🔍 회사명을 입력하세요"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="none"
+        spellcheck="false"
+      />
+    </div>
+
+    <div class="filter-section">
+      <span class="filter-label">주요 사업 분야 필터:</span>
+      <div id="filterButtons" class="filter-buttons">
+        <button class="filter-btn active" data-filter="">전체</button>
+      </div>
+    </div>
+
+    <div id="results" class="grid"></div>
+  </div>
+  
+  <!-- 상세 정보 모달 -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content" id="modalContent">
+    </div>
+  </div>
+
+  <script>
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdxkwUoTKh5y5xLeMwerXez9IpL6_QEY09ipRULpS-R60XiiSVMWC3LEjgVzHU57_EjlIVvg1LfSw_/pub?output=csv';
+  const DESIGN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRH6aVLkutbRv8_gv9kSdHS62fmcYV6_sLBRjGoPQyHHahyWMBdEm7nLVLPlkrnGccKXB462N9ZgKyK/pub?output=csv';
+  const READ_ONLY_EMAILS = ['bgtree456@kidp.or.kr', 'pd@epicstage.co.kr'];
+  
+  let rows = [];
+  let headerMap = {};
+  let searchKeyword = '';
+  let selectedFilters = []; // 복수 선택을 위한 배열
+  let userEmail = ''; // 인증된 사용자 이메일
+  let selections = {}; // {priority: companyData} 형태로 저장
+  let isReadOnly = false;
+  let readOnlyBannerAdded = false;
+  
+  // HTML 이스케이프 함수
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+  
+  // URL 파라미터에서 이메일 가져오기
+  function getEmailFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('email') || '';
+  }
+
+  function isReadOnlyEmail(email) {
+    return READ_ONLY_EMAILS.includes((email || '').toLowerCase());
+  }
+
+  function enterReadOnlyMode() {
+    if (readOnlyBannerAdded) return;
+    const slots = document.querySelector('.meetup-slots');
+    if (slots) {
+      slots.style.display = 'none';
+    }
+    const banner = document.createElement('div');
+    banner.className = 'readonly-banner';
+    banner.textContent = '이 계정은 목록 조회 전용입니다. 기업 목록만 확인할 수 있으며 밋업 신청 기능은 제한됩니다.';
+    const header = document.querySelector('header');
+    if (header && header.parentNode) {
+      header.parentNode.insertBefore(banner, header.nextSibling);
+    }
+    readOnlyBannerAdded = true;
+  }
+  
+  // 이메일 인증 확인 (기술기업 목록을 보려면 디자인전문기업 CSV에 이메일이 있어야 함)
+  async function verifyEmail() {
+    userEmail = getEmailFromURL();
+    
+    if (!userEmail) {
+      alert('접근 권한이 없습니다. 홈페이지에서 이메일 인증을 진행해주세요.');
+      window.location.href = 'index.html';
+      return false;
+    }
+
+    const readOnlyParam = new URLSearchParams(window.location.search).get('readonly') === '1';
+    if (isReadOnlyEmail(userEmail) || readOnlyParam) {
+      isReadOnly = true;
+      enterReadOnlyMode();
+      return true;
+    }
+    
+    try {
+      // 디자인전문기업 CSV에서 이메일 확인
+      const res = await fetch(DESIGN_CSV_URL);
+      const text = await res.text();
+      const designData = parseCSVForAuth(text);
+      
+      const found = designData.find(company => {
+        const email = (company['사용자 이름'] || '').toLowerCase().trim();
+        return email === userEmail.toLowerCase().trim();
+      });
+      
+      if (!found) {
+        alert('접근 권한이 없습니다. 등록된 디자인전문기업 이메일 주소로만 기술기업 목록을 볼 수 있습니다.');
+        window.location.href = 'index.html';
+        return false;
+      }
+      
+      // 사용자 소속 기업명 저장 (전역 변수)
+      window.userCompanyName = found['기업명'] || found['스타트업'] || found['디자인전문기업'] || '';
+      
+      return true;
+    } catch (e) {
+      console.error('인증 오류:', e);
+      alert('인증 중 오류가 발생했습니다.');
+      window.location.href = 'index.html';
+      return false;
+    }
+  }
+  
+  // 인증용 간단한 CSV 파싱
+  function parseCSVForAuth(text) {
+    const lines = text.split(/\r?\n/).filter(line => line.trim());
+    if (lines.length < 2) return [];
+    
+    const headers = parseCSVLineForAuth(lines[0]);
+    const data = [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      const values = parseCSVLineForAuth(lines[i]);
+      const row = {};
+      headers.forEach((h, idx) => {
+        row[h] = values[idx] || '';
+      });
+      data.push(row);
+    }
+    
+    return data;
+  }
+  
+  function parseCSVLineForAuth(line) {
+    const values = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      const nextChar = line[i + 1];
+      
+      if (char === '"') {
+        if (inQuotes && nextChar === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    values.push(current.trim());
+    return values;
+  }
+
+  async function loadCSV(){
+    // 먼저 이메일 인증 확인
+    const isAuthorized = await verifyEmail();
+    if (!isAuthorized) {
+      return;
+    }
+    
+    const resultsArea = document.getElementById('results');
+    
+    resultsArea.innerHTML = '<p class="muted">⏳ 데이터를 불러오는 중...</p>';
+    
+    try {
+      const res = await fetch(CSV_URL, {
+        method: 'GET',
+        cache: 'no-store'
+      });
+      
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      
+      const text = await res.text();
+      
+      if(!text || text.length < 10){
+        throw new Error('빈 응답 또는 잘못된 데이터');
+      }
+      
+      const parsed = parseCSV(text);
+      
+      if(parsed.rows.length === 0){
+        throw new Error('데이터 행이 없습니다');
+      }
+      
+      rows = parsed.rows;
+      headerMap = buildHeaderMap(parsed.headers);
+      
+      // 필터 버튼 생성
+      buildFilterButtons();
+      
+      if (!isReadOnly) {
+        // 밋업 신청 슬롯 초기화 및 기존 선택 로드
+        initMeetupSlots();
+        await loadSelections();
+        updateSubmitButton();
+      } else {
+        enterReadOnlyMode();
+      }
+      
+      // 검색창 이벤트 리스너 설정
+      const searchInput = document.getElementById('searchInput');
+      let isComposing = false;
+      
+      searchInput.addEventListener('compositionstart', () => {
+        isComposing = true;
+      });
+      
+      searchInput.addEventListener('compositionend', (e) => {
+        isComposing = false;
+        searchKeyword = e.target.value.trim().toLowerCase();
+        applyFilter();
+      });
+      
+      searchInput.addEventListener('input', (e) => {
+        if (!isComposing) {
+          searchKeyword = e.target.value.trim().toLowerCase();
+          applyFilter();
+        }
+      });
+      
+      applyFilter(); // 초기 로드 시 필터 적용
+    } catch(e) {
+      console.error('CSV 로드 오류:', e);
+      resultsArea.innerHTML = `
+        <div style="padding:20px; border:3px solid #DC2626; border-radius:12px; background:#FFF5F5; margin:20px 0;">
+          <h3 style="color:#DC2626; margin-top:0;">❌ 데이터 로딩 실패</h3>
+          <p class="muted">${e.message}</p>
+          <p class="muted" style="font-size:12px; margin-top:10px;">CSV URL을 확인해주세요.</p>
+        </div>
+      `;
+    }
+  }
+
+  function parseCSV(text){
+    const rows = [];
+    let currentRow = '';
+    let insideQuotes = false;
+    
+    for(let i = 0; i < text.length; i++){
+      const char = text[i];
+      const nextChar = text[i + 1];
+      
+      if(char === '"'){
+        currentRow += '"';
+        if(insideQuotes && nextChar === '"'){
+          currentRow += '"';
+          i++;
+        } else {
+          insideQuotes = !insideQuotes;
+        }
+      } else if(char === '\n' && !insideQuotes){
+        if(currentRow.trim().length > 0){
+          rows.push(currentRow);
+        }
+        currentRow = '';
+      } else if(char === '\r'){
+        // \r 무시
+      } else {
+        currentRow += char;
+      }
+    }
+    
+    if(currentRow.trim().length > 0){
+      rows.push(currentRow);
+    }
+    
+    const headers = splitLine(rows[0]).map(h=>h.replace(/^\uFEFF/, '').trim());
+    const dataRows = rows.slice(1).map(line=>{
+      const values = splitLine(line);
+      const o = {};
+      headers.forEach((h,i)=> o[h] = (values[i]||'').trim());
+      return o;
+    });
+    return {headers, rows: dataRows};
+  }
+
+  function splitLine(line){
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for(let i = 0; i < line.length; i++){
+      const char = line[i];
+      const nextChar = line[i + 1];
+      
+      if(char === '"'){
+        if(inQuotes && nextChar === '"'){
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if(char === ',' && !inQuotes){
+        result.push(current);
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    
+    result.push(current);
+    return result;
+  }
+
+  function buildHeaderMap(headers){
+    const map = {};
+    headers.forEach((h, i) => {
+      map[h] = i;
+    });
+    return map;
+  }
+
+  function buildFilterButtons() {
+    // 모든 주요 사업 분야 추출 (주요 사업 분야_1~5에서)
+    const allFields = new Set();
+    rows.forEach(r => {
+      // 주요 사업 분야_1~5 모두 확인
+      for(let i = 1; i <= 5; i++) {
+        const field = r[`주요 사업 분야_${i}`] || '';
+        if (field && field.trim()) {
+          allFields.add(field.trim());
+        }
+      }
+    });
+    
+    // 필터 버튼 생성
+    const filterContainer = document.getElementById('filterButtons');
+    const sortedFields = Array.from(allFields).sort();
+    
+    // "전체" 버튼 이벤트 리스너 추가
+    const allBtn = filterContainer.querySelector('.filter-btn[data-filter=""]');
+    if (allBtn) {
+      allBtn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        allBtn.classList.add('active');
+        selectedFilters = [];
+        applyFilter();
+      });
+    }
+    
+    sortedFields.forEach(field => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = field;
+      btn.dataset.filter = field;
+      btn.addEventListener('click', () => {
+        // "전체" 버튼 비활성화
+        allBtn.classList.remove('active');
+        
+        // 토글 방식: 이미 선택되어 있으면 제거, 없으면 추가
+        const index = selectedFilters.indexOf(field);
+        if (index > -1) {
+          selectedFilters.splice(index, 1);
+          btn.classList.remove('active');
+        } else {
+          selectedFilters.push(field);
+          btn.classList.add('active');
+        }
+        
+        // 선택된 필터가 없으면 "전체" 버튼 활성화
+        if (selectedFilters.length === 0) {
+          allBtn.classList.add('active');
+        }
+        
+        applyFilter();
+      });
+      filterContainer.appendChild(btn);
+    });
+  }
+
+  function applyFilter(){
+    const filtered = rows.filter(r=>{
+      // 검색 키워드 필터
+      if(searchKeyword) {
+        const companyName = r['기업명'] || r['멘토명'] || r['기술기업명'] || r['회사명'] || '';
+        if(!companyName.toLowerCase().includes(searchKeyword)) {
+          return false;
+        }
+      }
+      
+      // 주요 사업 분야 필터 (복수 선택 - OR 조건, 주요 사업 분야_1~5 모두 확인)
+      if(selectedFilters.length > 0) {
+        let found = false;
+        // 선택한 필터 중 하나라도 포함되면 표시
+        for(let i = 1; i <= 5; i++) {
+          const field = r[`주요 사업 분야_${i}`] || '';
+          if (field && field.trim() && selectedFilters.includes(field.trim())) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          return false;
+        }
+      }
+      
+      return true;
+    });
+    render(filtered);
+  }
+
+  function render(list){
+    const area = document.getElementById('results');
+    area.innerHTML = '';
+    
+    const validList = list.filter(r => {
+      const name = r['기업명'] || r['멘토명'] || r['기술기업명'] || r['회사명'] || '';
+      return name && name.trim().length > 0;
+    });
+    
+    if(validList.length===0){ 
+      area.innerHTML = '<p class="muted">조건에 맞는 기술기업이 없습니다.</p>'; 
+      return; 
+    }
+    
+    validList.forEach(r=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      const companyName = r['기업명'] || r['멘토명'] || r['기술기업명'] || r['회사명'] || '기술기업';
+      
+      // 선택된 카드인지 확인
+      const selectedPriority = getSelectedPriority(companyName);
+      if(selectedPriority) {
+        card.classList.add('selected');
+        card.innerHTML = `<div class="card-selected-badge">${selectedPriority}</div>`;
+      }
+      
+      let html = selectedPriority ? '' : '';
+      html += `<h3>${companyName}</h3>`;
+      
+      // 간략소개 표시 (카드 표면에만)
+      const briefIntro = r['간략소개'] || '';
+      if(briefIntro){
+        html += `<div class="card-desc">${briefIntro}</div>`;
+      } else {
+        // 간략소개가 없으면 주요 역량 표시 (하위 호환성)
+        const capability = r['주요 역량'] || '';
+        if(capability){
+          html += `<div class="card-desc">${capability}</div>`;
+        }
+      }
+      
+      // 홈페이지 링크 표시 (카드 표면에)
+      const homepageFields = ['홈페이지', '웹사이트', 'website', 'homepage', 'Website', 'Homepage'];
+      for (const field of homepageFields) {
+        if (r[field] && r[field].trim()) {
+          let url = r[field].trim();
+          // http:// 또는 https://가 없으면 추가
+          if (!/^https?:\/\//i.test(url)) {
+            url = 'https://' + url;
+          }
+          // URL 유효성 간단 체크
+          if (/^https?:\/\/.+/.test(url)) {
+            html += `<div class="card-homepage" style="margin-top: 8px; font-size: 12px;"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="color: #DC2626; text-decoration: underline;" onclick="event.stopPropagation();">🌐 ${escapeHtml(r[field])}</a></div>`;
+          }
+          break; // 첫 번째 홈페이지 필드만 표시
+        }
+      }
+      
+      // 태그들
+      html += '<div class="card-tags">';
+      // 주요 사업 분야_1~5 모두 표시
+      for(let i = 1; i <= 5; i++) {
+        const field = r[`주요 사업 분야_${i}`];
+        if(field && field.trim()) {
+          html += `<span class="card-badge">${field.trim()}</span>`;
+        }
+      }
+      if(r['기업규모']) html += `<span class="card-badge">${r['기업규모']}</span>`;
+      // 관심분야_1~6 모두 표시
+      for(let i = 1; i <= 6; i++) {
+        const interest = r[`관심분야_${i}`];
+        if(interest && interest.trim()) {
+          html += `<span class="card-badge">${interest.trim()}</span>`;
+        }
+      }
+      html += '</div>';
+      
+      if (!isReadOnly) {
+        const btnText = selectedPriority ? `✓ 신청됨 (${selectedPriority})` : '+ 밋업신청';
+        const btnClass = selectedPriority ? 'meetup-btn added' : 'meetup-btn';
+        html += `<button class="${btnClass}" onclick="event.stopPropagation(); addToMeetup(${JSON.stringify(r).replace(/"/g, '&quot;')})">${btnText}</button>`;
+      }
+      
+      card.innerHTML += html;
+      
+      card.addEventListener('click', ()=>showModal(r));
+      area.appendChild(card);
+    });
+  }
+  
+  // 선택된 우선순위 가져오기
+  function getSelectedPriority(companyName) {
+    for(let priority = 1; priority <= 7; priority++) {
+      if(selections[priority] && selections[priority].companyName === companyName) {
+        return priority;
+      }
+    }
+    return null;
+  }
+  
+  // 밋업 신청 슬롯 초기화
+  function initMeetupSlots() {
+    if (isReadOnly) return;
+    const container = document.getElementById('slotsContainer');
+    container.innerHTML = '';
+    
+    for(let i = 1; i <= 7; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'slot';
+      slot.dataset.priority = i;
+      
+      slot.innerHTML = `
+        <div class="slot-number">${i}</div>
+        <div class="slot-content">
+          <div class="slot-empty-text">카드를 선택하세요</div>
+        </div>
+        <button class="slot-remove" onclick="removeSelection(${i})" style="display: none;">×</button>
+      `;
+      
+      container.appendChild(slot);
+    }
+  }
+  
+  // 선택 추가/업데이트 (로컬만, 서버 저장은 제출하기 버튼에서)
+  function addSelection(priority, companyData) {
+    if (isReadOnly) {
+      alert('이 계정은 목록 조회 전용입니다.');
+      return;
+    }
+    const companyName = companyData['기업명'] || companyData['멘토명'] || companyData['기술기업명'] || companyData['회사명'] || '';
+    
+    if(!companyName) return;
+    
+    // 같은 기업이 다른 우선순위에 있으면 제거
+    for(let p = 1; p <= 7; p++) {
+      if(selections[p] && selections[p].companyName === companyName && p !== priority) {
+        delete selections[p];
+        updateSlotDisplay(p);
+      }
+    }
+    
+    // 새 선택 추가
+    selections[priority] = {
+      companyName: companyName,
+      companyData: companyData
+    };
+    
+    updateSlotDisplay(priority);
+    // 카드 다시 렌더링하여 배지 업데이트 (rows가 있을 때만)
+    if(rows.length > 0) {
+      render(rows);
+    }
+    
+    // 제출 버튼 상태 업데이트
+    updateSubmitButton();
+  }
+  
+  // 제출하기 버튼 상태 업데이트
+  function updateSubmitButton() {
+    const submitBtn = document.getElementById('submitBtn');
+    if(!submitBtn) return;
+    if (isReadOnly) {
+      submitBtn.disabled = true;
+      return;
+    }
+    const hasSelections = Object.keys(selections).length > 0;
+    submitBtn.disabled = !hasSelections;
+  }
+  
+  // 제출하기 - 모든 선택을 서버에 저장
+  async function submitSelections() {
+    if (isReadOnly) {
+      alert('이 계정은 목록 조회 전용입니다.');
+      return;
+    }
+    const selectedCount = Object.keys(selections).length;
+    if(selectedCount === 0) {
+      alert('선택한 기업이 없습니다.');
+      return;
+    }
+    
+    if(!confirm(`총 ${selectedCount}개의 기업을 밋업 신청하시겠습니까?`)) {
+      return;
+    }
+    
+    // 기존 선택 모두 삭제 후 새로 저장
+    try {
+      // 기존 선택 삭제
+      console.log('기존 선택 삭제 시작...');
+      try {
+        const deleteRes = await fetch(`/api/kidp2025/meetup/selections?email=${encodeURIComponent(userEmail)}&listType=tech`, {
+          method: 'DELETE'
+        });
+        if (!deleteRes.ok) {
+          let deleteError;
+          try {
+            deleteError = await deleteRes.json();
+          } catch (e) {
+            const text = await deleteRes.text();
+            deleteError = { error: 'JSON 파싱 실패', raw: text };
+          }
+          console.warn('기존 선택 삭제 경고:', JSON.stringify(deleteError, null, 2));
+        } else {
+          const deleteResult = await deleteRes.json().catch(() => ({}));
+          console.log('기존 선택 삭제 완료:', JSON.stringify(deleteResult, null, 2));
+        }
+      } catch (deleteErr) {
+        console.warn('기존 선택 삭제 중 오류 (무시하고 계속):', deleteErr);
+      }
+      
+      // 새 선택 저장
+      console.log('새 선택 저장 시작...', `총 ${Object.keys(selections).length}개`);
+      const savePromises = [];
+      for(let priority = 1; priority <= 7; priority++) {
+        if(selections[priority]) {
+          const sel = selections[priority];
+          console.log(`우선순위 ${priority} 저장 시도:`, sel.companyName);
+          savePromises.push(
+            fetch('/api/kidp2025/meetup/selections', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: userEmail,
+                companyName: sel.companyName,
+                priority: priority,
+                listType: 'tech',
+                companyData: {
+                  ...sel.companyData,
+                  '사용자 소속 기업': window.userCompanyName || ''
+                }
+              })
+            }).then(async (res) => {
+              let result;
+              try {
+                result = await res.json();
+              } catch (jsonError) {
+                const text = await res.text();
+                console.error(`우선순위 ${priority} JSON 파싱 실패:`, text);
+                throw new Error(`우선순위 ${priority} (${sel.companyName}): 서버 응답 파싱 실패 - ${text.substring(0, 200)}`);
+              }
+              
+              if (!res.ok) {
+                const errorMsg = result.error || result.details || '저장 실패';
+                const errorType = result.type || 'Unknown';
+                console.error(`우선순위 ${priority} 저장 실패:`, JSON.stringify({
+                  status: res.status,
+                  statusText: res.statusText,
+                  error: errorMsg,
+                  type: errorType,
+                  fullResponse: result
+                }, null, 2));
+                throw new Error(`우선순위 ${priority} (${sel.companyName}): ${errorMsg} [${errorType}]`);
+              }
+              console.log(`우선순위 ${priority} 저장 성공:`, JSON.stringify(result, null, 2));
+              return result;
+            }).catch((err) => {
+              console.error(`우선순위 ${priority} 네트워크 오류:`, err);
+              throw new Error(`우선순위 ${priority} (${sel.companyName}): ${err.message || '네트워크 오류'}`);
+            })
+          );
+        }
+      }
+      
+      const results = await Promise.all(savePromises);
+      console.log('모든 선택 저장 완료:', results);
+      
+      // 웹훅 호출 여부 확인
+      if (results.length > 0 && results[0]) {
+        const webhookUrl = results[0].webhookUrl;
+        console.log('서버 응답 정보:', {
+          webhookCalled: results[0].webhookCalled,
+          webhookUrl: webhookUrl
+        });
+        
+        // 전역 변수에 저장 (나중에 테스트용)
+        window.testWebhookUrl = webhookUrl;
+        console.log('💡 웹훅 테스트: 콘솔에 "testWebhook()" 입력');
+        
+        // 전역 테스트 함수 정의
+        window.testWebhook = function() {
+          if (!window.testWebhookUrl) {
+            console.error('웹훅 URL이 없습니다. 먼저 제출하기를 클릭하세요.');
+            return;
+          }
+          console.log('웹훅 테스트 시작:', window.testWebhookUrl);
+          fetch(window.testWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: 'test@test.com',
+              companyName: '테스트 기업',
+              priority: 1,
+              listType: 'tech',
+              companyData: { test: 'data' },
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            })
+          }).then(r => {
+            console.log('상태 코드:', r.status);
+            console.log('응답 URL:', r.url);
+            return r.text();
+          }).then(text => {
+            console.log('응답 내용:', text);
+            if (text.includes('<html') || text.includes('<!DOCTYPE')) {
+              console.error('⚠️ HTML 오류 페이지가 반환되었습니다!');
+            } else {
+              try {
+                const json = JSON.parse(text);
+                console.log('JSON 응답:', json);
+              } catch(e) {
+                console.log('JSON 파싱 실패, 텍스트 응답:', text);
+              }
+            }
+          }).catch(err => {
+            console.error('웹훅 테스트 오류:', err);
+          });
+        };
+        
+        if (!results[0].webhookCalled) {
+          console.warn('⚠️ Google Sheets 웹훅이 호출되지 않았습니다. 환경 변수를 확인하세요.');
+        }
+      }
+      
+      alert('밋업 신청이 완료되었습니다!');
+    } catch(e) {
+      console.error('제출 오류 상세:', {
+        message: e.message,
+        stack: e.stack,
+        error: e
+      });
+      const errorMessage = e.message || '알 수 없는 오류';
+      alert(`제출 중 오류가 발생했습니다.\n\n오류 내용: ${errorMessage}\n\n브라우저 콘솔(F12)에서 자세한 로그를 확인하세요.`);
+    }
+  }
+  
+  // 다시선택하기 - 슬롯 초기화
+  async function resetSelections() {
+    if (isReadOnly) {
+      alert('이 계정은 목록 조회 전용입니다.');
+      return;
+    }
+    const selectedCount = Object.keys(selections).length;
+    if(selectedCount === 0) {
+      return;
+    }
+    
+    if(!confirm('모든 선택을 취소하고 다시 선택하시겠습니까?')) {
+      return;
+    }
+    
+    try {
+      // 서버에서 모든 선택 삭제
+      await fetch(`/api/kidp2025/meetup/selections?email=${encodeURIComponent(userEmail)}&listType=tech`, {
+        method: 'DELETE'
+      });
+      
+      // 로컬 선택 초기화
+      selections = {};
+      for(let i = 1; i <= 7; i++) {
+        updateSlotDisplay(i);
+      }
+      
+      // 카드 다시 렌더링
+      if(rows.length > 0) {
+        render(rows);
+      }
+      
+      // 제출 버튼 상태 업데이트
+      updateSubmitButton();
+    } catch(e) {
+      console.error('초기화 오류:', e);
+      alert('초기화 중 오류가 발생했습니다.');
+    }
+  }
+  
+  // 선택 제거 (로컬만, 서버 삭제는 제출하기/다시선택하기에서)
+  function removeSelection(priority) {
+    if(selections[priority]) {
+      delete selections[priority];
+      updateSlotDisplay(priority);
+      // 카드 다시 렌더링하여 배지 제거 (rows가 있을 때만)
+      if(rows.length > 0) {
+        render(rows);
+      }
+      
+      // 제출 버튼 상태 업데이트
+      updateSubmitButton();
+    }
+  }
+  
+  // 슬롯 표시 업데이트
+  function updateSlotDisplay(priority) {
+    const slot = document.querySelector(`.slot[data-priority="${priority}"]`);
+    if(!slot) return;
+    
+    const content = slot.querySelector('.slot-content');
+    const removeBtn = slot.querySelector('.slot-remove');
+    
+    if(selections[priority]) {
+      slot.classList.add('filled');
+      content.innerHTML = selections[priority].companyName;
+      removeBtn.style.display = 'flex';
+    } else {
+      slot.classList.remove('filled');
+      content.innerHTML = '<div class="slot-empty-text">카드를 선택하세요</div>';
+      removeBtn.style.display = 'none';
+    }
+  }
+  
+      // 기존 선택 로드
+  async function loadSelections() {
+    if(!userEmail || isReadOnly) return;
+    
+    try {
+      const response = await fetch(`/api/kidp2025/meetup/selections?email=${encodeURIComponent(userEmail)}&listType=tech`);
+      const data = await response.json();
+      
+      if(data.success && data.selections) {
+        selections = {};
+        data.selections.forEach(sel => {
+          selections[sel.priority] = {
+            companyName: sel.companyName,
+            companyData: sel.companyData
+          };
+          updateSlotDisplay(sel.priority);
+        });
+        // 선택 로드 후 카드 다시 렌더링하여 배지 표시
+        if(rows.length > 0) {
+          render(rows);
+        }
+      }
+    } catch(e) {
+      console.error('선택 로드 오류:', e);
+    }
+  }
+  
+  function showModal(data){
+    const modal = document.getElementById('detailModal');
+    const content = document.getElementById('modalContent');
+    
+    const companyName = data['기업명'] || data['멘토명'] || data['기술기업명'] || data['회사명'] || '기술기업';
+    const selectedPriority = getSelectedPriority(companyName);
+    
+    let html = `
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h2>${companyName}</h2>
+    `;
+    
+    // 모든 필드 표시 (사용자 이름, 간략소개 제외)
+    Object.keys(data).forEach(key => {
+      if(data[key] && data[key].trim() && 
+         key !== '기업명' && key !== '멘토명' && key !== '기술기업명' && key !== '회사명' &&
+         key !== '사용자 이름' && key !== '간략소개'){
+        
+        // 홈페이지 필드인지 확인 (홈페이지, 웹사이트, website, homepage 등)
+        const isHomepageField = /홈페이지|웹사이트|website|homepage/i.test(key);
+        let value = data[key];
+        
+        if (isHomepageField) {
+          // URL 형식인지 확인하고 하이퍼링크로 변환
+          let url = value.trim();
+          // http:// 또는 https://가 없으면 추가
+          if (!/^https?:\/\//i.test(url)) {
+            url = 'https://' + url;
+          }
+          // URL 유효성 간단 체크
+          if (/^https?:\/\/.+/.test(url)) {
+            value = `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="color: #DC2626; text-decoration: underline;">${escapeHtml(data[key])}</a>`;
+          } else {
+            value = escapeHtml(data[key]);
+          }
+        } else {
+          value = escapeHtml(data[key]);
+        }
+        
+        html += `
+          <div class="modal-row">
+            <div class="modal-label">${key}</div>
+            <div class="modal-value">${value}</div>
+          </div>
+        `;
+      }
+    });
+    
+    // 모달 내부 밋업 신청 버튼 (읽기 전용 제외)
+    if (!isReadOnly) {
+      const btnText = selectedPriority ? `✓ 밋업 신청됨 (우선순위 ${selectedPriority})` : '+ 밋업신청';
+      const btnClass = selectedPriority ? 'modal-meetup-btn added' : 'modal-meetup-btn';
+      const escapedData = JSON.stringify(data).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      html += `<button class="${btnClass}" onclick="addToMeetup(${escapedData})">${btnText}</button>`;
+    }
+    
+    content.innerHTML = html;
+    modal.classList.add('show');
+  }
+  
+  // 빈 슬롯 찾아서 자동으로 추가
+  function addToMeetup(companyData) {
+    // 빈 슬롯 중 가장 낮은 번호 찾기
+    let emptySlot = null;
+    for(let i = 1; i <= 7; i++) {
+      if(!selections[i]) {
+        emptySlot = i;
+        break;
+      }
+    }
+    
+    if(emptySlot === null) {
+      alert('밋업 신청은 최대 7개까지 가능합니다. 기존 신청을 제거한 후 다시 시도해주세요.');
+      return;
+    }
+    
+    addSelection(emptySlot, companyData);
+    // 모달이 열려있으면 닫기
+    closeModal();
+  }
+  
+  function closeModal(){
+    document.getElementById('detailModal').classList.remove('show');
+  }
+  
+  window.onclick = function(event){
+    const modal = document.getElementById('detailModal');
+    if(event.target === modal){
+      closeModal();
+    }
+  };
+
+  // ESC 키로 모달 닫기
+  document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape' || event.keyCode === 27){
+      const modal = document.getElementById('detailModal');
+      if(modal.classList.contains('show')){
+        closeModal();
+      }
+    }
+  });
+
+  loadCSV();
+  </script>
+</body>
+</html>
+

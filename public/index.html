@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>2025 디자인-기술 협업 전주기지원</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .header {
+      margin-bottom: 60px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    
+    .logo {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 25px;
+      background: linear-gradient(135deg, #DC2626, #EF4444);
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .logo-icon {
+      font-size: 45px;
+    }
+    
+    h1 {
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #DC2626, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      font-size: 19px;
+      color: #a0a0a0;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    
+    .notice-section {
+      margin-top: 40px;
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid #2a2a2a;
+      background: rgba(255, 255, 255, 0.02);
+      text-align: left;
+      animation: fadeIn 0.8s ease-out 0.1s both;
+    }
+    
+    .notice-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+    
+    .notice-tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(220, 38, 38, 0.15);
+      color: #F87171;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .notice-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 25px;
+    }
+    
+    .notice-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+    
+    .notice-card h3 {
+      font-size: 16px;
+      color: #FECACA;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+    
+    .notice-list {
+      list-style: none;
+      color: #d4d4d4;
+      font-size: 15px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .notice-list li::before {
+      content: "•";
+      color: #F87171;
+      margin-right: 8px;
+    }
+    
+    .notice-emphasis {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    .notice-example {
+      display: inline-flex;
+      padding: 6px 12px;
+      background: rgba(248, 113, 113, 0.15);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 14px;
+    }
+    
+    .notice-account {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 16px;
+      color: #ffffff;
+    }
+    
+    .notice-account strong {
+      font-size: 20px;
+      letter-spacing: 0.04em;
+    }
+    
+    .notice-account small {
+      font-size: 14px;
+      color: #a0a0a0;
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 50px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    .card {
+      background: #1a1a1a;
+      border: 2px solid #2a2a2a;
+      border-radius: 20px;
+      padding: 40px 30px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .card:hover {
+      border-color: #DC2626;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(220, 38, 38, 0.3);
+    }
+    
+    .card-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+    
+    .card-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+    
+    .card-desc {
+      font-size: 15px;
+      color: #a0a0a0;
+      line-height: 1.5;
+    }
+    
+    .footer {
+      margin-top: 70px;
+      padding-top: 30px;
+      border-top: 1px solid #2a2a2a;
+      animation: fadeIn 0.8s ease-out 0.4s both;
+    }
+    
+    .footer-text {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .footer-org {
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+    
+    .footer-logo {
+      font-size: 12px;
+      color: #707070;
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 20px 60px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        box-shadow: 0 20px 80px rgba(220, 38, 38, 0.6);
+      }
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .modal-content {
+      background: #1a1a1a;
+      margin: 10% auto;
+      padding: 40px;
+      border: 2px solid #2a2a2a;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    .modal-close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: #a0a0a0;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .modal-close:hover {
+      color: #DC2626;
+    }
+    
+    .modal-content h2 {
+      color: #DC2626;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    
+    .modal-desc {
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .modal-question {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    
+    .modal-input {
+      width: 100%;
+      padding: 16px 20px;
+      background: #2a2a2a;
+      border: 2px solid #3a3a3a;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    
+    .modal-input:focus {
+      outline: none;
+      border-color: #DC2626;
+    }
+    
+    .modal-btn {
+      width: 100%;
+      padding: 16px;
+      background: #DC2626;
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-btn:hover {
+      background: #B91C1C;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .modal-btn-yes {
+      background: #DC2626;
+    }
+    
+    .modal-btn-yes:hover {
+      background: #B91C1C;
+    }
+    
+    .modal-btn-no {
+      background: #2a2a2a;
+      border: 2px solid #3a3a3a;
+    }
+    
+    .modal-btn-no:hover {
+      background: #3a3a3a;
+      border-color: #DC2626;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 30px;
+      }
+      .subtitle {
+        font-size: 16px;
+      }
+      .notice-section {
+        padding: 24px;
+      }
+      .notice-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .card {
+        padding: 30px 25px;
+      }
+      .card-title {
+        font-size: 22px;
+      }
+      .modal-content {
+        padding: 30px 20px;
+        margin: 20% auto;
+      }
+      .modal-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <span class="logo-icon">📍</span>
+      </div>
+      <h1>2025 디자인-기술 협업 전주기지원</h1>
+      <p class="subtitle">Design, collaborate with technology</p>
+    </div>
+    
+    <section class="notice-section">
+      <div class="notice-title">
+        <span class="notice-tag">Notice</span>
+        <span>신청 및 주의사항</span>
+      </div>
+      <div class="notice-grid">
+        <div class="notice-card">
+          <h3>신청 전 꼭 확인해주세요</h3>
+          <ul class="notice-list">
+            <li>최대 <span class="notice-emphasis">1인 2매</span>까지 예매 가능합니다.</li>
+            <li>번호 당 1개의 입장 QR코드만 발급되므로 <span class="notice-emphasis">2매 예매 시 각각의 개인정보</span>가 필요합니다.</li>
+            <li>이름 등 개인정보를 꼼꼼히 확인하여 정확히 기재해주세요.</li>
+            <li>좌석은 입금순으로 배정됩니다. (부정확할 경우 예매가 거절될 수 있습니다)</li>
+            <li>입금기한 내에 신청자와 동일한 이름으로 입금해야 예약이 확정됩니다.</li>
+            <li>신청인 + 전화번호 뒤 네 자리 숫자를 꼭 기입해주세요. <span class="notice-example">예) 홍길동 3747</span></li>
+            <li>문의사항은 하단 문의하기 버튼을 이용해주세요.</li>
+          </ul>
+        </div>
+        <div class="notice-card">
+          <h3>입금 계좌 안내</h3>
+          <div class="notice-account">
+            <span>카카오뱅크</span>
+            <strong>3333-3548-32957</strong>
+            <small>예금주) 샘커뮤니케이션즈</small>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <div class="cards">
+      <a href="#" class="card" onclick="openEmailModal('tech'); return false;">
+        <div class="card-title">기술기업 만나기</div>
+        <div class="card-desc">참가 기업 목록</div>
+      </a>
+      
+      <a href="#" class="card" onclick="openEmailModal('design'); return false;">
+        <div class="card-title">디자인전문기업 만나기</div>
+        <div class="card-desc">참가 기업 목록</div>
+      </a>
+      
+      <a href="floor-plan.html" class="card">
+        <div class="card-title">매칭 결과 및 좌석 배치 확인</div>
+      </a>
+    </div>
+    
+    <!-- 이메일 입력 모달 -->
+    <div id="emailModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeEmailModal()">&times;</span>
+        <h2 id="modalTitle">이메일 인증</h2>
+        <div id="emailInputSection">
+          <p class="modal-desc">이메일 주소를 입력해주세요</p>
+          <input 
+            type="email" 
+            id="emailInput" 
+            class="modal-input" 
+            placeholder="이메일 주소"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+          />
+          <button class="modal-btn" onclick="checkEmail()">확인</button>
+        </div>
+        <div id="confirmSection" style="display: none;">
+          <p class="modal-desc" id="companyNameText"></p>
+          <p class="modal-question">가 맞습니까?</p>
+          <div class="modal-buttons">
+            <button class="modal-btn modal-btn-yes" onclick="confirmEmail()">예</button>
+            <button class="modal-btn modal-btn-no" onclick="resetEmailModal()">아니오</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p class="footer-text">2025 디자인-기술 협업 전주기지원</p>
+      <p class="footer-org">주최: 산업통상부, 주관: 한국디자인진흥원, 운영: MYSC</p>
+      <p class="footer-logo">Powered by EpicStage</p>
+    </div>
+  </div>
+  
+  <script>
+    const TECH_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdxkwUoTKh5y5xLeMwerXez9IpL6_QEY09ipRULpS-R60XiiSVMWC3LEjgVzHU57_EjlIVvg1LfSw_/pub?output=csv';
+    const DESIGN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRH6aVLkutbRv8_gv9kSdHS62fmcYV6_sLBRjGoPQyHHahyWMBdEm7nLVLPlkrnGccKXB462N9ZgKyK/pub?output=csv';
+    const READONLY_EMAILS = ['bgtree456@kidp.or.kr', 'pd@epicstage.co.kr'];
+    
+    let currentType = ''; // 'tech' or 'design'
+    let techCompanies = [];
+    let designCompanies = [];
+    let foundCompany = null;
+    let isReadOnlyAccess = false;
+    
+    // CSV 데이터 미리 로드
+    async function loadCSVData() {
+      try {
+        // 기술기업 데이터 로드
+        const techRes = await fetch(TECH_CSV_URL);
+        const techText = await techRes.text();
+        techCompanies = parseCSV(techText);
+        
+        // 디자인전문기업 데이터 로드
+        const designRes = await fetch(DESIGN_CSV_URL);
+        const designText = await designRes.text();
+        designCompanies = parseCSV(designText);
+      } catch (e) {
+        console.error('CSV 로드 오류:', e);
+      }
+    }
+    
+    // 간단한 CSV 파싱
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/).filter(line => line.trim());
+      if (lines.length < 2) return [];
+      
+      const headers = parseCSVLine(lines[0]);
+      const data = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        const row = {};
+        headers.forEach((h, idx) => {
+          row[h] = values[idx] || '';
+        });
+        if (row['기업명'] && row['기업명'].trim()) {
+          data.push(row);
+        }
+      }
+      
+      return data;
+    }
+    
+    function parseCSVLine(line) {
+      const values = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          values.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      values.push(current.trim());
+      return values;
+    }
+    
+    function openEmailModal(type) {
+      currentType = type;
+      isReadOnlyAccess = false;
+      const modal = document.getElementById('emailModal');
+      const title = document.getElementById('modalTitle');
+      title.textContent = type === 'tech' ? '기술기업 목록 접근' : '디자인전문기업 목록 접근';
+      document.getElementById('emailInputSection').style.display = 'block';
+      document.getElementById('confirmSection').style.display = 'none';
+      document.getElementById('emailInput').value = '';
+      modal.style.display = 'block';
+      setTimeout(() => document.getElementById('emailInput').focus(), 100);
+    }
+    
+    function closeEmailModal() {
+      document.getElementById('emailModal').style.display = 'none';
+    }
+    
+    function isReadOnlyEmail(email) {
+      return READONLY_EMAILS.includes((email || '').toLowerCase());
+    }
+
+    async function checkEmail() {
+      const email = document.getElementById('emailInput').value.trim().toLowerCase();
+      
+      if (!email) {
+        alert('이메일 주소를 입력해주세요.');
+        return;
+      }
+
+      if (isReadOnlyEmail(email)) {
+        isReadOnlyAccess = true;
+        foundCompany = { '기업명': '목록 조회 전용 계정' };
+        document.getElementById('emailInputSection').style.display = 'none';
+        document.getElementById('confirmSection').style.display = 'block';
+        document.getElementById('companyNameText').textContent = '목록 조회 전용 계정입니다.';
+        return;
+      }
+      
+      // CSV 데이터가 아직 로드되지 않았다면 로드
+      if (techCompanies.length === 0 || designCompanies.length === 0) {
+        await loadCSVData();
+      }
+      
+      // 기술기업 목록을 보려면 디자인전문기업 CSV에서 이메일 찾기
+      // 디자인전문기업 목록을 보려면 기술기업 CSV에서 이메일 찾기
+      const searchData = currentType === 'tech' ? designCompanies : techCompanies;
+      foundCompany = searchData.find(company => {
+        const userEmail = (company['사용자 이름'] || '').toLowerCase().trim();
+        return userEmail === email;
+      });
+      
+      if (foundCompany) {
+        // 확인 섹션 표시
+        document.getElementById('emailInputSection').style.display = 'none';
+        document.getElementById('confirmSection').style.display = 'block';
+        document.getElementById('companyNameText').textContent = foundCompany['기업명'] || email;
+      } else {
+        alert('등록된 이메일 주소가 아닙니다. 이메일 주소를 확인해주세요.');
+      }
+    }
+    
+    function confirmEmail() {
+      if (foundCompany) {
+        const email = document.getElementById('emailInput').value.trim();
+        const url = currentType === 'tech' 
+          ? `tech-companies.html?email=${encodeURIComponent(email)}${isReadOnlyAccess ? '&readonly=1' : ''}`
+          : `design-companies.html?email=${encodeURIComponent(email)}${isReadOnlyAccess ? '&readonly=1' : ''}`;
+        window.location.href = url;
+      }
+    }
+    
+    function resetEmailModal() {
+      document.getElementById('emailInputSection').style.display = 'block';
+      document.getElementById('confirmSection').style.display = 'none';
+      document.getElementById('emailInput').value = '';
+      foundCompany = null;
+      isReadOnlyAccess = false;
+    }
+    
+    // ESC 키로 모달 닫기
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        const modal = document.getElementById('emailModal');
+        if (modal.style.display === 'block') {
+          closeEmailModal();
+        }
+      }
+    });
+    
+    // 페이지 로드 시 CSV 데이터 미리 로드
+    window.addEventListener('load', () => {
+      loadCSVData();
+      
+      // Enter 키로 확인
+      const emailInput = document.getElementById('emailInput');
+      if (emailInput) {
+        emailInput.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+            checkEmail();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

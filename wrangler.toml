@@ -1,0 +1,9 @@
+name = "kidp2025-meetup"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kidp2025-meetup-db"
+database_id = "2502a8e9-5138-4f22-84ef-0787d97b75e6"
+

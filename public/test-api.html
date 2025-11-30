@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>API Test</title></head>
+<body>
+<h1>API 테스트</h1>
+<button onclick="testAPI()">API 테스트</button>
+<pre id="result"></pre>
+<script>
+async function testAPI() {
+    const result = document.getElementById('result');
+    try {
+        const response = await fetch('/api/admin/events');
+        const text = await response.text();
+        result.textContent = `Status: ${response.status}\nHeaders: ${JSON.stringify([...response.headers.entries()], null, 2)}\nBody: ${text}`;
+    } catch (e) {
+        result.textContent = `Error: ${e.message}`;
+    }
+}
+</script>
+</body>
+</html>
