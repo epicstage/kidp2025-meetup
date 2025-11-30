@@ -21,10 +21,18 @@
 - **데이터베이스**: Cloudflare D1
 - **인증**: Google OAuth
 
+## 배포
+
+### 배포 URL
+- **Production**: https://kidp2025-meetup2.pages.dev
+- **Custom Domain**: https://solutions.epicstage.co.kr
+
+### 자동 배포
+- GitHub에 푸시하면 자동으로 배포됩니다
+- Pull Request마다 Preview 배포가 생성됩니다
+
 ## 시작하기
 
 자세한 내용은 다음 문서를 참고하세요:
-- `LAUNCH_CHECKLIST.md` - 런칭 체크리스트
-- `TROUBLESHOOTING.md` - 문제 해결 가이드
-- `DOMAIN_SETUP_GUIDE.md` - 도메인 설정 가이드
+- `CLOUDFLARE_SETUP.md` - Cloudflare Pages 설정 가이드
 

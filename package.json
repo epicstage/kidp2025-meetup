@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "wrangler pages dev public",
-    "deploy": "wrangler pages deploy public --project-name kidp2025-meetup",
-    "deploy:prod": "wrangler pages deploy public --project-name kidp2025-meetup --branch main",
+    "deploy": "wrangler pages deploy public --project-name kidp2025-meetup2",
+    "deploy:prod": "wrangler pages deploy public --project-name kidp2025-meetup2 --branch main",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
