@@ -42,7 +42,7 @@ Cloudflare Dashboard에서 확인:
 
 ### 방법 6: 임시로 기본 도메인 사용
 문제가 계속되면 임시로 기본 도메인 사용:
-- https://kidp2025-meetup.pages.dev
+- https://kidp2025-meetup2.pages.dev
 
 ## 추가 확인사항
 
